@@ -2,8 +2,8 @@ import styles from "./header.module.scss";
 import Link from "next/link";
 
 type Props = {
-    isAuthorized: boolean;
-};
+  isAuthorized: boolean
+}
 
 const Header = ({ isAuthorized }: Props) => {
     return (
@@ -27,4 +27,4 @@ const Header = ({ isAuthorized }: Props) => {
     );
 };
 
-export default Header;
+export default Header
