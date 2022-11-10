@@ -8,6 +8,7 @@
     "test:ci": "jest --ci"
   },
   "dependencies": {
+    "firebase": "^9.13.0",
     "next": "latest",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
