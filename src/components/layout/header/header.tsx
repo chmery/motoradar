@@ -1,11 +1,11 @@
-import styles from "header.module.scss";
+import styles from 'header.module.scss'
 
 type Props = {
-    isAuthorized: boolean;
-};
+  isAuthorized: boolean
+}
 
 const Header = ({ isAuthorized }: Props) => {
-    return <h1>Header</h1>;
-};
+  return <h1>Header</h1>
+}
 
-export default Header;
+export default Header
