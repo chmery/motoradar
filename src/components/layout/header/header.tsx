@@ -1,6 +1,6 @@
 import styles from './header.module.scss'
 import Link from 'next/link'
-import { AuthType, useAuth } from '@/store/AuthContext'
+import { AuthType, useAuth } from '../../../store/AuthContext'
 
 const Header = () => {
   const { user } = useAuth() as AuthType

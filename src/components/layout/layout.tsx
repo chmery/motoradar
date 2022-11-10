@@ -1,13 +1,13 @@
-import { ReactNode } from "react";
-import Header from "./header/header";
+import { ReactNode } from 'react'
+import Header from './header/header'
 
 const Layout = ({ children }: { children: ReactNode }) => {
-    return (
-        <>
-            <Header isAuthorized />
-            <main>{children}</main>
-        </>
-    );
-};
+  return (
+    <>
+      <Header />
+      <main>{children}</main>
+    </>
+  )
+}
 
-export default Layout;
+export default Layout
