@@ -5,7 +5,7 @@ import {
   signOut,
   UserCredential,
 } from 'firebase/auth'
-import { auth } from '@/firebase/firebase'
+import { auth } from '../firebase/firebase'
 import { createContext, useContext, useEffect, useState } from 'react'
 
 type Props = {
