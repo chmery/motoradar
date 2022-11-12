@@ -12,17 +12,25 @@
   border-bottom: 1px solid var(--placeholder);
   padding: 0.5em 0;
   cursor: pointer;
+  position: relative;
 }
 
 .dropdown-list {
+  margin-top: 1em;
+  position: absolute;
+  width: 100%;
   background: #fff;
   color: var(--dark-text);
-  padding: 1em;
+  padding: 1em 0;
 }
 
 .dropdown-item {
-  padding: 0.5em 0;
   cursor: pointer;
+  padding: 0.3em 0;
+
+  & > span {
+    padding: 0 1em;
+  }
 
   &:hover {
     background: var(--border);
