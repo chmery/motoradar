@@ -5,8 +5,17 @@ const TEST_DATA = {
   title: 'Brand',
 }
 
+const TEST_DATA2 = {
+  options: ['Sedan', 'Coupe'],
+  title: 'Chassis Type',
+}
+
 const Filter = () => {
-  const dropdownSelectHandler = (selected: string) => {
+  const brandSelectHandler = (selected: string) => {
+    console.log('in filter:', selected)
+  }
+
+  const chassisSelectHandler = (selected: string) => {
     console.log('in filter:', selected)
   }
 
@@ -16,7 +25,12 @@ const Filter = () => {
       <DropdownList
         title={TEST_DATA.title}
         options={TEST_DATA.options}
-        onSelect={dropdownSelectHandler}
+        onSelect={brandSelectHandler}
+      />
+      <DropdownList
+        title={TEST_DATA2.title}
+        options={TEST_DATA2.options}
+        onSelect={chassisSelectHandler}
       />
     </form>
   )

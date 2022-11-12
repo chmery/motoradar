@@ -13,6 +13,11 @@
   padding: 0.5em 0;
   cursor: pointer;
   position: relative;
+
+  & > svg {
+    height: 1.5em;
+    width: 1.5em;
+  }
 }
 
 .dropdown-list {
@@ -22,6 +27,7 @@
   background: #fff;
   color: var(--dark-text);
   padding: 1em 0;
+  z-index: 10;
 }
 
 .dropdown-item {

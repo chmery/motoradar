@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import Icons from '../Icons/Icons'
+import { TbChevronDown, TbChevronUp } from 'react-icons/tb'
 import styles from './DropdownList.module.scss'
 
 type Props = {
@@ -52,8 +52,8 @@ const DropdownList = ({ options, title, onSelect }: Props) => {
         ref={selectedRef}
       >
         <span>{selectedOption ? selectedOption : options[0]}</span>
-        {!isDropdownOpen && <Icons.ArrowDown />}
-        {isDropdownOpen && <Icons.ArrowUp />}
+        {!isDropdownOpen && <TbChevronDown />}
+        {isDropdownOpen && <TbChevronUp />}
       </div>
       {isDropdownOpen && (
         <div className={styles['dropdown-list']} ref={dropdownRef}>
