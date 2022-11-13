@@ -31,7 +31,7 @@ const RangeSlider = ({ range, title, defaultValue, onChange }: Props) => {
         valueLabelDisplay='off'
         disableSwap
         sx={{
-          color: '#41ADFB',
+          color: 'var(--blue)',
           '.MuiSlider-rail, .MuiSlider-track': {
             height: '6px',
           },
