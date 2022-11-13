@@ -18,9 +18,9 @@ const RangeSlider = ({ range, title, defaultValue, onChange }: Props) => {
   }
 
   return (
-    <div>
-      <span>{title}</span>
-      <span>
+    <div className={styles['range-slider']}>
+      <span className={styles.title}>{title}</span>
+      <span className={styles.range}>
         {value[0]} - {value[1]}
       </span>
       <Slider
@@ -30,6 +30,12 @@ const RangeSlider = ({ range, title, defaultValue, onChange }: Props) => {
         onChange={changeHandler}
         valueLabelDisplay='off'
         disableSwap
+        sx={{
+          color: '#41ADFB',
+          '.MuiSlider-rail, .MuiSlider-track': {
+            height: '6px',
+          },
+        }}
       />
     </div>
   )

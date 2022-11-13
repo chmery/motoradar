@@ -1,5 +1,6 @@
 import DropdownList from 'components/UI/DropdownList/DropdownList'
 import RangeSlider from 'components/UI/RangeSlider/RangeSlider'
+import styles from './Filter.module.scss'
 
 const TEST_DATA = {
   options: ['Audi', 'BMW', 'Mercedes'],
@@ -31,7 +32,7 @@ const Filter = () => {
   }
 
   return (
-    <form>
+    <form className={styles.filter}>
       <h3>What you're looking for?</h3>
       <DropdownList
         title={TEST_DATA.title}
