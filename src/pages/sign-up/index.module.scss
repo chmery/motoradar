@@ -13,43 +13,6 @@
   margin-bottom: 3rem;
 }
 
-.form {
-  display: flex;
-  flex-direction: column;
-  width: 80%;
-}
-
-.label {
-  font-size: 0.8rem;
-  color: var(--gray-text);
-}
-
-.input {
-  margin-bottom: 1rem;
-  background: none;
-  border: none;
-  border-bottom: 1px solid var(--border);
-  outline: none;
-  padding: 10px 0;
-  color: var(--dark-text);
-  font-weight: 500;
-  transition: border-color 0.15s;
-
-  &:focus {
-    border-color: var(--blue);
-  }
-}
-
-.button {
-  padding: 15px 0;
-  background: none;
-  border: 1px solid var(--placeholder);
-  border-radius: 5px;
-  color: var(--placeholder);
-  font-weight: 600;
-  margin-top: 1rem;
-}
-
 .link {
   text-decoration: underline;
   font-weight: 600;
