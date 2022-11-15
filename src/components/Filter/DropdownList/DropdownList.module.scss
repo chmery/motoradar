@@ -1,5 +1,6 @@
 .dropdown {
   width: 100%;
+  position: relative;
   & > span {
     color: var(--placeholder);
   }
@@ -12,7 +13,6 @@
   border-bottom: 1px solid var(--placeholder);
   padding: 0.5em 0;
   cursor: pointer;
-  position: relative;
 
   & > svg {
     height: 1.5em;
