@@ -1,0 +1,44 @@
+.dropdown {
+  width: 100%;
+  position: relative;
+  & > span {
+    color: var(--placeholder);
+  }
+}
+
+.selected {
+  color: var(--placeholder);
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--placeholder);
+  padding: 0.5em 0;
+  cursor: pointer;
+
+  & > svg {
+    height: 1.5em;
+    width: 1.5em;
+  }
+}
+
+.dropdown-list {
+  margin-top: 1em;
+  position: absolute;
+  width: 100%;
+  background: #fff;
+  color: var(--dark-text);
+  padding: 1em 0;
+  z-index: 10;
+}
+
+.dropdown-item {
+  cursor: pointer;
+  padding: 0.3em 0;
+
+  & > span {
+    padding: 0 1em;
+  }
+
+  &:hover {
+    background: var(--border);
+  }
+}

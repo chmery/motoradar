@@ -1,0 +1,22 @@
+.background {
+  background-image: url('../images/background-car.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.gradient {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    61.55deg,
+    #0c1116 39.1%,
+    rgba(0, 11, 17, 0.53) 143.6%
+  );
+  padding-bottom: 10rem;
+}
+
+.filter {
+  padding-top: 8rem;
+  max-width: 30rem;
+}
