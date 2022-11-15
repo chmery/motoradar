@@ -13,9 +13,8 @@ const DropdownList = ({ options, title, onSelect }: Props) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
   const dropdownRef = useRef<HTMLDivElement>(null)
-  const selectedRef = useRef<HTMLDivElement>(null)
 
-  const openDropdownHandler = () => setIsDropdownOpen(true)
+  const dropdownHandler = () => setIsDropdownOpen(!isDropdownOpen)
 
   const selectOptionHandler = (event: React.MouseEvent) => {
     const selectedOption = (event.target as HTMLDivElement).innerText
@@ -29,8 +28,7 @@ const DropdownList = ({ options, title, onSelect }: Props) => {
       if (
         isDropdownOpen &&
         dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node) &&
-        !selectedRef.current!.contains(event.target as Node)
+        !dropdownRef.current.contains(event.target as Node)
       ) {
         setIsDropdownOpen(false)
       }
@@ -44,19 +42,15 @@ const DropdownList = ({ options, title, onSelect }: Props) => {
   }, [isDropdownOpen])
 
   return (
-    <div className={styles.dropdown}>
+    <div className={styles.dropdown} ref={dropdownRef}>
       <span>{title}</span>
-      <div
-        className={styles.selected}
-        onClick={openDropdownHandler}
-        ref={selectedRef}
-      >
+      <div className={styles.selected} onClick={dropdownHandler}>
         <span>{selectedOption ? selectedOption : options[0]}</span>
         {!isDropdownOpen && <TbChevronDown />}
         {isDropdownOpen && <TbChevronUp />}
       </div>
       {isDropdownOpen && (
-        <div className={styles['dropdown-list']} ref={dropdownRef}>
+        <div className={styles['dropdown-list']}>
           {options.map((option) => (
             <div
               className={styles['dropdown-item']}
