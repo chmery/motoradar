@@ -7,11 +7,24 @@
   background: transparent;
   color: #fff;
   position: absolute;
-  z-index: 10;
 
   & a {
     font-weight: 600;
   }
+}
+
+.header-dark {
+  color: var(--dark-text);
+
+  & .button:hover {
+    border: solid 1px var(--blue);
+    background-color: var(--blue);
+    color: #fff;
+  }
+}
+
+.header-dark {
+  color: var(--dark-text);
 }
 
 .nav {
