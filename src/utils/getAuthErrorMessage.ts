@@ -7,6 +7,8 @@ export const getAuthErrorMessage = (error: string) => {
   switch (error) {
     case 'auth/invalid-email':
       return 'Invalid e-mail!';
+    case 'auth/email-already-in-use':
+      return 'E-mail already in use!';
     case 'auth/weak-password':
       return 'Password should be at least 6 characters!';
     case 'auth/wrong-password':
@@ -20,6 +22,4 @@ export const getAuthErrorMessage = (error: string) => {
     default:
       return 'Unknown auth error.';
   }
-
-  return error;
 };

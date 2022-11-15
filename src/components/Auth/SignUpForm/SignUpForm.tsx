@@ -6,12 +6,14 @@ import { AuthType, useAuth } from 'store/AuthContext';
 import { getAuthErrorMessage } from 'utils/getAuthErrorMessage';
 
 import styles from './SignUpForm.module.scss';
+import RadialLoader from 'components/Loaders/RadialLoader/RadialLoader';
 
 const SignUpForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const { signUp } = useAuth() as AuthType;
   const router = useRouter();
@@ -39,6 +41,7 @@ const SignUpForm = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setLoading(true);
 
     if (!email && !password && !confirmPassword) return;
 
@@ -49,13 +52,13 @@ const SignUpForm = () => {
 
     try {
       await signUp(email, password);
-      setError('');
       router.push('/');
     } catch (error) {
       if (error instanceof FirebaseError) {
         setError(getAuthErrorMessage(error.code));
       }
     }
+    setLoading(false);
   };
 
   return (
@@ -108,9 +111,11 @@ const SignUpForm = () => {
         className={`${styles.button} ${
           email && password && confirmPassword ? styles.active : ''
         }`}
-        disabled={email && password && confirmPassword ? false : true}
+        disabled={
+          email && password && confirmPassword && !loading ? false : true
+        }
       >
-        Sign Up
+        {loading ? <RadialLoader /> : 'Sign Up'}
       </button>
     </form>
   );
