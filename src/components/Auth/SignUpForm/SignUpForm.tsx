@@ -6,7 +6,7 @@ import { AuthType, useAuth } from 'store/AuthContext';
 import { getAuthErrorMessage } from 'utils/getAuthErrorMessage';
 
 import styles from './SignUpForm.module.scss';
-import RadialLoader from 'components/Loaders/RadialLoader/RadialLoader';
+import RadialLoader from 'components/UI/Loaders/RadialLoader/RadialLoader';
 
 const SignUpForm = () => {
   const [email, setEmail] = useState('');

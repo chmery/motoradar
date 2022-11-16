@@ -1,10 +1,10 @@
-import RadialLoader from 'components/Loaders/RadialLoader/RadialLoader';
 import { FirebaseError } from 'firebase/app';
 import { useRouter } from 'next/router';
 import { FormEvent, useState } from 'react';
 import { AuthType, useAuth } from 'store/AuthContext';
 import { getAuthErrorMessage } from 'utils/getAuthErrorMessage';
 import styles from './SignInForm.module.scss';
+import RadialLoader from 'components/UI/Loaders/RadialLoader/RadialLoader';
 
 const SignInForm = () => {
   const [email, setEmail] = useState('');
