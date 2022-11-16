@@ -12,7 +12,7 @@ const SignInForm = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isErrorOpen, setIsErrorOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { signIn } = useAuth() as AuthType;
   const router = useRouter();
@@ -35,7 +35,7 @@ const SignInForm = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setIsLoading(true);
 
     if (!email && !password) return;
 
@@ -48,7 +48,7 @@ const SignInForm = () => {
         setIsErrorOpen(true);
       }
     }
-    setLoading(false);
+    setIsLoading(false);
   };
 
   const handleErrorBoxClose = () => {
@@ -88,9 +88,9 @@ const SignInForm = () => {
           className={`${styles.button} ${
             email && password ? styles.active : ''
           }`}
-          disabled={email && password && !loading ? false : true}
+          disabled={email && password && !isLoading ? false : true}
         >
-          {loading ? <RadialLoader /> : 'Sign In'}
+          {isLoading ? <RadialLoader /> : 'Sign In'}
         </button>
       </form>
     </>

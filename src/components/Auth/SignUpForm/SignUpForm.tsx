@@ -15,7 +15,7 @@ const SignUpForm = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [isErrorOpen, setIsErrorOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { signUp } = useAuth() as AuthType;
   const router = useRouter();
@@ -41,14 +41,14 @@ const SignUpForm = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setIsLoading(true);
 
     if (!email && !password && !confirmPassword) return;
 
     if (password !== confirmPassword) {
       setError('Passwords do not match!');
       setIsErrorOpen(true);
-      setLoading(false);
+      setIsLoading(false);
       return;
     }
 
@@ -61,7 +61,7 @@ const SignUpForm = () => {
         setIsErrorOpen(true);
       }
     }
-    setLoading(false);
+    setIsLoading(false);
   };
 
   const handleErrorBoxClose = () => {
@@ -113,10 +113,10 @@ const SignUpForm = () => {
             email && password && confirmPassword ? styles.active : ''
           }`}
           disabled={
-            email && password && confirmPassword && !loading ? false : true
+            email && password && confirmPassword && !isLoading ? false : true
           }
         >
-          {loading ? <RadialLoader /> : 'Sign Up'}
+          {isLoading ? <RadialLoader /> : 'Sign Up'}
         </button>
       </form>
     </>
