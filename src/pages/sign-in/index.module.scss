@@ -1,0 +1,19 @@
+.main {
+  width: 100%;
+  height: calc(100vh - 5rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.header {
+  color: var(--dark-text);
+  font-weight: 600;
+  margin-bottom: 3rem;
+}
+
+.link {
+  text-decoration: underline;
+  font-weight: 600;
+}
