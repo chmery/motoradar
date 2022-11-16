@@ -10,10 +10,6 @@
   transition: color 0.15s;
 }
 
-.labelError {
-  color: var(--error);
-}
-
 .input {
   margin-bottom: 1rem;
   background: none;
@@ -34,16 +30,6 @@
   }
 }
 
-.inputError {
-  border-color: var(--error);
-}
-
-.error {
-  color: var(--error);
-  font-size: 0.8rem;
-  margin-bottom: 5px;
-}
-
 .button {
   background: none;
   border: 1px solid var(--placeholder);
@@ -52,6 +38,7 @@
   font-weight: 600;
   cursor: not-allowed;
   height: 55px;
+  margin-bottom: 1rem;
   display: grid;
   justify-content: center;
   align-items: center;
