@@ -6,12 +6,25 @@
   height: 5rem;
   background: transparent;
   color: #fff;
-  position: relative;
-  z-index: 10;
+  position: absolute;
 
   & a {
     font-weight: 600;
   }
+}
+
+.header-dark {
+  color: var(--dark-text);
+
+  & .button:hover {
+    border: solid 1px var(--blue);
+    background-color: var(--blue);
+    color: #fff;
+  }
+}
+
+.header-dark {
+  color: var(--dark-text);
 }
 
 .nav {

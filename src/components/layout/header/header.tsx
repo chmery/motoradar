@@ -1,12 +1,23 @@
-import styles from './header.module.scss'
-import Link from 'next/link'
-import { AuthType, useAuth } from '../../../store/AuthContext'
+import styles from './Header.module.scss';
+import Link from 'next/link';
+import { AuthType, useAuth } from '../../../store/AuthContext';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 const Header = () => {
-  const { user } = useAuth() as AuthType
+  const { user } = useAuth() as AuthType;
+  const { pathname } = useRouter();
+
+  const [headerClass, setHeaderClass] = useState(styles.header);
+
+  useEffect(() => {
+    pathname !== '/'
+      ? setHeaderClass(`${styles.header} ${styles['header-dark']}`)
+      : setHeaderClass(styles.header);
+  }, []);
 
   return (
-    <header className={styles.header}>
+    <header className={headerClass}>
       <nav className={styles.nav}>
         <Link href='/'>MOTORADAR</Link>
         <div className={styles.links}>
@@ -23,7 +34,7 @@ const Header = () => {
         </div>
       </nav>
     </header>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
