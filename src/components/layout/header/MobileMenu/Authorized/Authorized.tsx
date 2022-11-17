@@ -1,4 +1,5 @@
 import { AuthType, useAuth } from 'store/AuthContext';
+import { createRandomUsername } from 'utils/createRandomUsername';
 import styles from './Authorized.module.scss';
 
 type Props = {
