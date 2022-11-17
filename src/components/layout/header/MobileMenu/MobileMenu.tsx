@@ -19,7 +19,11 @@ const MobileMenu = ({ closeMenu }: Props) => {
         <IconContext.Provider value={{ className: styles.close }}>
           <IoClose onClick={closeMenu} />
         </IconContext.Provider>
-        {user ? <Authorized /> : <Unauthorized closeMenu={closeMenu} />}
+        {user ? (
+          <Authorized closeMenu={closeMenu} />
+        ) : (
+          <Unauthorized closeMenu={closeMenu} />
+        )}
       </nav>
     </div>
   );

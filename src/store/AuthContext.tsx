@@ -4,32 +4,34 @@ import {
   signInWithEmailAndPassword,
   signOut,
   UserCredential,
-} from 'firebase/auth'
-import { auth } from '../firebase/firebase'
-import { createContext, useContext, useEffect, useState } from 'react'
+} from 'firebase/auth';
+import { auth } from '../firebase/firebase';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 type Props = {
-  children: React.ReactNode
-}
+  children: React.ReactNode;
+};
 
 type UserType = {
-  uid: string
-  email: string | null
-}
+  uid: string;
+  email: string | null;
+  displayName: string | null;
+  photoURL: string | null;
+};
 
 export type AuthType = {
-  user: UserType | null
-  signUp: (email: string, password: string) => Promise<UserCredential>
-  signIn: (email: string, password: string) => Promise<UserCredential>
-  signOut: () => void
-}
+  user: UserType | null;
+  signUp: (email: string, password: string) => Promise<UserCredential>;
+  signIn: (email: string, password: string) => Promise<UserCredential>;
+  signOut: () => void;
+};
 
-const AuthContext = createContext<AuthType | null>(null)
+const AuthContext = createContext<AuthType | null>(null);
 
-export const useAuth = () => useContext(AuthContext)
+export const useAuth = () => useContext(AuthContext);
 
 export const AuthContextProvider = ({ children }: Props) => {
-  const [user, setUser] = useState<UserType | null>(null)
+  const [user, setUser] = useState<UserType | null>(null);
 
   useEffect(() => {
     return onAuthStateChanged(auth, (user) => {
@@ -37,32 +39,34 @@ export const AuthContextProvider = ({ children }: Props) => {
         setUser({
           uid: user.uid,
           email: user.email,
-        })
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+        });
       } else {
-        setUser(null)
+        setUser(null);
       }
-    })
-  })
+    });
+  });
 
   const signUp = (email: string, password: string) => {
-    return createUserWithEmailAndPassword(auth, email, password)
-  }
+    return createUserWithEmailAndPassword(auth, email, password);
+  };
 
   const signIn = (email: string, password: string) => {
-    return signInWithEmailAndPassword(auth, email, password)
-  }
+    return signInWithEmailAndPassword(auth, email, password);
+  };
 
   const logOut = () => {
-    setUser(null)
-    signOut(auth)
-  }
+    setUser(null);
+    signOut(auth);
+  };
 
   const value: AuthType = {
     user: user,
     signUp: signUp,
     signIn: signIn,
     signOut: logOut,
-  }
+  };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
-}
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};
