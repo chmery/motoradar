@@ -1,3 +1,5 @@
+@use '../../../styles/mixins' as *;
+
 .header {
   width: 100%;
   display: flex;
@@ -54,6 +56,10 @@
   & > a:hover {
     color: var(--border);
   }
+
+  @include mobileL {
+    display: none;
+  }
 }
 
 .button {
@@ -67,5 +73,15 @@
     border: solid 1px #fff;
     background-color: #fff;
     color: var(--dark-text);
+  }
+}
+
+.hamburger {
+  font-size: 1.8rem;
+  cursor: pointer;
+  display: none;
+
+  @include mobileL {
+    display: block;
   }
 }
