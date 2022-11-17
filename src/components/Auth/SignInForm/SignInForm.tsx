@@ -6,6 +6,7 @@ import { getAuthErrorMessage } from 'utils/getAuthErrorMessage';
 import styles from './SignInForm.module.scss';
 import RadialLoader from 'components/UI/Loaders/RadialLoader/RadialLoader';
 import ErrorBox from '../ErrorBox/ErrorBox';
+import Button from 'components/UI/Button/Button';
 
 const SignInForm = () => {
   const [email, setEmail] = useState('');
@@ -83,15 +84,13 @@ const SignInForm = () => {
           onChange={(e) => handleInputChange('password', e.target.value)}
           className={styles.input}
         />
-        <button
-          type='submit'
-          className={`${styles.button} ${
-            email && password ? styles.active : ''
-          }`}
+        <Button
+          text={'Sign In'}
+          type={'submit'}
+          isLoading={isLoading}
+          active={email && password ? true : false}
           disabled={email && password && !isLoading ? false : true}
-        >
-          {isLoading ? <RadialLoader /> : 'Sign In'}
-        </button>
+        />
       </form>
     </>
   );

@@ -1,9 +1,27 @@
 .button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
-  color: #fff;
+  color: var(--dark-text);
   border-radius: 0.5em;
+  border: solid 1px var(--placeholder);
   font-size: 1rem;
   font-weight: 600;
-  background: var(--blue);
-  padding: 1em;
+  background: none;
+  height: 55px;
+  cursor: pointer;
+  outline: none;
+
+  &:disabled {
+    color: var(--placeholder);
+    cursor: not-allowed;
+  }
+}
+
+.active {
+  background-color: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+  cursor: pointer;
 }
