@@ -8,6 +8,7 @@ import { getAuthErrorMessage } from 'utils/getAuthErrorMessage';
 import styles from './SignUpForm.module.scss';
 import RadialLoader from 'components/UI/Loaders/RadialLoader/RadialLoader';
 import ErrorBox from '../ErrorBox/ErrorBox';
+import Button from 'components/UI/Button/Button';
 
 const SignUpForm = () => {
   const [email, setEmail] = useState('');
@@ -107,17 +108,15 @@ const SignUpForm = () => {
           onChange={(e) => handleInputChange('confirm', e.target.value)}
           className={styles.input}
         />
-        <button
-          type='submit'
-          className={`${styles.button} ${
-            email && password && confirmPassword ? styles.active : ''
-          }`}
+        <Button
+          text={'Sign Up'}
+          type={'submit'}
+          isLoading={isLoading}
+          active={email && password && confirmPassword ? true : false}
           disabled={
             email && password && confirmPassword && !isLoading ? false : true
           }
-        >
-          {isLoading ? <RadialLoader /> : 'Sign Up'}
-        </button>
+        />
       </form>
     </>
   );

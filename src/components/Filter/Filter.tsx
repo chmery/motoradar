@@ -1,42 +1,42 @@
-import CustomCheckbox from './CustomCheckbox/CustomCheckbox'
-import DropdownList from './DropdownList/DropdownList'
-import RangeSlider from './RangeSlider/RangeSlider'
-import { useState } from 'react'
-import styles from './Filter.module.scss'
-import Button from 'components/UI/Button/Button'
+import CustomCheckbox from './CustomCheckbox/CustomCheckbox';
+import DropdownList from './DropdownList/DropdownList';
+import RangeSlider from './RangeSlider/RangeSlider';
+import { useState } from 'react';
+import styles from './Filter.module.scss';
+import Button from 'components/UI/Button/Button';
 
 const TEST_DATA = {
   options: ['Audi', 'BMW', 'Mercedes'],
   title: 'Brand',
-}
+};
 
 const TEST_DATA2 = {
   options: ['Sedan', 'Coupe'],
   title: 'Chassis Type',
-}
+};
 
 const RANGE_DATA = {
   title: 'Production Year Range',
   defaultValue: [2004, 2018],
   range: [1980, 2022],
-}
+};
 
 const Filter = () => {
-  const [isDamaged, setIsDamaged] = useState(false)
-  const [isAccidentFree, setIsAccidentFree] = useState(false)
-  const [brand, setBrand] = useState('')
-  const [chassis, setChassis] = useState('')
-  const [yearRange, setYearRange] = useState(RANGE_DATA.range)
+  const [isDamaged, setIsDamaged] = useState(false);
+  const [isAccidentFree, setIsAccidentFree] = useState(false);
+  const [brand, setBrand] = useState('');
+  const [chassis, setChassis] = useState('');
+  const [yearRange, setYearRange] = useState(RANGE_DATA.range);
 
-  const brandSelectHandler = (selected: string) => setBrand(selected)
-  const chassisSelectHandler = (selected: string) => setChassis(selected)
-  const yearRangeSelectHandler = (range: number[]) => setYearRange(range)
-  const damagedCheckHandler = (isChecked: boolean) => setIsDamaged(isChecked)
+  const brandSelectHandler = (selected: string) => setBrand(selected);
+  const chassisSelectHandler = (selected: string) => setChassis(selected);
+  const yearRangeSelectHandler = (range: number[]) => setYearRange(range);
+  const damagedCheckHandler = (isChecked: boolean) => setIsDamaged(isChecked);
   const accidentFreeCheckHandler = (isChecked: boolean) =>
-    setIsAccidentFree(isChecked)
+    setIsAccidentFree(isChecked);
 
   const searchHandler = (event: React.FormEvent) => {
-    event.preventDefault()
+    event.preventDefault();
 
     const searchParams = {
       isDamaged,
@@ -44,10 +44,10 @@ const Filter = () => {
       brand,
       chassis,
       yearRange,
-    }
+    };
 
-    console.log(searchParams)
-  }
+    console.log(searchParams);
+  };
 
   return (
     <form className={styles.filter} onSubmit={searchHandler}>
@@ -89,9 +89,9 @@ const Filter = () => {
           onChange={accidentFreeCheckHandler}
         />
       </div>
-      <Button text='Search' type='submit' />
+      <Button text='Search' type='submit' active />
     </form>
-  )
-}
+  );
+};
 
-export default Filter
+export default Filter;

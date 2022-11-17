@@ -1,5 +1,5 @@
-import Link from 'next/link'
-import styles from './footer.module.scss'
+import Link from 'next/link';
+import styles from './Footer.module.scss';
 
 const Footer = () => {
   return (
@@ -13,7 +13,7 @@ const Footer = () => {
         <span>Based in Poland</span>
       </div>
     </footer>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;

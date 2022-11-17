@@ -1,8 +1,5 @@
-import { FormEvent, useState } from 'react';
 import Link from 'next/link';
-
 import styles from './index.module.scss';
-import { AuthType, useAuth } from 'store/AuthContext';
 import SignUpForm from 'components/Auth/SignUpForm/SignUpForm';
 import Wrapper from 'components/UI/Wrapper/Wrapper';
 

@@ -29,24 +29,3 @@
     border-color: var(--blue);
   }
 }
-
-.button {
-  background: none;
-  border: 1px solid var(--placeholder);
-  border-radius: 5px;
-  color: var(--placeholder);
-  font-weight: 600;
-  cursor: not-allowed;
-  height: 55px;
-  display: grid;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.active {
-  background-color: var(--blue);
-  border-color: var(--blue);
-  color: #fff;
-  cursor: pointer;
-}
