@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { AuthType, useAuth } from 'store/AuthContext';
+import { createRandomUsername } from 'utils/createRandomUsername';
 import styles from './Authorized.module.scss';
 
 import { BsStack } from 'react-icons/bs';

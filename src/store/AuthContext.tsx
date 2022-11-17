@@ -3,10 +3,12 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
+  updateProfile,
   UserCredential,
 } from 'firebase/auth';
 import { auth } from '../firebase/firebase';
 import { createContext, useContext, useEffect, useState } from 'react';
+import { createRandomUsername } from 'utils/createRandomUsername';
 
 type Props = {
   children: React.ReactNode;
@@ -21,7 +23,7 @@ type UserType = {
 
 export type AuthType = {
   user: UserType | null;
-  signUp: (email: string, password: string) => Promise<UserCredential>;
+  signUp: (email: string, password: string) => Promise<void>;
   signIn: (email: string, password: string) => Promise<UserCredential>;
   signOut: () => void;
 };
@@ -49,7 +51,15 @@ export const AuthContextProvider = ({ children }: Props) => {
   });
 
   const signUp = (email: string, password: string) => {
-    return createUserWithEmailAndPassword(auth, email, password);
+    return createUserWithEmailAndPassword(auth, email, password).then(
+      (userData) => {
+        updateProfile(auth.currentUser!, {
+          displayName: createRandomUsername(userData.user.email!),
+          photoURL:
+            'https://firebasestorage.googleapis.com/v0/b/motoradar-3dd45.appspot.com/o/profilePics%2Ftemporary.jpg?alt=media&token=f60ccd74-f6e4-42ca-add8-243e349fbb1b',
+        });
+      }
+    );
   };
 
   const signIn = (email: string, password: string) => {
