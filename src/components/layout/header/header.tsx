@@ -4,6 +4,8 @@ import { AuthType, useAuth } from '../../../store/AuthContext';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { BiMenu } from 'react-icons/bi';
+
 const Header = () => {
   const { user } = useAuth() as AuthType;
   const { pathname } = useRouter();
@@ -31,6 +33,9 @@ const Header = () => {
             {user && <Link href='/new-listing'>New Listing</Link>}
             {!user && <Link href='/sign-in'>Sign In</Link>}
           </div>
+        </div>
+        <div className={styles.hamburger}>
+          <BiMenu />
         </div>
       </nav>
     </header>
