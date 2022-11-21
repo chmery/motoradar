@@ -1,0 +1,45 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+}
+
+.image-container {
+  position: relative;
+}
+
+.image {
+  border-radius: 50%;
+}
+
+.input {
+  position: absolute;
+  left: -99999999rem;
+}
+
+.label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  color: transparent;
+  cursor: pointer;
+  transition: 0.15s;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+  }
+}
+
+.email {
+  font-size: 0.9rem;
+  color: var(--gray-text);
+}
