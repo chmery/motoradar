@@ -10,9 +10,32 @@
   display: flex;
   flex-direction: column;
   padding: 2em 20px 2em 0;
+
+  & > button {
+    margin-bottom: 10px;
+  }
 }
 
 .listings {
   flex-grow: 1;
   padding: 2em 0 2em 20px;
+}
+
+.link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  color: var(--dark-text);
+  border-radius: 0.5em;
+  border: solid 1px var(--placeholder);
+  font-size: 1rem;
+  font-weight: 600;
+  height: 55px;
+  cursor: pointer;
+}
+
+.logout {
+  transform: rotate(180deg);
+  margin-right: 10px;
 }

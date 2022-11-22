@@ -65,12 +65,12 @@ const EditProfile = ({ handleEditProfileOpen }: Props) => {
         <Button
           text='Save'
           type='submit'
-          active
           isLoading={isLoading}
-          disabled={isLoading}
+          disabled={isLoading || !username}
+          active={username ? true : false}
         />
+        <Button text='Cancel' type='button' onClick={handleEditProfileOpen} />
       </form>
-      <Button text='Cancel' type='button' onClick={handleEditProfileOpen} />
     </section>
   );
 };
