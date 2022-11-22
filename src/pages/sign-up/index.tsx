@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import styles from './index.module.scss';
-import SignUpForm from 'components/Auth/SignUpForm/SignUpForm';
-import Wrapper from 'components/UI/Wrapper/Wrapper';
+import SignUpForm from '../../components/Auth/SignUpForm/SignUpForm';
+import Wrapper from '../../components/UI/Wrapper/Wrapper';
 
 const SignUpPage = () => {
   return (

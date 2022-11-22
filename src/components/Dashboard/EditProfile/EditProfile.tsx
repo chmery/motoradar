@@ -1,9 +1,9 @@
-import Button from 'components/UI/Button/Button';
 import { updateProfile } from 'firebase/auth';
 import { auth } from '../../../firebase/firebase';
 import { FormEvent, useState } from 'react';
-import { AuthType, useAuth } from 'store/AuthContext';
 import styles from './EditProfile.module.scss';
+import Button from '../../UI/Button/Button';
+import { AuthType, useAuth } from '../../../store/AuthContext';
 
 type Props = {
   handleEditProfileOpen: () => void;

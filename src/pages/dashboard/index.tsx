@@ -1,8 +1,8 @@
-import EditProfile from 'components/Dashboard/EditProfile/EditProfile';
-import UserInfo from 'components/Dashboard/UserInfo/UserInfo';
-import Button from 'components/UI/Button/Button';
-import Wrapper from 'components/UI/Wrapper/Wrapper';
 import { useState } from 'react';
+import EditProfile from '../../components/Dashboard/EditProfile/EditProfile';
+import UserInfo from '../../components/Dashboard/UserInfo/UserInfo';
+import Button from '../../components/UI/Button/Button';
+import Wrapper from '../../components/UI/Wrapper/Wrapper';
 import styles from './index.module.scss';
 
 const DashboardPage = () => {

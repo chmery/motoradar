@@ -1,6 +1,6 @@
-import SignInForm from 'components/Auth/SignInForm/SignInForm';
-import Wrapper from 'components/UI/Wrapper/Wrapper';
 import Link from 'next/link';
+import SignInForm from '../../components/Auth/SignInForm/SignInForm';
+import Wrapper from '../../components/UI/Wrapper/Wrapper';
 import styles from './index.module.scss';
 
 const SignInPage = () => {

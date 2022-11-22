@@ -1,12 +1,11 @@
 import { FirebaseError } from 'firebase/app';
 import { useRouter } from 'next/router';
 import { FormEvent, useState } from 'react';
-import { AuthType, useAuth } from 'store/AuthContext';
-import { getAuthErrorMessage } from 'utils/getAuthErrorMessage';
 import styles from './SignInForm.module.scss';
-import RadialLoader from 'components/UI/Loaders/RadialLoader/RadialLoader';
 import ErrorBox from '../ErrorBox/ErrorBox';
-import Button from 'components/UI/Button/Button';
+import { AuthType, useAuth } from '../../../store/AuthContext';
+import { getAuthErrorMessage } from '../../../utils/getAuthErrorMessage';
+import Button from '../../UI/Button/Button';
 
 const SignInForm = () => {
   const [email, setEmail] = useState('');

@@ -5,10 +5,10 @@ import { updateProfile } from 'firebase/auth';
 import { useState } from 'react';
 
 import styles from './UserInfo.module.scss';
-import { AuthType, useAuth } from 'store/AuthContext';
 
 import { FiUpload } from 'react-icons/fi';
-import UploadLoader from 'components/UI/Loaders/UploadLoader/UploadLoader';
+import { AuthType, useAuth } from '../../../store/AuthContext';
+import UploadLoader from '../../UI/Loaders/UploadLoader/UploadLoader';
 
 const UserInfo = () => {
   const { user } = useAuth() as AuthType;

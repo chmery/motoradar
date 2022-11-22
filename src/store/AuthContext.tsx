@@ -8,7 +8,7 @@ import {
 } from 'firebase/auth';
 import { auth } from '../firebase/firebase';
 import { createContext, useContext, useEffect, useState } from 'react';
-import { createRandomUsername } from 'utils/createRandomUsername';
+import { createRandomUsername } from '../utils/createRandomUsername';
 
 type Props = {
   children: React.ReactNode;

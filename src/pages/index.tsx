@@ -1,6 +1,6 @@
-import Filter from 'components/Filter/Filter'
-import Wrapper from 'components/UI/Wrapper/Wrapper'
-import styles from './index.module.scss'
+import Filter from '../components/Filter/Filter';
+import Wrapper from '../components/UI/Wrapper/Wrapper';
+import styles from './index.module.scss';
 
 export default function Home() {
   return (
@@ -13,5 +13,5 @@ export default function Home() {
         </Wrapper>
       </div>
     </div>
-  )
+  );
 }
