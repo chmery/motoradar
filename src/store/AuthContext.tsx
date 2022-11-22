@@ -18,6 +18,7 @@ type UserType = {
   uid: string;
   email: string | null;
   displayName: string | null;
+  phoneNumber: string | null;
   photoURL: string | null;
 };
 
@@ -42,6 +43,7 @@ export const AuthContextProvider = ({ children }: Props) => {
           uid: user.uid,
           email: user.email,
           displayName: user.displayName,
+          phoneNumber: user.phoneNumber,
           photoURL: user.photoURL,
         });
       } else {

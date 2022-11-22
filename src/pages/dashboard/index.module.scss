@@ -1,5 +1,6 @@
 .main {
   width: 100%;
+  min-height: calc(100vh - 80px);
   display: flex;
 }
 
@@ -8,10 +9,10 @@
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  padding-right: 20px;
+  padding: 2em 20px 2em 0;
 }
 
 .listings {
   flex-grow: 1;
-  padding-left: 20px;
+  padding: 2em 0 2em 20px;
 }

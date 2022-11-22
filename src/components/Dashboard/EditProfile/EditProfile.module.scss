@@ -1,7 +1,14 @@
+.header {
+  margin-bottom: 2em;
+}
+
 .form {
   display: flex;
   flex-direction: column;
-  width: 100%;
+
+  & > button {
+    margin-bottom: 10px;
+  }
 }
 
 .label {
@@ -21,7 +28,7 @@
   font-weight: 500;
   transition: border-color 0.15s;
 
-  &:nth-of-type(3) {
+  &:nth-of-type(2) {
     margin-bottom: 2rem;
   }
 
