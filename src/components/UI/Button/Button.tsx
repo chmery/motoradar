@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { MouseEvent, ReactElement } from 'react';
 import { IconType } from 'react-icons';
 import RadialLoader from '../Loaders/RadialLoader/RadialLoader';
 import styles from './Button.module.scss';
@@ -10,7 +10,7 @@ type Props = {
   type?: 'button' | 'submit' | 'reset' | undefined;
   disabled?: boolean;
   isLoading?: boolean;
-  onClick?: () => void;
+  onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
 };
 
 const Button = ({
