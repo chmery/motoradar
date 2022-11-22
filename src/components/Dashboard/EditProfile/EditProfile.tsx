@@ -56,6 +56,7 @@ const EditProfile = ({ handleEditProfileOpen }: Props) => {
         <input
           type='text'
           className={styles.input}
+          maxLength={15}
           id='username'
           value={username as string}
           onChange={(e) => handleInputChange('username', e.target.value)}
