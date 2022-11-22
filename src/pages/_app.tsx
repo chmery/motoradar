@@ -1,7 +1,7 @@
-import '../styles/main.scss'
-import Layout from '../components/Layout/Layout'
-import type { AppProps } from 'next/app'
-import { AuthContextProvider } from '../store/AuthContext'
+import '../styles/main.scss';
+import Layout from '../components/Layout/Layout';
+import type { AppProps } from 'next/app';
+import { AuthContextProvider } from '../store/AuthContext';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -10,5 +10,5 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <Component {...pageProps} />
       </Layout>
     </AuthContextProvider>
-  )
+  );
 }

@@ -17,6 +17,7 @@
 
 .header-dark {
   color: var(--dark-text);
+  border-bottom: 1px solid var(--border);
 
   & .button:hover {
     border: solid 1px var(--blue);
@@ -65,7 +66,7 @@
 .button {
   border: solid 1px var(--border);
   border-radius: 0.4rem;
-  padding: 0.8em 2em;
+  padding: 0.8em 0em;
   cursor: pointer;
   transition: background-color 0.2s, border 0.2s, color 0.2s;
 
@@ -73,6 +74,10 @@
     border: solid 1px #fff;
     background-color: #fff;
     color: var(--dark-text);
+  }
+
+  & > a {
+    padding: 0.8em 2em;
   }
 }
 
