@@ -19,8 +19,11 @@ const DashboardPage = () => {
   const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
 
   const handleEditProfileOpen = () => {
-    if (isChangeEmailOpen || isChangePasswordOpen) {
+    if (isChangeEmailOpen) {
       handleChangeEmailOpen();
+    }
+
+    if (isChangePasswordOpen) {
       handleChangePasswordOpen();
     }
 
@@ -28,8 +31,11 @@ const DashboardPage = () => {
   };
 
   const handleChangeEmailOpen = () => {
-    if (isEditProfileOpen || isChangePasswordOpen) {
+    if (isEditProfileOpen) {
       handleEditProfileOpen();
+    }
+
+    if (isChangePasswordOpen) {
       handleChangePasswordOpen();
     }
 
@@ -37,8 +43,11 @@ const DashboardPage = () => {
   };
 
   const handleChangePasswordOpen = () => {
-    if (isEditProfileOpen || isChangeEmailOpen) {
+    if (isEditProfileOpen) {
       handleEditProfileOpen();
+    }
+
+    if (isChangeEmailOpen) {
       handleChangeEmailOpen();
     }
 
@@ -77,7 +86,11 @@ const DashboardPage = () => {
               onClick={handleChangePasswordOpen}
             />
           )}
-          {isChangePasswordOpen && <ChangePassword />}
+          {isChangePasswordOpen && (
+            <ChangePassword
+              handleChangePasswordOpen={handleChangePasswordOpen}
+            />
+          )}
           <Link
             href='/'
             className={styles.link}
