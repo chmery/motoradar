@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { IconContext } from 'react-icons';
 import { FiLogIn } from 'react-icons/fi';
 import ChangeEmail from '../../components/Dashboard/ChangeEmail/ChangeEmail';
+import ChangePassword from '../../components/Dashboard/ChangePassword/ChangePassword';
 import EditProfile from '../../components/Dashboard/EditProfile/EditProfile';
 import UserInfo from '../../components/Dashboard/UserInfo/UserInfo';
 import Button from '../../components/UI/Button/Button';
@@ -15,21 +16,33 @@ const DashboardPage = () => {
 
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
   const [isChangeEmailOpen, setIsChangeEmailOpen] = useState(false);
+  const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
 
   const handleEditProfileOpen = () => {
-    if (isChangeEmailOpen) {
+    if (isChangeEmailOpen || isChangePasswordOpen) {
       handleChangeEmailOpen();
+      handleChangePasswordOpen();
     }
 
     setIsEditProfileOpen(!isEditProfileOpen);
   };
 
   const handleChangeEmailOpen = () => {
-    if (isEditProfileOpen) {
+    if (isEditProfileOpen || isChangePasswordOpen) {
       handleEditProfileOpen();
+      handleChangePasswordOpen();
     }
 
     setIsChangeEmailOpen(!isChangeEmailOpen);
+  };
+
+  const handleChangePasswordOpen = () => {
+    if (isEditProfileOpen || isChangeEmailOpen) {
+      handleEditProfileOpen();
+      handleChangeEmailOpen();
+    }
+
+    setIsChangePasswordOpen(!isChangePasswordOpen);
   };
 
   return (
@@ -57,6 +70,14 @@ const DashboardPage = () => {
           {isChangeEmailOpen && (
             <ChangeEmail handleChangeEmailOpen={handleChangeEmailOpen} />
           )}
+          {!isChangePasswordOpen && (
+            <Button
+              text='Change Password'
+              type='button'
+              onClick={handleChangePasswordOpen}
+            />
+          )}
+          {isChangePasswordOpen && <ChangePassword />}
           <Link
             href='/'
             className={styles.link}
