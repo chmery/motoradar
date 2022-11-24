@@ -1,5 +1,4 @@
 import { MouseEvent, ReactElement } from 'react';
-import { IconType } from 'react-icons';
 import RadialLoader from '../Loaders/RadialLoader/RadialLoader';
 import styles from './Button.module.scss';
 
