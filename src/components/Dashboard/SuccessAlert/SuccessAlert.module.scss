@@ -3,14 +3,17 @@
   top: 10px;
   left: 50%;
   transform: translateX(-50%);
-  border: 1px solid var(--success);
   border-radius: 5px;
   padding: 15px 10px;
-  background-color: rgba(57, 179, 57, 0.8);
+  background-color: var(--success);
   color: var(--dark-text);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  animation-name: open, hide;
+  animation-delay: 0s, 4.6s;
+  animation-duration: 0.4s;
+  animation-timing-function: ease-in-out;
 }
 
 .close {
@@ -18,4 +21,22 @@
   font-size: 1.3rem;
   cursor: pointer;
   margin-left: 1em;
+}
+
+@keyframes open {
+  0% {
+    top: -100px;
+  }
+  100% {
+    top: 10px;
+  }
+}
+
+@keyframes hide {
+  0% {
+    top: 10px;
+  }
+  100% {
+    top: -100px;
+  }
 }
