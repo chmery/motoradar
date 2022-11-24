@@ -1,6 +1,6 @@
 import { FirebaseError } from 'firebase/app';
 import { updatePassword } from 'firebase/auth';
-import { FormEvent, useState } from 'react';
+import { Dispatch, FormEvent, SetStateAction, useState } from 'react';
 import { auth } from '../../../firebase/firebase';
 import { AuthType, useAuth } from '../../../store/AuthContext';
 import { getAuthErrorMessage } from '../../../utils/getAuthErrorMessage';
@@ -10,9 +10,15 @@ import styles from './ChangePassword.module.scss';
 
 type Props = {
   handleChangePasswordOpen: () => void;
+  setIsSuccessAlertOpen: Dispatch<SetStateAction<boolean>>;
+  setSuccessText: Dispatch<SetStateAction<string>>;
 };
 
-const ChangePassword = ({ handleChangePasswordOpen }: Props) => {
+const ChangePassword = ({
+  handleChangePasswordOpen,
+  setIsSuccessAlertOpen,
+  setSuccessText,
+}: Props) => {
   const { user } = useAuth() as AuthType;
 
   const [password, setPassword] = useState('');
@@ -51,6 +57,8 @@ const ChangePassword = ({ handleChangePasswordOpen }: Props) => {
       if (auth.currentUser) {
         await updatePassword(auth.currentUser, password);
         handleChangePasswordOpen();
+        setSuccessText('Password successfuly changed!');
+        setIsSuccessAlertOpen(true);
       }
     } catch (error) {
       if (error instanceof FirebaseError) {

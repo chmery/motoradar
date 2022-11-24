@@ -1,0 +1,21 @@
+.success {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 1px solid var(--success);
+  border-radius: 5px;
+  padding: 15px 10px;
+  background-color: rgba(57, 179, 57, 0.8);
+  color: var(--dark-text);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.close {
+  color: var(--dark-text);
+  font-size: 1.3rem;
+  cursor: pointer;
+  margin-left: 1em;
+}

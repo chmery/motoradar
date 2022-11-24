@@ -5,6 +5,7 @@ import { FiLogIn } from 'react-icons/fi';
 import ChangeEmail from '../../components/Dashboard/ChangeEmail/ChangeEmail';
 import ChangePassword from '../../components/Dashboard/ChangePassword/ChangePassword';
 import EditProfile from '../../components/Dashboard/EditProfile/EditProfile';
+import SuccessAlert from '../../components/Dashboard/SuccessAlert/SuccessAlert';
 import UserInfo from '../../components/Dashboard/UserInfo/UserInfo';
 import Button from '../../components/UI/Button/Button';
 import Wrapper from '../../components/UI/Wrapper/Wrapper';
@@ -17,6 +18,8 @@ const DashboardPage = () => {
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
   const [isChangeEmailOpen, setIsChangeEmailOpen] = useState(false);
   const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
+  const [isSuccessAlertOpen, setIsSuccessAlertOpen] = useState(false);
+  const [successText, setSuccessText] = useState('');
 
   const handleEditProfileOpen = () => {
     if (isChangeEmailOpen) {
@@ -54,59 +57,81 @@ const DashboardPage = () => {
     setIsChangePasswordOpen(!isChangePasswordOpen);
   };
 
+  const handleSuccessAlertClose = () => {
+    setIsSuccessAlertOpen(false);
+  };
+
   return (
-    <Wrapper>
-      <div className={styles.main}>
-        <section className={styles.options}>
-          <UserInfo />
-          {!isEditProfileOpen && (
-            <Button
-              text='Edit Profile'
-              type='button'
-              onClick={handleEditProfileOpen}
-            />
-          )}
-          {isEditProfileOpen && (
-            <EditProfile handleEditProfileOpen={handleEditProfileOpen} />
-          )}
-          {!isChangeEmailOpen && (
-            <Button
-              text='Change E-mail'
-              type='button'
-              onClick={handleChangeEmailOpen}
-            />
-          )}
-          {isChangeEmailOpen && (
-            <ChangeEmail handleChangeEmailOpen={handleChangeEmailOpen} />
-          )}
-          {!isChangePasswordOpen && (
-            <Button
-              text='Change Password'
-              type='button'
-              onClick={handleChangePasswordOpen}
-            />
-          )}
-          {isChangePasswordOpen && (
-            <ChangePassword
-              handleChangePasswordOpen={handleChangePasswordOpen}
-            />
-          )}
-          <Link
-            href='/'
-            className={styles.link}
-            onClick={() => {
-              signOut();
-            }}
-          >
-            <IconContext.Provider value={{ className: styles.logout }}>
-              <FiLogIn />
-            </IconContext.Provider>{' '}
-            Sign Out
-          </Link>
-        </section>
-        <section className={styles.listings}>listings</section>
-      </div>
-    </Wrapper>
+    <>
+      {isSuccessAlertOpen && (
+        <SuccessAlert
+          text={successText}
+          handleClose={handleSuccessAlertClose}
+        />
+      )}
+      <Wrapper>
+        <div className={styles.main}>
+          <section className={styles.options}>
+            <UserInfo />
+            {!isEditProfileOpen && (
+              <Button
+                text='Edit Profile'
+                type='button'
+                onClick={handleEditProfileOpen}
+              />
+            )}
+            {isEditProfileOpen && (
+              <EditProfile
+                handleEditProfileOpen={handleEditProfileOpen}
+                setIsSuccessAlertOpen={setIsSuccessAlertOpen}
+                setSuccessText={setSuccessText}
+              />
+            )}
+            {!isChangeEmailOpen && (
+              <Button
+                text='Change E-mail'
+                type='button'
+                onClick={handleChangeEmailOpen}
+              />
+            )}
+            {isChangeEmailOpen && (
+              <ChangeEmail
+                handleChangeEmailOpen={handleChangeEmailOpen}
+                setIsSuccessAlertOpen={setIsSuccessAlertOpen}
+                setSuccessText={setSuccessText}
+              />
+            )}
+            {!isChangePasswordOpen && (
+              <Button
+                text='Change Password'
+                type='button'
+                onClick={handleChangePasswordOpen}
+              />
+            )}
+            {isChangePasswordOpen && (
+              <ChangePassword
+                handleChangePasswordOpen={handleChangePasswordOpen}
+                setIsSuccessAlertOpen={setIsSuccessAlertOpen}
+                setSuccessText={setSuccessText}
+              />
+            )}
+            <Link
+              href='/'
+              className={styles.link}
+              onClick={() => {
+                signOut();
+              }}
+            >
+              <IconContext.Provider value={{ className: styles.logout }}>
+                <FiLogIn />
+              </IconContext.Provider>{' '}
+              Sign Out
+            </Link>
+          </section>
+          <section className={styles.listings}>listings</section>
+        </div>
+      </Wrapper>
+    </>
   );
 };
 

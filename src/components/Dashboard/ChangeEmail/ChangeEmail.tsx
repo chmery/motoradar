@@ -1,6 +1,6 @@
 import { FirebaseError } from 'firebase/app';
 import { updateEmail } from 'firebase/auth';
-import { FormEvent, useState } from 'react';
+import { Dispatch, FormEvent, SetStateAction, useState } from 'react';
 import { auth } from '../../../firebase/firebase';
 import { AuthType, useAuth } from '../../../store/AuthContext';
 import { getAuthErrorMessage } from '../../../utils/getAuthErrorMessage';
@@ -10,9 +10,15 @@ import styles from './ChangeEmail.module.scss';
 
 type Props = {
   handleChangeEmailOpen: () => void;
+  setIsSuccessAlertOpen: Dispatch<SetStateAction<boolean>>;
+  setSuccessText: Dispatch<SetStateAction<string>>;
 };
 
-const ChangeEmail = ({ handleChangeEmailOpen }: Props) => {
+const ChangeEmail = ({
+  handleChangeEmailOpen,
+  setIsSuccessAlertOpen,
+  setSuccessText,
+}: Props) => {
   const { user } = useAuth() as AuthType;
 
   const [email, setEmail] = useState(user?.email || '');
@@ -50,6 +56,9 @@ const ChangeEmail = ({ handleChangeEmailOpen }: Props) => {
     try {
       if (auth.currentUser) {
         await updateEmail(auth.currentUser, email);
+        setSuccessText('E-mail successfuly changed!');
+        setIsSuccessAlertOpen(true);
+        handleChangeEmailOpen();
       }
     } catch (error) {
       if (error instanceof FirebaseError) {
@@ -59,7 +68,6 @@ const ChangeEmail = ({ handleChangeEmailOpen }: Props) => {
     }
 
     setIsLoading(false);
-    handleChangeEmailOpen();
   };
 
   const handleErrorBoxClose = () => {
