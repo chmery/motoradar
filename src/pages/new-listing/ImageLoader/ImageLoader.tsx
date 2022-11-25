@@ -6,7 +6,6 @@ import { IoClose } from 'react-icons/io5';
 
 const ImageLoader = () => {
   const [uploadedImages, setUploadedImages] = useState<File[] | []>([]);
-
   const uploadInputRef = useRef<HTMLInputElement>(null);
 
   const startUploadingHandler = (event: MouseEvent<HTMLButtonElement>) => {
@@ -25,9 +24,11 @@ const ImageLoader = () => {
         uploadedImages.every((image) => image.name !== newImage.name)
       );
 
-      setUploadedImages((prevState) =>
-        prevState ? [...prevState, ...newImages] : [...newImages]
-      );
+      if (!newImages.length) return;
+
+      setUploadedImages((prevState) => {
+        return [...prevState, ...newImages];
+      });
 
       return;
     }
@@ -39,8 +40,8 @@ const ImageLoader = () => {
     const updatedUploadedImages = uploadedImages.filter(
       (image) => image.name !== imageToRemove
     );
-    console.log(updatedUploadedImages);
     setUploadedImages(updatedUploadedImages);
+    uploadInputRef!.current!.value = '';
   };
 
   const ImageItem = ({ src, id }: { src: string; id: string }) => {
