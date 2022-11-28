@@ -1,20 +1,21 @@
-import { Checkbox } from '@mui/material'
-import { ChangeEvent } from 'react'
-import { ImCheckboxChecked, ImCheckboxUnchecked } from 'react-icons/im'
-import styles from './CustomCheckbox.module.scss'
+import { Checkbox } from '@mui/material';
+import { ChangeEvent } from 'react';
+import { ImCheckboxChecked, ImCheckboxUnchecked } from 'react-icons/im';
+import styles from './CustomCheckbox.module.scss';
 
 type Props = {
-  label: string
-  onChange: (isChecked: boolean) => void
-}
+  label: string;
+  onChange: (isChecked: boolean) => void;
+  dark?: boolean;
+};
 
-const CustomCheckbox = ({ label, onChange }: Props) => {
+const CustomCheckbox = ({ label, onChange, dark }: Props) => {
   const onChangeHandler = (
     event: ChangeEvent<HTMLInputElement>,
     isChecked: boolean
-  ) => onChange(isChecked)
+  ) => onChange(isChecked);
 
-  const capitalizedLabel = `${label[0].toUpperCase()}${label.slice(1)}`
+  const capitalizedLabel = `${label[0].toUpperCase()}${label.slice(1)}`;
 
   return (
     <div className={styles.checkbox}>
@@ -36,9 +37,11 @@ const CustomCheckbox = ({ label, onChange }: Props) => {
         }}
         onChange={onChangeHandler}
       />
-      <span className={styles.text}>{capitalizedLabel}</span>
+      <span className={`${styles.text} ${dark ? styles.dark : ''}`}>
+        {capitalizedLabel}
+      </span>
     </div>
-  )
-}
+  );
+};
 
-export default CustomCheckbox
+export default CustomCheckbox;
