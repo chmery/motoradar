@@ -1,12 +1,20 @@
 import Button from 'components/UI/Button/Button';
-import { ChangeEvent, useRef, useState, MouseEvent } from 'react';
+import { ChangeEvent, useRef, useState, MouseEvent, useEffect } from 'react';
 import { BsPlus } from 'react-icons/bs';
 import styles from './ImageLoader.module.scss';
 import { IoClose } from 'react-icons/io5';
 
-const ImageLoader = () => {
+type Props = {
+  onImageUpload: (images: File[] | []) => void;
+};
+
+const ImageLoader = ({ onImageUpload }: Props) => {
   const [uploadedImages, setUploadedImages] = useState<File[] | []>([]);
   const uploadInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    onImageUpload(uploadedImages);
+  }, [uploadedImages]);
 
   const startUploadingHandler = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
