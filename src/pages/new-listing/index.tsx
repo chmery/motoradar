@@ -1,3 +1,4 @@
+import NewListingForm from 'components/NewListing/NewListingForm/NewListingForm';
 import Wrapper from 'components/UI/Wrapper/Wrapper';
 import { useState } from 'react';
 import ImageLoader from '../../components/NewListing/ImageLoader/ImageLoader';
@@ -14,6 +15,7 @@ const NewListingPage = () => {
       <form>
         <h1>Add New Listing</h1>
         <ImageLoader onImageUpload={setImagesHandler} />
+        <NewListingForm />
       </form>
     </Wrapper>
   );
