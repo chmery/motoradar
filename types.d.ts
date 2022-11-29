@@ -20,5 +20,4 @@ interface Listing {
   price: string;
   isDamaged: boolean;
   isAccidentFree: boolean;
-  images: File[];
 }

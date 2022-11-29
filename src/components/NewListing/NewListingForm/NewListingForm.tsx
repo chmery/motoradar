@@ -11,7 +11,7 @@ const TEST_DATA = {
 };
 
 type Props = {
-  onPublish: (listingData: Listing) => void;
+  onPublish: (listingData: Listing, images: File[]) => void;
 };
 
 const NewListingForm = ({ onPublish }: Props) => {
@@ -29,7 +29,7 @@ const NewListingForm = ({ onPublish }: Props) => {
   const [isAccidentFree, setIsAccidentFree] = useState(false);
   const [images, setImages] = useState<File[] | []>([]);
 
-  //const { user } = useAuth() as AuthType;
+  const { user } = useAuth() as AuthType;
 
   const publishHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -50,10 +50,9 @@ const NewListingForm = ({ onPublish }: Props) => {
       price,
       isDamaged,
       isAccidentFree,
-      images,
     };
 
-    onPublish(listingData);
+    onPublish(listingData, images);
   };
 
   const setImagesHandler = (uploadedImages: File[] | []) =>
