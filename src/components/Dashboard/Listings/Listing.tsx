@@ -5,21 +5,31 @@ import { IoLocationOutline } from 'react-icons/io5';
 import { FaCheck } from 'react-icons/fa';
 import styles from './Listing.module.scss';
 import { IconContext } from 'react-icons';
+import { useRouter } from 'next/router';
+import { getNumberWithSpaces } from '../../../utils/getNumberWithSpaces';
 
 type Props = {
   data: Listing;
 };
 
 const Listing = ({ data }: Props) => {
+  const router = useRouter();
+
   return (
-    <Link href={`/listing/refdodocatumabyc`} className={styles.listing}>
-      <Image
-        src={data.imageUrls[0]}
-        alt={data.brand}
-        width={150}
-        height={150}
-        className={styles.image}
-      />
+    <div
+      onClick={() => router.push(`/listing/tumabycdocrefid`)}
+      className={styles.listing}
+    >
+      <div className={styles['image-container']}>
+        <Image
+          src={data.imageUrls[0]}
+          alt={data.brand}
+          fill
+          sizes='200px'
+          priority
+          className={styles.image}
+        />
+      </div>
       <div className={styles.container}>
         <div className={styles['time-container']}>
           <p className={styles.time}>
@@ -29,16 +39,18 @@ const Listing = ({ data }: Props) => {
             <BiEditAlt />
           </Link>
         </div>
-        <div className={styles['location-container']}>
-          <IoLocationOutline />
-          <p className={styles.location}>Tu ma być lokalizacja</p>
+        <div>
+          <div className={styles['location-container']}>
+            <IoLocationOutline />
+            <p className={styles.location}>Tu ma być lokalizacja</p>
+          </div>
+          <p className={styles.car}>
+            {data.brand} {data.model}
+          </p>
+          <p className={styles.mileage}>
+            {data.productionYear} - {data.mileage} km
+          </p>
         </div>
-        <p className={styles.car}>
-          {data.brand} {data.model}
-        </p>
-        <p className={styles.mileage}>
-          {data.productionYear} - {data.mileage} km
-        </p>
         <div className={styles['price-container']}>
           {data.isAccidentFree && (
             <div className={styles.accident}>
@@ -48,10 +60,10 @@ const Listing = ({ data }: Props) => {
               Accident-Free
             </div>
           )}
-          <p className={styles.price}>${data.price}</p>
+          <p className={styles.price}>${getNumberWithSpaces(data.price)}</p>
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 

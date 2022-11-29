@@ -2,6 +2,7 @@ import {
   collection,
   CollectionReference,
   getDocs,
+  orderBy,
   query,
   where,
 } from 'firebase/firestore';
@@ -20,7 +21,8 @@ const Listings = () => {
       if (user) {
         const listingsQuery = query(
           collection(db, 'listings') as CollectionReference<Listing>,
-          where('uid', '==', user?.uid)
+          where('uid', '==', user?.uid),
+          orderBy('date', 'desc')
         );
 
         const listingsDocs = await getDocs(listingsQuery);
