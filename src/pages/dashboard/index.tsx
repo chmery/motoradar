@@ -1,3 +1,4 @@
+import { addDoc, collection } from 'firebase/firestore';
 import Link from 'next/link';
 import { useState } from 'react';
 import { IconContext } from 'react-icons';
@@ -9,6 +10,7 @@ import SuccessAlert from '../../components/Dashboard/SuccessAlert/SuccessAlert';
 import UserInfo from '../../components/Dashboard/UserInfo/UserInfo';
 import Button from '../../components/UI/Button/Button';
 import Wrapper from '../../components/UI/Wrapper/Wrapper';
+import { db } from '../../firebase/firebase';
 import { AuthType, useAuth } from '../../store/AuthContext';
 import styles from './index.module.scss';
 
@@ -128,7 +130,9 @@ const DashboardPage = () => {
               Sign Out
             </Link>
           </section>
-          <section className={styles.listings}>listings</section>
+          <section className={styles.listings}>
+            <h2>Your listings</h2>
+          </section>
         </div>
       </Wrapper>
     </>
