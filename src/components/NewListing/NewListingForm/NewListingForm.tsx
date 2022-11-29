@@ -41,6 +41,7 @@ const NewListingForm = ({ onPublish }: Props) => {
       email: user.email as string,
       photoURL: user.photoURL as string,
       date: Date.now(),
+      imageUrls: [],
       brand,
       model,
       productionYear,

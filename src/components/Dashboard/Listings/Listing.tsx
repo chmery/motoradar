@@ -36,7 +36,7 @@ const Listing = ({ data, id }: Props) => {
           <p className={styles.time}>
             Listed {new Date(data.date).toLocaleString()}
           </p>
-          <Link href={`/new-listing?${id}`} className={styles.edit}>
+          <Link href={`/new-listing?edit=${id}`} className={styles.edit}>
             <BiEditAlt />
           </Link>
         </div>
