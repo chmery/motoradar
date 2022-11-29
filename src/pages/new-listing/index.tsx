@@ -1,13 +1,14 @@
 import NewListingForm from 'components/NewListing/NewListingForm/NewListingForm';
 import Wrapper from 'components/UI/Wrapper/Wrapper';
-import styles from './index.module.scss';
 
 const NewListingPage = () => {
+  const publishHandler = (listingData: Listing) => {
+    console.log(listingData);
+  };
+
   return (
     <Wrapper>
-      <form className={styles.form}>
-        <NewListingForm />
-      </form>
+      <NewListingForm onPublish={publishHandler} />
     </Wrapper>
   );
 };

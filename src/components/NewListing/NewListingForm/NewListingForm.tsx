@@ -1,7 +1,8 @@
 import Button from 'components/UI/Button/Button';
 import CustomCheckbox from 'components/UI/CustomCheckbox/CustomCheckbox';
 import DropdownList from 'components/UI/DropdownList/DropdownList';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
+import { AuthType, useAuth } from 'store/AuthContext';
 import ImageLoader from '../ImageLoader/ImageLoader';
 import styles from './NewListingForm.module.scss';
 
@@ -9,7 +10,11 @@ const TEST_DATA = {
   options: ['Audi', 'BMW', 'Mercedes'],
 };
 
-const NewListingForm = () => {
+type Props = {
+  onPublish: (listingData: Listing) => void;
+};
+
+const NewListingForm = ({ onPublish }: Props) => {
   const [brand, setBrand] = useState('');
   const [model, setModel] = useState('');
   const [productionYear, setProductionYear] = useState('');
@@ -23,6 +28,33 @@ const NewListingForm = () => {
   const [isDamaged, setIsDamaged] = useState(false);
   const [isAccidentFree, setIsAccidentFree] = useState(false);
   const [images, setImages] = useState<File[] | []>([]);
+
+  //const { user } = useAuth() as AuthType;
+
+  const publishHandler = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!user) return;
+
+    const listingData = {
+      uid: user.uid,
+      date: Date.now(),
+      brand,
+      model,
+      productionYear,
+      mileage,
+      power,
+      powertrain,
+      gearbox,
+      fuelType,
+      description,
+      price,
+      isDamaged,
+      isAccidentFree,
+      images,
+    };
+
+    onPublish(listingData);
+  };
 
   const setImagesHandler = (uploadedImages: File[] | []) =>
     setImages(uploadedImages);
@@ -50,7 +82,7 @@ const NewListingForm = () => {
       : false;
 
   return (
-    <div className={styles['new-listing-form']}>
+    <form className={styles['new-listing-form']} onSubmit={publishHandler}>
       <h1>Add New Listing</h1>
       <ImageLoader onImageUpload={setImagesHandler} />
       <div>
@@ -137,11 +169,12 @@ const NewListingForm = () => {
         </div>
       </div>
       <Button
+        type='submit'
         text='Publish'
         disabled={!canPublish}
         active={canPublish ? true : false}
       />
-    </div>
+    </form>
   );
 };
 
