@@ -6,6 +6,7 @@ import { FiLogIn } from 'react-icons/fi';
 import ChangeEmail from '../../components/Dashboard/ChangeEmail/ChangeEmail';
 import ChangePassword from '../../components/Dashboard/ChangePassword/ChangePassword';
 import EditProfile from '../../components/Dashboard/EditProfile/EditProfile';
+import Listings from '../../components/Dashboard/Listings/Listings';
 import SuccessAlert from '../../components/Dashboard/SuccessAlert/SuccessAlert';
 import UserInfo from '../../components/Dashboard/UserInfo/UserInfo';
 import Button from '../../components/UI/Button/Button';
@@ -131,7 +132,8 @@ const DashboardPage = () => {
             </Link>
           </section>
           <section className={styles.listings}>
-            <h2>Your listings</h2>
+            <h2 className={styles.header}>Your listings</h2>
+            <Listings />
           </section>
         </div>
       </Wrapper>

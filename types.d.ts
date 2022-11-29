@@ -7,6 +7,9 @@ declare module '*module.css' {
 
 interface Listing {
   uid: string;
+  username: string;
+  email: string;
+  photoURL: string;
   brand: string;
   date: number;
   model: string;
@@ -20,4 +23,5 @@ interface Listing {
   price: string;
   isDamaged: boolean;
   isAccidentFree: boolean;
+  imageUrls: string[];
 }

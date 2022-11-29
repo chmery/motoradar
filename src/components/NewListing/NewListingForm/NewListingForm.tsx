@@ -1,8 +1,8 @@
-import Button from 'components/UI/Button/Button';
-import CustomCheckbox from 'components/UI/CustomCheckbox/CustomCheckbox';
-import DropdownList from 'components/UI/DropdownList/DropdownList';
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { AuthType, useAuth } from 'store/AuthContext';
+import { AuthType, useAuth } from '../../../store/AuthContext';
+import Button from '../../UI/Button/Button';
+import CustomCheckbox from '../../UI/CustomCheckbox/CustomCheckbox';
+import DropdownList from '../../UI/DropdownList/DropdownList';
 import ImageLoader from '../ImageLoader/ImageLoader';
 import styles from './NewListingForm.module.scss';
 
@@ -37,6 +37,9 @@ const NewListingForm = ({ onPublish }: Props) => {
 
     const listingData = {
       uid: user.uid,
+      username: user.displayName as string,
+      email: user.email as string,
+      photoURL: user.photoURL as string,
       date: Date.now(),
       brand,
       model,

@@ -1,8 +1,8 @@
-import Button from 'components/UI/Button/Button';
 import { ChangeEvent, useRef, useState, MouseEvent, useEffect } from 'react';
 import { BsPlus } from 'react-icons/bs';
 import styles from './ImageLoader.module.scss';
 import { IoClose } from 'react-icons/io5';
+import Button from '../../UI/Button/Button';
 
 type Props = {
   onImageUpload: (images: File[] | []) => void;

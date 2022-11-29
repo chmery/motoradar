@@ -14,7 +14,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-type UserType = {
+export type UserType = {
   uid: string;
   email: string | null;
   displayName: string | null;
