@@ -48,7 +48,7 @@ export const AuthContextProvider = ({ children }: Props) => {
         setUser(null);
       }
     });
-  });
+  }, []);
 
   const signUp = (email: string, password: string) => {
     return createUserWithEmailAndPassword(auth, email, password).then(

@@ -1,18 +1,21 @@
+import { MouseEvent, ReactElement } from 'react';
 import RadialLoader from '../Loaders/RadialLoader/RadialLoader';
 import styles from './Button.module.scss';
 
 type Props = {
   text: string;
+  icon?: ReactElement;
   active?: boolean;
   type?: 'button' | 'submit' | 'reset' | undefined;
   disabled?: boolean;
   isLoading?: boolean;
-  onClick?: () => void;
+  onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
 };
 
 const Button = ({
   text,
   type,
+  icon,
   active,
   onClick,
   isLoading,
@@ -25,9 +28,10 @@ const Button = ({
       onClick={onClick}
       disabled={disabled}
     >
-      {isLoading ? <RadialLoader /> : text}
+      {isLoading && <RadialLoader />}
+      {!isLoading && icon && icon}
+      {!isLoading && text}
     </button>
   );
 };
-
 export default Button;

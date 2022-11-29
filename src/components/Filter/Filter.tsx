@@ -1,5 +1,5 @@
-import CustomCheckbox from './CustomCheckbox/CustomCheckbox';
-import DropdownList from './DropdownList/DropdownList';
+import CustomCheckbox from '../UI/CustomCheckbox/CustomCheckbox';
+import DropdownList from '../UI/DropdownList/DropdownList';
 import RangeSlider from './RangeSlider/RangeSlider';
 import { useState } from 'react';
 import styles from './Filter.module.scss';
