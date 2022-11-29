@@ -14,15 +14,17 @@
 }
 
 .container {
-  display: flex;
   flex-grow: 1;
+  display: flex;
   flex-direction: column;
 }
 
 .time-container {
   width: 100%;
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  margin-bottom: 0.8em;
 }
 
 .time {
@@ -33,4 +35,51 @@
 .edit {
   font-size: 1.4rem;
   cursor: pointer;
+}
+
+.location-container {
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  margin-bottom: 0.5em;
+}
+
+.location {
+  margin-left: 5px;
+  font-size: 0.8rem;
+}
+
+.car {
+  font-weight: 700;
+  margin-bottom: 0.5em;
+}
+
+.mileage {
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-bottom: 1.2em;
+}
+
+.price-container {
+  display: flex;
+  align-items: center;
+}
+
+.price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--blue);
+  margin-left: auto;
+}
+
+.accident {
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+}
+
+.checkmark {
+  font-size: 1rem;
+  color: var(--blue);
+  margin-right: 5px;
 }
