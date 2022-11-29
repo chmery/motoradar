@@ -4,17 +4,19 @@ import {
   getDocs,
   orderBy,
   query,
+  QueryDocumentSnapshot,
   where,
 } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { db } from '../../../firebase/firebase';
-import { AuthType, useAuth, UserType } from '../../../store/AuthContext';
+import { AuthType, useAuth } from '../../../store/AuthContext';
 import Listing from './Listing';
-import styles from './Listings.module.scss';
 
 const Listings = () => {
   const { user } = useAuth() as AuthType;
-  const [listings, setListings] = useState<Listing[] | undefined>(undefined);
+  const [listings, setListings] = useState<
+    QueryDocumentSnapshot<Listing>[] | undefined
+  >(undefined);
 
   useEffect(() => {
     const getListings = async () => {
@@ -26,13 +28,8 @@ const Listings = () => {
         );
 
         const listingsDocs = await getDocs(listingsQuery);
-        const listings: Listing[] = [];
 
-        listingsDocs.forEach((doc) => {
-          listings.push(doc.data());
-        });
-
-        setListings(listings);
+        setListings(listingsDocs.docs);
       }
     };
 
@@ -41,8 +38,8 @@ const Listings = () => {
 
   return (
     <section>
-      {listings?.map((data, index) => (
-        <Listing key={index} data={data} />
+      {listings?.map((data) => (
+        <Listing key={data.id} data={data.data()} id={data.id} />
       ))}
     </section>
   );

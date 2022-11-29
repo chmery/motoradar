@@ -10,14 +10,15 @@ import { getNumberWithSpaces } from '../../../utils/getNumberWithSpaces';
 
 type Props = {
   data: Listing;
+  id: string;
 };
 
-const Listing = ({ data }: Props) => {
+const Listing = ({ data, id }: Props) => {
   const router = useRouter();
 
   return (
     <div
-      onClick={() => router.push(`/listing/tumabycdocrefid`)}
+      onClick={() => router.push(`/listing/${id}`)}
       className={styles.listing}
     >
       <div className={styles['image-container']}>
@@ -35,7 +36,7 @@ const Listing = ({ data }: Props) => {
           <p className={styles.time}>
             Listed {new Date(data.date).toLocaleString()}
           </p>
-          <Link href={`/new-listing?${123}`} className={styles.edit}>
+          <Link href={`/new-listing?${id}`} className={styles.edit}>
             <BiEditAlt />
           </Link>
         </div>
