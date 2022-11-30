@@ -1,13 +1,24 @@
+@use '../../../styles/mixins' as *;
+
 .container {
   display: flex;
   align-items: center;
   gap: 2rem;
   width: 100%;
   margin-bottom: 2em;
+
+  @include mobileL {
+    flex-direction: column;
+    gap: 0;
+  }
 }
 
 .image-container {
   position: relative;
+
+  @include mobileL {
+    margin-bottom: 1em;
+  }
 }
 
 .image {
@@ -43,4 +54,10 @@
 .email {
   font-size: 0.9rem;
   color: var(--gray-text);
+}
+
+.name {
+  @include mobileL {
+    text-align: center;
+  }
 }

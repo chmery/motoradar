@@ -1,7 +1,13 @@
+@use '../../styles/mixins' as *;
+
 .main {
   width: 100%;
   min-height: calc(100vh - 80px);
   display: flex;
+
+  @include mobileL {
+    flex-direction: column;
+  }
 }
 
 .options {
@@ -13,6 +19,13 @@
 
   & > button {
     margin-bottom: 10px;
+  }
+
+  @include mobileL {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding-right: 0;
   }
 }
 
@@ -42,4 +55,8 @@
 
 .header {
   margin-bottom: 2em;
+
+  @include mobileL {
+    text-align: center;
+  }
 }
