@@ -1,5 +1,5 @@
-import Filter from 'components/Filter/Filter';
-import Wrapper from 'components/UI/Wrapper/Wrapper';
+import Filter from '../components/Filter/Filter';
+import Wrapper from '../components/UI/Wrapper/Wrapper';
 import styles from './index.module.scss';
 
 export default function Home() {

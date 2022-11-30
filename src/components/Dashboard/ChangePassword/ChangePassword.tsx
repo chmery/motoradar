@@ -1,38 +1,43 @@
-import { FormEvent, useState } from 'react';
-import { useRouter } from 'next/router';
 import { FirebaseError } from 'firebase/app';
-
-import styles from './SignUpForm.module.scss';
-import ErrorBox from '../ErrorBox/ErrorBox';
+import { updatePassword } from 'firebase/auth';
+import { Dispatch, FormEvent, SetStateAction, useState } from 'react';
+import { auth } from '../../../firebase/firebase';
 import { AuthType, useAuth } from '../../../store/AuthContext';
 import { getAuthErrorMessage } from '../../../utils/getAuthErrorMessage';
+import ErrorBox from '../../Auth/ErrorBox/ErrorBox';
 import Button from '../../UI/Button/Button';
+import styles from './ChangePassword.module.scss';
 
-const SignUpForm = () => {
-  const [email, setEmail] = useState('');
+type Props = {
+  handleChangePasswordOpen: () => void;
+  setIsSuccessAlertOpen: Dispatch<SetStateAction<boolean>>;
+  setSuccessText: Dispatch<SetStateAction<string>>;
+};
+
+const ChangePassword = ({
+  handleChangePasswordOpen,
+  setIsSuccessAlertOpen,
+  setSuccessText,
+}: Props) => {
+  const { user } = useAuth() as AuthType;
+
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [isErrorOpen, setIsErrorOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const { signUp } = useAuth() as AuthType;
-  const router = useRouter();
 
   const handleInputChange = (type: string, input: string) => {
     switch (type) {
-      case 'email':
-        setEmail(input);
-        break;
       case 'password':
         setPassword(input);
         break;
-      case 'confirm':
+      case 'confirmPassword':
         setConfirmPassword(input);
         break;
       default:
         console.error(
-          'passed wrong type to handleInputChange function in sign-up'
+          'passed wrong type to handleInputChange function in EditProfile'
         );
         break;
     }
@@ -42,24 +47,26 @@ const SignUpForm = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    if (!email && !password && !confirmPassword) return;
-
     if (password !== confirmPassword) {
       setError('Passwords do not match!');
       setIsErrorOpen(true);
       setIsLoading(false);
-      return;
     }
 
     try {
-      await signUp(email, password);
-      router.push('/');
+      if (auth.currentUser) {
+        await updatePassword(auth.currentUser, password);
+        handleChangePasswordOpen();
+        setSuccessText('Password successfuly changed!');
+        setIsSuccessAlertOpen(true);
+      }
     } catch (error) {
       if (error instanceof FirebaseError) {
         setError(getAuthErrorMessage(error.code));
         setIsErrorOpen(true);
       }
     }
+
     setIsLoading(false);
   };
 
@@ -68,56 +75,47 @@ const SignUpForm = () => {
   };
 
   return (
-    <>
+    <section>
       {isErrorOpen && (
         <ErrorBox text={error} closeErrorBox={handleErrorBoxClose} />
       )}
-      <form className={styles.form} onSubmit={handleSubmit} noValidate>
-        <label htmlFor='email' className={styles.label}>
-          E-mail
-        </label>
-        <input
-          type='email'
-          id='email'
-          autoComplete='test@test.com'
-          value={email}
-          onChange={(e) => handleInputChange('email', e.target.value)}
-          className={styles.input}
-        />
-        <label htmlFor='password' className={styles.label}>
-          Password
+      <form className={styles.form} onSubmit={handleSubmit}>
+        <label htmlFor='password' className={styles.label} id='form'>
+          New Password
         </label>
         <input
           type='password'
+          className={styles.input}
           id='password'
-          autoComplete='new-password'
           value={password}
           onChange={(e) => handleInputChange('password', e.target.value)}
-          className={styles.input}
         />
-        <label htmlFor='confirm' className={styles.label}>
-          Confirm password
+        <label htmlFor='confirm' className={styles.label} id='form'>
+          Confirm Password
         </label>
         <input
           type='password'
-          id='confirm'
-          autoComplete='new-password'
-          value={confirmPassword}
-          onChange={(e) => handleInputChange('confirm', e.target.value)}
           className={styles.input}
+          id='confirm'
+          value={confirmPassword}
+          onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
+        />
+
+        <Button
+          text='Save'
+          type='submit'
+          isLoading={isLoading}
+          disabled={isLoading || !password}
+          active={password ? true : false}
         />
         <Button
-          text={'Sign Up'}
-          type={'submit'}
-          isLoading={isLoading}
-          active={email && password && confirmPassword ? true : false}
-          disabled={
-            email && password && confirmPassword && !isLoading ? false : true
-          }
+          text='Cancel'
+          type='button'
+          onClick={handleChangePasswordOpen}
         />
       </form>
-    </>
+    </section>
   );
 };
 
-export default SignUpForm;
+export default ChangePassword;

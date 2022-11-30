@@ -1,7 +1,5 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { AuthType, useAuth } from 'store/AuthContext';
-import { createRandomUsername } from 'utils/createRandomUsername';
 import styles from './Authorized.module.scss';
 
 import { BsStack } from 'react-icons/bs';
@@ -9,6 +7,7 @@ import { GoPlus } from 'react-icons/go';
 import { HiOutlineHeart } from 'react-icons/hi';
 import { FiLogIn } from 'react-icons/fi';
 import { IconContext } from 'react-icons';
+import { AuthType, useAuth } from '../../../../../store/AuthContext';
 
 type Props = {
   closeMenu: () => void;

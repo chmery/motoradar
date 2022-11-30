@@ -8,16 +8,17 @@ import {
 } from 'firebase/auth';
 import { auth } from '../firebase/firebase';
 import { createContext, useContext, useEffect, useState } from 'react';
-import { createRandomUsername } from 'utils/createRandomUsername';
+import { createRandomUsername } from '../utils/createRandomUsername';
 
 type Props = {
   children: React.ReactNode;
 };
 
-type UserType = {
+export type UserType = {
   uid: string;
   email: string | null;
   displayName: string | null;
+  phoneNumber: string | null;
   photoURL: string | null;
 };
 
@@ -42,13 +43,14 @@ export const AuthContextProvider = ({ children }: Props) => {
           uid: user.uid,
           email: user.email,
           displayName: user.displayName,
+          phoneNumber: user.phoneNumber,
           photoURL: user.photoURL,
         });
       } else {
         setUser(null);
       }
     });
-  }, []);
+  }, [user]);
 
   const signUp = (email: string, password: string) => {
     return createUserWithEmailAndPassword(auth, email, password).then(

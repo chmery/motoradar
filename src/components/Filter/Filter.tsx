@@ -3,7 +3,7 @@ import DropdownList from '../UI/DropdownList/DropdownList';
 import RangeSlider from './RangeSlider/RangeSlider';
 import { useState } from 'react';
 import styles from './Filter.module.scss';
-import Button from 'components/UI/Button/Button';
+import Button from '../UI/Button/Button';
 
 const TEST_DATA = {
   options: ['Audi', 'BMW', 'Mercedes'],

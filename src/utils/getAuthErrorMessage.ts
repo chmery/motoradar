@@ -19,6 +19,8 @@ export const getAuthErrorMessage = (error: string) => {
       return 'User not found!';
     case 'auth/internal-error':
       return 'No password provided!';
+    case 'auth/user-token-expired':
+      return 'User token expired!';
     default:
       return 'Unknown auth error.';
   }

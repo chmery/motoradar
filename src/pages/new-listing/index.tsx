@@ -1,7 +1,7 @@
-import NewListingForm from 'components/NewListing/NewListingForm/NewListingForm';
-import Wrapper from 'components/UI/Wrapper/Wrapper';
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 import { getDownloadURL, listAll, ref, uploadBytes } from 'firebase/storage';
+import NewListingForm from '../../components/NewListing/NewListingForm/NewListingForm';
+import Wrapper from '../../components/UI/Wrapper/Wrapper';
 import { db, storage } from '../../firebase/firebase';
 
 const NewListingPage = () => {
