@@ -10,16 +10,20 @@ import {
 import { useEffect, useState } from 'react';
 import { db } from '../../../firebase/firebase';
 import { AuthType, useAuth } from '../../../store/AuthContext';
+import ListingLoader from '../../UI/Loaders/ListingLoader/ListingLoader';
 import Listing from './Listing';
 
 const Listings = () => {
   const { user } = useAuth() as AuthType;
+
   const [listings, setListings] = useState<
     QueryDocumentSnapshot<Listing>[] | undefined
   >(undefined);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const getListings = async () => {
+      setIsLoading(true);
       if (user) {
         const listingsQuery = query(
           collection(db, 'listings') as CollectionReference<Listing>,
@@ -30,6 +34,7 @@ const Listings = () => {
         const listingsDocs = await getDocs(listingsQuery);
 
         setListings(listingsDocs.docs);
+        setIsLoading(false);
       }
     };
 
@@ -38,6 +43,7 @@ const Listings = () => {
 
   return (
     <section>
+      {isLoading && <ListingLoader />}
       {listings?.map((data) => (
         <Listing key={data.id} data={data.data()} id={data.id} />
       ))}
