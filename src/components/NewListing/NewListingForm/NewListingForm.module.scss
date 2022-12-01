@@ -17,12 +17,31 @@
   }
 }
 
-.title {
+.title,
+.description-title {
   width: 40rem;
+}
+
+.description-title {
+  align-self: flex-start;
 }
 
 .checkboxes {
   display: flex;
   justify-content: flex-start;
   column-gap: 2rem;
+}
+
+.description {
+  outline: none;
+  border: none;
+  border-bottom: 1px solid var(--placeholder);
+  padding: 0.5em 0;
+  width: 100%;
+  resize: none;
+  height: 8rem;
+
+  &::placeholder {
+    color: var(--placeholder);
+  }
 }

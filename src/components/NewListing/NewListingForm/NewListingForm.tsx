@@ -62,9 +62,9 @@ const NewListingForm = ({ onPublish }: Props) => {
   const setImagesHandler = (uploadedImages: File[] | []) =>
     setImages(uploadedImages);
 
-  const setDescriptionHandler = (event: ChangeEvent<HTMLInputElement>) => {
+  const setDescriptionHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const description = event.target.value;
-    if (description.length > 250) return;
+    if (description.length > 300) return;
     setDescription(description);
   };
 
@@ -142,11 +142,12 @@ const NewListingForm = ({ onPublish }: Props) => {
         />
       </div>
       <div>
-        <span className={styles.title}>Description</span>
-        <input
-          type='text'
-          value={description}
+        <span className={styles['description-title']}>Description</span>
+        <textarea
+          className={styles.description}
           onChange={setDescriptionHandler}
+          value={description}
+          placeholder={'Describe your vehicle in detail'}
         />
       </div>
       <div>
