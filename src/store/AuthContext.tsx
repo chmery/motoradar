@@ -6,9 +6,11 @@ import {
   updateProfile,
   UserCredential,
 } from 'firebase/auth';
-import { auth } from '../firebase/firebase';
+import { auth, db } from '../firebase/firebase';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { createRandomUsername } from '../utils/createRandomUsername';
+import { doc, setDoc } from 'firebase/firestore';
+import { useRouter } from 'next/router';
 
 type Props = {
   children: React.ReactNode;
@@ -18,12 +20,11 @@ export type UserType = {
   uid: string;
   email: string | null;
   displayName: string | null;
-  phoneNumber: string | null;
   photoURL: string | null;
 };
 
 export type AuthType = {
-  user: UserType | null;
+  userData: UserType | null;
   signUp: (email: string, password: string) => Promise<void>;
   signIn: (email: string, password: string) => Promise<UserCredential>;
   signOut: () => void;
@@ -43,7 +44,6 @@ export const AuthContextProvider = ({ children }: Props) => {
           uid: user.uid,
           email: user.email,
           displayName: user.displayName,
-          phoneNumber: user.phoneNumber,
           photoURL: user.photoURL,
         });
       } else {
@@ -52,16 +52,26 @@ export const AuthContextProvider = ({ children }: Props) => {
     });
   }, []);
 
-  const signUp = (email: string, password: string) => {
-    return createUserWithEmailAndPassword(auth, email, password).then(
-      (userData) => {
-        updateProfile(auth.currentUser!, {
-          displayName: createRandomUsername(userData.user.email!),
-          photoURL:
-            'https://firebasestorage.googleapis.com/v0/b/motoradar-3dd45.appspot.com/o/profilePics%2Ftemporary.jpg?alt=media&token=f60ccd74-f6e4-42ca-add8-243e349fbb1b',
-        });
-      }
+  const signUp = async (email: string, password: string) => {
+    const userData = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
     );
+
+    await updateProfile(auth.currentUser!, {
+      displayName: createRandomUsername(userData.user.email!),
+      photoURL:
+        'https://firebasestorage.googleapis.com/v0/b/motoradar-3dd45.appspot.com/o/profilePics%2Ftemporary.jpg?alt=media&token=f60ccd74-f6e4-42ca-add8-243e349fbb1b',
+    });
+
+    await setDoc(doc(db, 'users', userData.user.uid), {
+      email: userData.user.email,
+      photoURL: userData.user.photoURL,
+      displayName: userData.user.displayName,
+      phoneNumber: '',
+      location: '',
+    });
   };
 
   const signIn = (email: string, password: string) => {
@@ -74,7 +84,7 @@ export const AuthContextProvider = ({ children }: Props) => {
   };
 
   const value: AuthType = {
-    user: user,
+    userData: user,
     signUp: signUp,
     signIn: signIn,
     signOut: logOut,

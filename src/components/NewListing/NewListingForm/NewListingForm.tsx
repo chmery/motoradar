@@ -1,4 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
+import { useUser } from '../../../hooks/useUser';
 import { AuthType, useAuth } from '../../../store/AuthContext';
 import Button from '../../UI/Button/Button';
 import CustomCheckbox from '../../UI/CustomCheckbox/CustomCheckbox';
@@ -29,17 +30,18 @@ const NewListingForm = ({ onPublish }: Props) => {
   const [isAccidentFree, setIsAccidentFree] = useState(false);
   const [images, setImages] = useState<File[] | []>([]);
 
-  const { user } = useAuth() as AuthType;
+  const { userData } = useAuth() as AuthType;
+  const user = useUser(userData?.uid);
 
   const publishHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!user) return;
+    if (!userData) return;
 
     const listingData = {
-      uid: user.uid,
-      username: user.displayName as string,
-      email: user.email as string,
-      photoURL: user.photoURL as string,
+      uid: userData.uid,
+      username: userData.displayName as string,
+      email: userData.email as string,
+      photoURL: userData.photoURL as string,
       date: Date.now(),
       imageUrls: [],
       brand,

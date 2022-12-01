@@ -8,13 +8,15 @@ import { HiOutlineHeart } from 'react-icons/hi';
 import { FiLogIn } from 'react-icons/fi';
 import { IconContext } from 'react-icons';
 import { AuthType, useAuth } from '../../../../../store/AuthContext';
+import { useUser } from '../../../../../hooks/useUser';
 
 type Props = {
   closeMenu: () => void;
 };
 
 const Authorized = ({ closeMenu }: Props) => {
-  const { user, signOut } = useAuth() as AuthType;
+  const { userData, signOut } = useAuth() as AuthType;
+  const user = useUser(userData?.uid);
 
   return (
     <>
