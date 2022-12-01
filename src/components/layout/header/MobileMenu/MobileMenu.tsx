@@ -11,7 +11,7 @@ type Props = {
 };
 
 const MobileMenu = ({ closeMenu }: Props) => {
-  const { user } = useAuth() as AuthType;
+  const { userData } = useAuth() as AuthType;
 
   return (
     <div className={styles.container}>
@@ -19,7 +19,7 @@ const MobileMenu = ({ closeMenu }: Props) => {
         <IconContext.Provider value={{ className: styles.close }}>
           <IoClose onClick={closeMenu} />
         </IconContext.Provider>
-        {user ? (
+        {userData ? (
           <Authorized closeMenu={closeMenu} />
         ) : (
           <Unauthorized closeMenu={closeMenu} />

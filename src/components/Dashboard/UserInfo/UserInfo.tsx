@@ -9,9 +9,12 @@ import styles from './UserInfo.module.scss';
 import { FiUpload } from 'react-icons/fi';
 import { AuthType, useAuth } from '../../../store/AuthContext';
 import UploadLoader from '../../UI/Loaders/UploadLoader/UploadLoader';
+import { useUser } from '../../../hooks/useUser';
 
 const UserInfo = () => {
-  const { user } = useAuth() as AuthType;
+  const { userData } = useAuth() as AuthType;
+  const user = useUser(userData?.uid);
+
   const [isLoading, setIsLoading] = useState(false);
 
   const changeAvatar = (image: FileList | null) => {
@@ -23,7 +26,7 @@ const UserInfo = () => {
     reader.onload = async (readerEvent: ProgressEvent<FileReader>) => {
       setIsLoading(true);
       if (readerEvent.target?.result) {
-        const imageRef = ref(storage, `profilePics/${user?.uid}`);
+        const imageRef = ref(storage, `profilePics/${userData?.uid}`);
 
         await uploadString(
           imageRef,
@@ -48,14 +51,17 @@ const UserInfo = () => {
   return (
     <div className={styles.container}>
       <div className={styles['image-container']}>
-        {user && (
+        {user?.photoURL ? (
           <Image
-            src={user.photoURL!}
+            src={user.photoURL}
             alt='profile picture'
             width={80}
             height={80}
+            priority
             className={styles.image}
           />
+        ) : (
+          <div className={styles['image-placeholder']}></div>
         )}
         <label htmlFor='input' className={styles.label}>
           <FiUpload />

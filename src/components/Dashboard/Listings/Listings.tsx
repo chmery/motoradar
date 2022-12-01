@@ -14,7 +14,7 @@ import ListingLoader from '../../UI/Loaders/ListingLoader/ListingLoader';
 import Listing from './Listing';
 
 const Listings = () => {
-  const { user } = useAuth() as AuthType;
+  const { userData } = useAuth() as AuthType;
 
   const [listings, setListings] = useState<
     QueryDocumentSnapshot<Listing>[] | undefined
@@ -24,10 +24,10 @@ const Listings = () => {
   useEffect(() => {
     const getListings = async () => {
       setIsLoading(true);
-      if (user) {
+      if (userData) {
         const listingsQuery = query(
           collection(db, 'listings') as CollectionReference<Listing>,
-          where('uid', '==', user?.uid),
+          where('uid', '==', userData.uid),
           orderBy('date', 'desc')
         );
 
@@ -39,7 +39,7 @@ const Listings = () => {
     };
 
     getListings();
-  }, [user]);
+  }, [userData]);
 
   return (
     <section>

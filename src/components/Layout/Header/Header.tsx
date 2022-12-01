@@ -8,7 +8,7 @@ import { useState } from 'react';
 import MobileMenu from './MobileMenu/MobileMenu';
 
 const Header = () => {
-  const { user } = useAuth() as AuthType;
+  const { userData } = useAuth() as AuthType;
   const { pathname } = useRouter();
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -27,15 +27,15 @@ const Header = () => {
         <nav className={styles.nav}>
           <Link href='/'>MOTORADAR</Link>
           <div className={styles.links}>
-            {user && (
+            {userData && (
               <>
                 <Link href='/saved'>Saved</Link>
                 <Link href='/dashboard'>Dashboard</Link>
               </>
             )}
             <div className={styles.button}>
-              {user && <Link href='/new-listing'>New Listing</Link>}
-              {!user && <Link href='/sign-in'>Sign In</Link>}
+              {userData && <Link href='/new-listing'>New Listing</Link>}
+              {!userData && <Link href='/sign-in'>Sign In</Link>}
             </div>
           </div>
           <div className={styles.hamburger}>

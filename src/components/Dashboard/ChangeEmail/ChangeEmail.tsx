@@ -2,6 +2,7 @@ import { FirebaseError } from 'firebase/app';
 import { updateEmail } from 'firebase/auth';
 import { Dispatch, FormEvent, SetStateAction, useState } from 'react';
 import { auth } from '../../../firebase/firebase';
+import { useUser } from '../../../hooks/useUser';
 import { AuthType, useAuth } from '../../../store/AuthContext';
 import { getAuthErrorMessage } from '../../../utils/getAuthErrorMessage';
 import ErrorBox from '../../Auth/ErrorBox/ErrorBox';
@@ -19,7 +20,8 @@ const ChangeEmail = ({
   setIsSuccessAlertOpen,
   setSuccessText,
 }: Props) => {
-  const { user } = useAuth() as AuthType;
+  const { userData } = useAuth() as AuthType;
+  const user = useUser(userData?.uid);
 
   const [email, setEmail] = useState(user?.email || '');
   const [isLoading, setIsLoading] = useState(false);

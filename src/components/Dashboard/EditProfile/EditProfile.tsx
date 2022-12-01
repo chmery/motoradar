@@ -8,6 +8,7 @@ import SuccessAlert from '../SuccessAlert/SuccessAlert';
 import { FirebaseError } from 'firebase/app';
 import { getAuthErrorMessage } from '../../../utils/getAuthErrorMessage';
 import ErrorBox from '../../Auth/ErrorBox/ErrorBox';
+import { useUser } from '../../../hooks/useUser';
 
 type Props = {
   handleEditProfileOpen: () => void;
@@ -20,7 +21,8 @@ const EditProfile = ({
   setIsSuccessAlertOpen,
   setSuccessText,
 }: Props) => {
-  const { user } = useAuth() as AuthType;
+  const { userData } = useAuth() as AuthType;
+  const user = useUser(userData?.uid);
 
   const [username, setUsername] = useState(user?.displayName || '');
   const [isLoading, setIsLoading] = useState(false);
