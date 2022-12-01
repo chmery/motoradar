@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
-import { auth, storage } from '../../../firebase/firebase';
+import { auth, db, storage } from '../../../firebase/firebase';
 import { updateProfile } from 'firebase/auth';
 import { useState } from 'react';
 
@@ -10,6 +10,7 @@ import { FiUpload } from 'react-icons/fi';
 import { AuthType, useAuth } from '../../../store/AuthContext';
 import UploadLoader from '../../UI/Loaders/UploadLoader/UploadLoader';
 import { useUser } from '../../../hooks/useUser';
+import { doc, updateDoc } from 'firebase/firestore';
 
 const UserInfo = () => {
   const { userData } = useAuth() as AuthType;
@@ -25,23 +26,30 @@ const UserInfo = () => {
 
     reader.onload = async (readerEvent: ProgressEvent<FileReader>) => {
       setIsLoading(true);
-      if (readerEvent.target?.result) {
-        const imageRef = ref(storage, `profilePics/${userData?.uid}`);
+      if (readerEvent.target?.result && userData?.uid) {
+        const imageStorageRef = ref(storage, `profilePics/${userData.uid}`);
 
-        await uploadString(
-          imageRef,
+        const imageRef = await uploadString(
+          imageStorageRef,
           readerEvent.target.result as string,
           'data_url'
-        ).then(async () => {
-          const imageUrl = await getDownloadURL(imageRef);
-          try {
-            await updateProfile(auth.currentUser!, {
-              photoURL: imageUrl,
-            });
-          } catch (error) {
-            console.error(error);
-          }
-        });
+        );
+
+        const imageUrl = await getDownloadURL(imageRef.ref);
+
+        try {
+          await updateProfile(auth.currentUser!, {
+            photoURL: imageUrl,
+          });
+
+          const userRef = doc(db, 'users', userData.uid);
+
+          await updateDoc(userRef, {
+            photoURL: imageUrl,
+          });
+        } catch (error) {
+          console.error(error);
+        }
       }
 
       setIsLoading(false);

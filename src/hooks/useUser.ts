@@ -26,24 +26,25 @@ type UserType = {
 export const useUser = (uid: string | undefined) => {
   const [user, setUser] = useState<UserType | undefined>(undefined);
 
-  if (!uid) {
-    return {
-      email: 'loading...',
-      displayName: 'loading...',
-      photoURL: 'loading...',
-      location: 'loading...',
-      phoneNumber: 'loading...',
-    };
-  }
-
   useEffect(() => {
-    return onSnapshot(
-      doc(db, 'users', uid) as DocumentReference<UserType>,
-      (doc) => {
-        setUser(doc.data());
-      }
-    );
-  }, []);
+    if (!uid) {
+      setUser({
+        email: 'loading...',
+        displayName: 'loading...',
+        photoURL:
+          'https://firebasestorage.googleapis.com/v0/b/motoradar-3dd45.appspot.com/o/profilePics%2Ftemporary.jpg?alt=media&token=f60ccd74-f6e4-42ca-add8-243e349fbb1b',
+        location: 'loading...',
+        phoneNumber: 100000000,
+      });
+    } else {
+      return onSnapshot(
+        doc(db, 'users', uid) as DocumentReference<UserType>,
+        (doc) => {
+          setUser(doc.data());
+        }
+      );
+    }
+  }, [uid]);
 
   return user;
 };
