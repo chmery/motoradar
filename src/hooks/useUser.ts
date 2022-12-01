@@ -18,7 +18,7 @@ type UserType = {
 /**
  * Hook to retrive user information from firebase database
  *
- * @param uid user uid from firebase auth
+ * @param uid user uid you want to retrive information about
  *
  * @returns user object
  */
