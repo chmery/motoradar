@@ -32,7 +32,7 @@ export const useUser = (uid: string | undefined) => {
         email: 'loading...',
         displayName: 'loading...',
         photoURL:
-          'https://firebasestorage.googleapis.com/v0/b/motoradar-3dd45.appspot.com/o/profilePics%2Ftemporary.jpg?alt=media&token=f60ccd74-f6e4-42ca-add8-243e349fbb1b',
+          'https://firebasestorage.googleapis.com/v0/b/motoradar-3dd45.appspot.com/o/profilePics%2Floading.png?alt=media&token=70894ac3-ecbd-409f-8fed-f830b9a97cd5',
         location: 'loading...',
         phoneNumber: 100000000,
       });
