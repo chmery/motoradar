@@ -12,7 +12,7 @@ type UserType = {
   displayName: string | null;
   photoURL: string | null;
   location: string | null;
-  phoneNumber: number | null;
+  phoneNumber: string | null;
 };
 
 /**
@@ -34,7 +34,7 @@ export const useUser = (uid: string | undefined) => {
         photoURL:
           'https://firebasestorage.googleapis.com/v0/b/motoradar-3dd45.appspot.com/o/profilePics%2Floading.png?alt=media&token=70894ac3-ecbd-409f-8fed-f830b9a97cd5',
         location: 'loading...',
-        phoneNumber: 100000000,
+        phoneNumber: 'loading...',
       });
     } else {
       return onSnapshot(

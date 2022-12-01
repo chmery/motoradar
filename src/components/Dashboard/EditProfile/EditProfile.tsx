@@ -33,6 +33,7 @@ const EditProfile = ({
 
   const [username, setUsername] = useState(user?.displayName || '');
   const [location, setLocation] = useState(user?.location || '');
+  const [phoneNumber, setPhoneNumber] = useState(user?.phoneNumber || '');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [isErrorOpen, setIsErrorOpen] = useState(false);
@@ -41,6 +42,7 @@ const EditProfile = ({
     if (user) {
       setUsername(user.displayName as string);
       setLocation(user.location as string);
+      setPhoneNumber(user.phoneNumber as string);
     }
   }, [user]);
 
@@ -51,6 +53,9 @@ const EditProfile = ({
         break;
       case 'location':
         setLocation(input);
+        break;
+      case 'phoneNumber':
+        setPhoneNumber(input);
         break;
       default:
         console.error(
@@ -64,7 +69,23 @@ const EditProfile = ({
     e.preventDefault();
     setIsLoading(true);
 
-    if (username === user?.displayName && location === user?.location) {
+    if (
+      !phoneNumber.match(
+        /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/
+      ) &&
+      phoneNumber
+    ) {
+      setError('Wrong phone number!');
+      setIsErrorOpen(true);
+      setIsLoading(false);
+      return;
+    }
+
+    if (
+      username === user?.displayName &&
+      location === user?.location &&
+      phoneNumber === user?.phoneNumber
+    ) {
       setIsLoading(false);
       handleEditProfileOpen();
       return;
@@ -80,10 +101,11 @@ const EditProfile = ({
         await updateDoc(userRef, {
           displayName: username,
           location: location,
+          phoneNumber: phoneNumber,
         });
 
         handleEditProfileOpen();
-        setSuccessText('Username successfuly changed!');
+        setSuccessText('Profile info successfuly changed!');
         setIsSuccessAlertOpen(true);
       }
     } catch (error) {
@@ -128,6 +150,16 @@ const EditProfile = ({
             id='location'
             value={location as string}
             onChange={(e) => handleInputChange('location', e.target.value)}
+          />
+          <label htmlFor='phoneNumber' className={styles.label} id='form'>
+            Phone Number
+          </label>
+          <input
+            type='text'
+            className={styles.input}
+            id='phoneNumber'
+            value={phoneNumber}
+            onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
           />
 
           <Button
