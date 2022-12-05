@@ -1,0 +1,41 @@
+.seller {
+  margin-top: 3rem;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  margin: 1.2rem 0;
+}
+
+.image {
+  border-radius: 50%;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  margin-left: 1rem;
+}
+
+.text {
+  margin-top: 0.3rem;
+  font-size: 0.9rem;
+  color: var(--gray-text);
+}
+
+.link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  font-weight: 600;
+  transition: border-color 0.11s;
+
+  &:hover {
+    border-color: var(--dark-text);
+  }
+}
