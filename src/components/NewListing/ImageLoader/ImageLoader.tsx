@@ -58,12 +58,20 @@ const ImageLoader = ({ onImageUpload }: Props) => {
         <div onClick={() => removeImage(id)} className={styles.remove}>
           <IoClose />
         </div>
-        <img src={src}></img>
+        <img src={src} />
       </div>
     );
   };
 
   const ImagesList = () => {
+    /*     const createImageSrc = (imageFile: File) => {
+      const image = new Image();
+      const imageUrl = URL.createObjectURL(imageFile);
+      image.src = imageUrl;
+
+      return image;
+    }; */
+
     return (
       <div className={styles['images-list']}>
         {uploadedImages.map((image) => (

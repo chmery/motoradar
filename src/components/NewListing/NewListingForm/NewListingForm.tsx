@@ -1,20 +1,18 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { AuthType, useAuth } from '../../../store/AuthContext';
+import { dropdownData, getDropdownData } from '../../../utils/getDropdownData';
 import Button from '../../UI/Button/Button';
 import CustomCheckbox from '../../UI/CustomCheckbox/CustomCheckbox';
 import DropdownList from '../../UI/DropdownList/DropdownList';
 import ImageLoader from '../ImageLoader/ImageLoader';
 import styles from './NewListingForm.module.scss';
 
-const TEST_DATA = {
-  options: ['Audi', 'BMW', 'Mercedes'],
-};
-
 type Props = {
   onPublish: (listingData: Listing, images: File[]) => void;
 };
 
 const NewListingForm = ({ onPublish }: Props) => {
+  const [location, setLocation] = useState('');
   const [brand, setBrand] = useState('');
   const [model, setModel] = useState('');
   const [productionYear, setProductionYear] = useState('');
@@ -29,13 +27,22 @@ const NewListingForm = ({ onPublish }: Props) => {
   const [isAccidentFree, setIsAccidentFree] = useState(false);
   const [images, setImages] = useState<File[] | []>([]);
 
+  const [dropdownData, setDropdownData] = useState<dropdownData | null>(null);
+
   const { user } = useAuth() as AuthType;
+
+  useEffect(() => {
+    const fetchDropdownData = async () =>
+      setDropdownData(await getDropdownData());
+    fetchDropdownData();
+  }, []);
 
   const publishHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!user) return;
 
     const listingData = {
+      location,
       uid: user.uid,
       username: user.displayName as string,
       email: user.email as string,
@@ -72,6 +79,7 @@ const NewListingForm = ({ onPublish }: Props) => {
     images.length &&
     brand &&
     model &&
+    user &&
     productionYear &&
     mileage &&
     power &&
@@ -90,11 +98,14 @@ const NewListingForm = ({ onPublish }: Props) => {
       <ImageLoader onImageUpload={setImagesHandler} />
       <div>
         <span className={styles.title}>Brand</span>
-        <DropdownList
-          options={TEST_DATA.options}
-          onSelect={(selected) => setBrand(selected)}
-        />
+        {dropdownData && (
+          <DropdownList
+            options={dropdownData.brands}
+            onSelect={(selected) => setBrand(selected)}
+          />
+        )}
       </div>
+
       <div>
         <span className={styles.title}>Model</span>
         <input type='text' onChange={(event) => setModel(event.target.value)} />
@@ -122,23 +133,36 @@ const NewListingForm = ({ onPublish }: Props) => {
       </div>
       <div>
         <span className={styles.title}>Gearbox</span>
-        <DropdownList
-          options={TEST_DATA.options}
-          onSelect={(selected) => setGearbox(selected)}
-        />
+        {dropdownData && (
+          <DropdownList
+            options={dropdownData.gearboxTypes}
+            onSelect={(selected) => setGearbox(selected)}
+          />
+        )}
       </div>
       <div>
-        <span className={styles.title}>Powertrain</span>
-        <DropdownList
-          options={TEST_DATA.options}
-          onSelect={(selected) => setPowertrain(selected)}
-        />
+        <span className={styles.title}>Drivetrain</span>
+        {dropdownData && (
+          <DropdownList
+            options={dropdownData.drivetrainTypes}
+            onSelect={(selected) => setPowertrain(selected)}
+          />
+        )}
       </div>
       <div>
         <span className={styles.title}>Fuel Type</span>
-        <DropdownList
-          options={TEST_DATA.options}
-          onSelect={(selected) => setFuelType(selected)}
+        {dropdownData && (
+          <DropdownList
+            options={dropdownData.fuelTypes}
+            onSelect={(selected) => setFuelType(selected)}
+          />
+        )}
+      </div>
+      <div>
+        <span className={styles.title}>Location</span>
+        <input
+          type='text'
+          onChange={(event) => setLocation(event.target.value)}
         />
       </div>
       <div>
@@ -164,11 +188,13 @@ const NewListingForm = ({ onPublish }: Props) => {
             label={'Damaged'}
             onChange={(isChecked) => setIsDamaged(isChecked)}
             dark
+            isChecked={isDamaged}
           />
           <CustomCheckbox
             label={'Accident-free'}
             onChange={(isChecked) => setIsAccidentFree(isChecked)}
             dark
+            isChecked={isAccidentFree}
           />
         </div>
       </div>

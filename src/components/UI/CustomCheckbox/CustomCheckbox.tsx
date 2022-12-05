@@ -7,9 +7,10 @@ type Props = {
   label: string;
   onChange: (isChecked: boolean) => void;
   dark?: boolean;
+  isChecked?: boolean;
 };
 
-const CustomCheckbox = ({ label, onChange, dark }: Props) => {
+const CustomCheckbox = ({ label, onChange, dark, isChecked }: Props) => {
   const onChangeHandler = (
     event: ChangeEvent<HTMLInputElement>,
     isChecked: boolean
@@ -20,6 +21,7 @@ const CustomCheckbox = ({ label, onChange, dark }: Props) => {
   return (
     <div className={styles.checkbox}>
       <Checkbox
+        checked={isChecked}
         disableRipple
         checkedIcon={<ImCheckboxChecked />}
         icon={<ImCheckboxUnchecked />}
