@@ -12,7 +12,7 @@ import {
 } from 'firebase/firestore';
 import { db } from '../../../firebase/firebase';
 import { AuthType, useAuth } from '../../../store/AuthContext';
-import { UserType } from '../../../hooks/useUser';
+import { UserType, useUser } from '../../../hooks/useUser';
 
 type Props = {
   listingId: string;
@@ -23,6 +23,7 @@ const Save = ({ listingId }: Props) => {
   const docRef = useRef<DocumentReference<UserType> | null>(null);
 
   const { userData } = useAuth() as AuthType;
+  const user = useUser(userData?.uid);
 
   useEffect(() => {
     if (userData) {
@@ -32,7 +33,11 @@ const Save = ({ listingId }: Props) => {
         userData.uid
       ) as DocumentReference<UserType>;
     }
-  }, [userData]);
+
+    if (user?.saved?.find((savedListing) => savedListing === listingId)) {
+      setIsSaved(true);
+    }
+  }, [userData, user]);
 
   const handleSave = async () => {
     if (isSaved) {
