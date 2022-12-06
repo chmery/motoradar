@@ -42,3 +42,28 @@
   font-weight: 600;
   color: var(--blue);
 }
+
+.header {
+  margin: 2rem 0 1rem 0;
+}
+
+.details {
+  width: 100%;
+  display: grid;
+  grid-template: repeat(4, 1fr) / repeat(4, 1fr);
+  align-items: center;
+  gap: 10px 20px;
+
+  &__type {
+    color: var(--gray-text);
+  }
+}
+
+.description {
+  width: 100%;
+}
+
+.date {
+  margin-top: 5rem;
+  color: var(--gray-text);
+}
