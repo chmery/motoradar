@@ -22,13 +22,27 @@ const ImageLoader = ({ onImageUpload }: Props) => {
     uploadInputRef.current.click();
   };
 
+  const getImagesToAdd = (newUploadedImages: File[]) => {
+    const remainingSpace = 12 - uploadedImages.length;
+
+    if (remainingSpace < 0) return [];
+
+    const imagesToAdd = newUploadedImages.filter((image, index) => {
+      if (index < remainingSpace) return image;
+    });
+
+    return imagesToAdd;
+  };
+
   const setImagesHandler = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
 
     const uploadedImagesArray = Array.from(event.target.files);
+    const imagesToAdd = getImagesToAdd(uploadedImagesArray);
+    if (!imagesToAdd.length) return;
 
     if (uploadedImages.length) {
-      const newImages = uploadedImagesArray.filter((newImage) =>
+      const newImages = imagesToAdd.filter((newImage) =>
         uploadedImages.every((image) => image.name !== newImage.name)
       );
 
@@ -41,7 +55,7 @@ const ImageLoader = ({ onImageUpload }: Props) => {
       return;
     }
 
-    setUploadedImages(uploadedImagesArray);
+    setUploadedImages(imagesToAdd);
   };
 
   const removeImage = (imageToRemove: string) => {
@@ -64,14 +78,6 @@ const ImageLoader = ({ onImageUpload }: Props) => {
   };
 
   const ImagesList = () => {
-    /*     const createImageSrc = (imageFile: File) => {
-      const image = new Image();
-      const imageUrl = URL.createObjectURL(imageFile);
-      image.src = imageUrl;
-
-      return image;
-    }; */
-
     return (
       <div className={styles['images-list']}>
         {uploadedImages.map((image) => (
@@ -81,9 +87,11 @@ const ImageLoader = ({ onImageUpload }: Props) => {
             id={image.name}
           />
         ))}
-        <button onClick={startUploadingHandler}>
-          <BsPlus />
-        </button>
+        {uploadedImages.length < 12 && (
+          <button onClick={startUploadingHandler}>
+            <BsPlus />
+          </button>
+        )}
       </div>
     );
   };
