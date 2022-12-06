@@ -46,6 +46,8 @@ const NewListingForm = ({ onPublish }: Props) => {
   ) => {
     const value = event.target.value.replace(/\D/g, '');
 
+    if (value === '0') return;
+
     if (input === 'power') setPower(value);
     if (input === 'mileage') setMileage(value);
     if (input === 'price') setPrice(value);
