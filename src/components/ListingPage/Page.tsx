@@ -1,5 +1,5 @@
-import { useUser } from '../../hooks/useUser';
 import { getNumberWithSpaces } from '../../utils/getNumberWithSpaces';
+import Carousel from './Carousel/Carousel';
 import styles from './Page.module.scss';
 import Seller from './Seller/Seller';
 
@@ -22,7 +22,9 @@ const Page = ({ data }: Props) => {
         <p className={styles.price}>${getNumberWithSpaces(data.price)}</p>
         <Seller uid={data.uid} />
       </section>
-      <section className={styles.listing}></section>
+      <section className={styles.listing}>
+        <Carousel images={data.imageUrls} />
+      </section>
     </article>
   );
 };

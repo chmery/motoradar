@@ -21,13 +21,15 @@ const Authorized = ({ closeMenu }: Props) => {
   return (
     <>
       <div className={styles.user}>
-        <Image
-          src={user?.photoURL!}
-          alt='profile picture'
-          width={50}
-          height={50}
-          className={styles['profile-pic']}
-        />
+        {user && (
+          <Image
+            src={user.photoURL as string}
+            alt='profile picture'
+            width={50}
+            height={50}
+            className={styles['profile-pic']}
+          />
+        )}
         <div>
           <h2>{user?.displayName}</h2>
           <p className={styles.email}>{user?.email}</p>
