@@ -1,3 +1,5 @@
+@use '../../../styles/mixins' as *;
+
 .seller {
   margin-top: 3rem;
 }
@@ -37,5 +39,9 @@
 
   &:hover {
     border-color: var(--dark-text);
+  }
+
+  @include mobileL {
+    display: none;
   }
 }

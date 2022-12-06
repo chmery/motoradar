@@ -1,3 +1,5 @@
+@use '../../../styles/mixins' as *;
+
 .container {
   width: 100%;
   aspect-ratio: 3 / 2;
@@ -5,6 +7,10 @@
   background-color: var(--border);
   position: relative;
   overflow: hidden;
+
+  @include mobileL {
+    order: 0;
+  }
 }
 
 .image-container {
@@ -19,7 +25,7 @@
 }
 
 .image-counter {
-  z-index: 1000;
+  z-index: 100;
   position: absolute;
   color: #fff;
   bottom: 10px;
