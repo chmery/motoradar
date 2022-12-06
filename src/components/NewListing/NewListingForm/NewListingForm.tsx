@@ -37,6 +37,37 @@ const NewListingForm = ({ onPublish }: Props) => {
     fetchDropdownData();
   }, []);
 
+  const setImagesHandler = (uploadedImages: File[] | []) =>
+    setImages(uploadedImages);
+
+  const numInputsHandler = (
+    event: ChangeEvent<HTMLInputElement>,
+    input: string
+  ) => {
+    const value = event.target.value.replace(/\D/g, '');
+
+    if (input === 'power') setPower(value);
+    if (input === 'mileage') setMileage(value);
+    if (input === 'price') setPrice(value);
+  };
+
+  const canPublish =
+    images.length &&
+    brand &&
+    model &&
+    user &&
+    productionYear &&
+    mileage &&
+    power &&
+    powertrain &&
+    gearbox &&
+    fuelType &&
+    description &&
+    price &&
+    (isDamaged || isAccidentFree)
+      ? true
+      : false;
+
   const publishHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!user) return;
@@ -66,32 +97,6 @@ const NewListingForm = ({ onPublish }: Props) => {
     onPublish(listingData, images);
   };
 
-  const setImagesHandler = (uploadedImages: File[] | []) =>
-    setImages(uploadedImages);
-
-  const setDescriptionHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    const description = event.target.value;
-    if (description.length > 300) return;
-    setDescription(description);
-  };
-
-  const canPublish =
-    images.length &&
-    brand &&
-    model &&
-    user &&
-    productionYear &&
-    mileage &&
-    power &&
-    powertrain &&
-    gearbox &&
-    fuelType &&
-    description &&
-    price &&
-    (isDamaged || isAccidentFree)
-      ? true
-      : false;
-
   return (
     <form className={styles['new-listing-form']} onSubmit={publishHandler}>
       <h1>Add New Listing</h1>
@@ -108,27 +113,35 @@ const NewListingForm = ({ onPublish }: Props) => {
 
       <div>
         <span className={styles.title}>Model</span>
-        <input type='text' onChange={(event) => setModel(event.target.value)} />
+        <input
+          type='text'
+          maxLength={40}
+          onChange={(event) => setModel(event.target.value)}
+        />
       </div>
       <div>
         <span className={styles.title}>Production Year</span>
-        <input
-          type='number'
-          onChange={(event) => setProductionYear(event.target.value)}
-        />
+        {dropdownData && (
+          <DropdownList
+            options={dropdownData.productionYears}
+            onSelect={(selected) => setProductionYear(selected)}
+          />
+        )}
       </div>
       <div>
         <span className={styles.title}>Mileage</span>
         <input
-          type='number'
-          onChange={(event) => setMileage(event.target.value)}
+          type='text'
+          value={mileage}
+          onChange={(event) => numInputsHandler(event, 'mileage')}
         />
       </div>
       <div>
         <span className={styles.title}>Power</span>
         <input
-          type='number'
-          onChange={(event) => setPower(event.target.value)}
+          type='text'
+          value={power}
+          onChange={(event) => numInputsHandler(event, 'power')}
         />
       </div>
       <div>
@@ -162,14 +175,16 @@ const NewListingForm = ({ onPublish }: Props) => {
         <span className={styles.title}>Location</span>
         <input
           type='text'
+          maxLength={40}
           onChange={(event) => setLocation(event.target.value)}
         />
       </div>
       <div>
         <span className={styles['description-title']}>Description</span>
         <textarea
+          maxLength={300}
           className={styles.description}
-          onChange={setDescriptionHandler}
+          onChange={(event) => setDescription(event.target.value)}
           value={description}
           placeholder={'Describe your vehicle in detail'}
         />
@@ -177,8 +192,9 @@ const NewListingForm = ({ onPublish }: Props) => {
       <div>
         <span className={styles.title}>Price</span>
         <input
-          type='number'
-          onChange={(event) => setPrice(event.target.value)}
+          type='text'
+          value={price}
+          onChange={(event) => numInputsHandler(event, 'price')}
         />
       </div>
       <div className={styles.status}>

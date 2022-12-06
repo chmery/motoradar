@@ -5,6 +5,7 @@ export type dropdownData = {
   gearboxTypes: string[];
   drivetrainTypes: string[];
   fuelTypes: string[];
+  productionYears: string[];
   brands: string[];
 };
 
@@ -17,6 +18,10 @@ export const getDropdownData = async () => {
     'Rear-wheel drive',
   ];
   const fuelTypes = ['Petrol', 'Diesel', 'Electric', 'Hybrid'];
+  const productionYears: string[] = [];
+  for (let i = 1990; i <= 2022; i++) {
+    productionYears.push(i.toString());
+  }
   const brands: string[] = [];
 
   const brandsQuery = await getDocs(collection(db, 'brands'));
@@ -28,6 +33,7 @@ export const getDropdownData = async () => {
     gearboxTypes,
     drivetrainTypes,
     fuelTypes,
+    productionYears,
     brands,
   };
 };
