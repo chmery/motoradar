@@ -106,6 +106,7 @@ const NewListingForm = ({ onPublish }: Props) => {
         {dropdownData && (
           <DropdownList
             options={dropdownData.brands}
+            placeholder={'Brand'}
             onSelect={(selected) => setBrand(selected)}
           />
         )}
@@ -124,6 +125,7 @@ const NewListingForm = ({ onPublish }: Props) => {
         {dropdownData && (
           <DropdownList
             options={dropdownData.productionYears}
+            placeholder={'Production Year'}
             onSelect={(selected) => setProductionYear(selected)}
           />
         )}
@@ -149,6 +151,7 @@ const NewListingForm = ({ onPublish }: Props) => {
         {dropdownData && (
           <DropdownList
             options={dropdownData.gearboxTypes}
+            placeholder={'Gearbox'}
             onSelect={(selected) => setGearbox(selected)}
           />
         )}
@@ -158,6 +161,7 @@ const NewListingForm = ({ onPublish }: Props) => {
         {dropdownData && (
           <DropdownList
             options={dropdownData.drivetrainTypes}
+            placeholder={'Drivetrain'}
             onSelect={(selected) => setPowertrain(selected)}
           />
         )}
@@ -167,6 +171,7 @@ const NewListingForm = ({ onPublish }: Props) => {
         {dropdownData && (
           <DropdownList
             options={dropdownData.fuelTypes}
+            placeholder={'Fuel Type'}
             onSelect={(selected) => setFuelType(selected)}
           />
         )}

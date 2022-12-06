@@ -55,11 +55,13 @@ const Filter = () => {
       <div className={styles.dropdowns}>
         <DropdownList
           title={TEST_DATA.title}
+          placeholder={TEST_DATA.title}
           options={TEST_DATA.options}
           onSelect={brandSelectHandler}
         />
         <DropdownList
           title={TEST_DATA2.title}
+          placeholder={TEST_DATA.title}
           options={TEST_DATA2.options}
           onSelect={chassisSelectHandler}
         />
