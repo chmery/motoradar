@@ -39,7 +39,9 @@ const ListingPage = () => {
   return (
     <Wrapper>
       {isLoading && <div>Loading ...</div>}
-      {!isLoading && listing && <Page data={listing} />}
+      {!isLoading && listing && (
+        <Page data={listing} listingId={listingId as string} />
+      )}
     </Wrapper>
   );
 };

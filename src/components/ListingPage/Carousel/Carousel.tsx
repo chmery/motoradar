@@ -6,12 +6,14 @@ import {
   MdOutlineArrowForwardIos,
 } from 'react-icons/md';
 import { useState } from 'react';
+import Save from '../Save/Save';
 
 type Props = {
   images: string[];
+  listingId: string;
 };
 
-const Carousel = ({ images }: Props) => {
+const Carousel = ({ images, listingId }: Props) => {
   const [imageNumber, setImageNumber] = useState(0);
 
   const nextImage = () => {
@@ -34,6 +36,7 @@ const Carousel = ({ images }: Props) => {
 
   return (
     <div className={styles.container}>
+      <Save listingId={listingId} />
       <div className={styles['image-container']}>
         <Image
           src={images[imageNumber]}

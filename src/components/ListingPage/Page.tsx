@@ -5,9 +5,10 @@ import Seller from './Seller/Seller';
 
 type Props = {
   data: Listing;
+  listingId: string;
 };
 
-const Page = ({ data }: Props) => {
+const Page = ({ data, listingId }: Props) => {
   return (
     <article className={styles.page}>
       <section className={styles.info}>
@@ -23,7 +24,7 @@ const Page = ({ data }: Props) => {
         <Seller uid={data.uid} />
       </section>
       <section className={styles.listing}>
-        <Carousel images={data.imageUrls} />
+        <Carousel images={data.imageUrls} listingId={listingId} />
       </section>
     </article>
   );
