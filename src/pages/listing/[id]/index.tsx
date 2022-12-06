@@ -2,6 +2,7 @@ import { doc, DocumentReference, getDoc } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Page from '../../../components/ListingPage/Page';
+import ListingPageLoader from '../../../components/UI/Loaders/ListingPageLoader/ListingPageLoader';
 import Wrapper from '../../../components/UI/Wrapper/Wrapper';
 import { db } from '../../../firebase/firebase';
 
@@ -38,7 +39,7 @@ const ListingPage = () => {
 
   return (
     <Wrapper>
-      {isLoading && <div>Loading ...</div>}
+      {isLoading && <ListingPageLoader />}
       {!isLoading && listing && (
         <Page data={listing} listingId={listingId as string} />
       )}
