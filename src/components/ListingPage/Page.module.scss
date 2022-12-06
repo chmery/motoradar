@@ -1,0 +1,97 @@
+@use '../../styles/mixins' as *;
+
+.page {
+  width: 100%;
+  min-height: calc(100vh - 80px);
+  display: flex;
+
+  @include mobileL {
+    flex-direction: column;
+  }
+}
+
+.info {
+  min-width: 30%;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 2em 20px 2em 0;
+
+  @include mobileL {
+    width: 100%;
+    border-right: none;
+  }
+}
+
+.listing {
+  flex-grow: 1;
+  padding: 2em 0 2em 20px;
+
+  @include mobileL {
+    padding: 2em 0;
+  }
+}
+
+.car {
+  font-size: 1.5rem;
+  font-weight: 600;
+
+  @include mobileL {
+    margin-top: 2rem;
+  }
+}
+
+.date {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  margin: 0.5rem 0;
+}
+
+.circle {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background-color: var(--dark-text);
+  margin: 0 1rem;
+}
+
+.price {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--blue);
+}
+
+.header {
+  margin: 2rem 0 1rem 0;
+}
+
+.details {
+  width: 100%;
+  display: grid;
+  grid-template: repeat(4, 1fr) / repeat(4, 1fr);
+  align-items: center;
+  gap: 10px 20px;
+
+  @include mobile {
+    grid-template: repeat(8, 1fr) / repeat(2, 1fr);
+    font-size: 0.9rem;
+  }
+
+  &__type {
+    color: var(--gray-text);
+  }
+}
+
+.description {
+  width: 100%;
+
+  @include mobile {
+    font-size: 0.9rem;
+  }
+}
+
+.time {
+  margin-top: 5rem;
+  color: var(--gray-text);
+}
