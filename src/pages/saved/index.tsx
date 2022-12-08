@@ -8,6 +8,7 @@ import {
 } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import Listing from '../../components/Listing/Listing';
+import ListingLoader from '../../components/UI/Loaders/ListingLoader/ListingLoader';
 import Wrapper from '../../components/UI/Wrapper/Wrapper';
 import { db } from '../../firebase/firebase';
 import { useUser } from '../../hooks/useUser';
@@ -19,19 +20,20 @@ const SavedPage = () => {
   const [savedListings, setSavedListings] = useState<
     QueryDocumentSnapshot<Listing>[] | null
   >(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { userData } = useAuth() as AuthType;
   const user = useUser(userData?.uid);
 
   useEffect(() => {
     const getSavedListings = async () => {
-      if (user && user.saved.length > 0) {
+      setIsLoading(true);
+      if (user && user.saved.length) {
         const saved = user.saved;
         const batches: QueryDocumentSnapshot<Listing>[] = [];
 
         while (saved.length) {
           const batch = saved.splice(0, 10);
-          console.log(batch);
 
           const queryListings = query(
             collection(db, 'listings') as CollectionReference<Listing>,
@@ -44,6 +46,7 @@ const SavedPage = () => {
         }
         setSavedListings(batches);
       }
+      setIsLoading(false);
     };
 
     getSavedListings();
@@ -52,10 +55,15 @@ const SavedPage = () => {
   return (
     <Wrapper>
       <div className={styles.main}>
-        <h2 className={styles.header}>Saved listings</h2>
-        {savedListings?.map((listing) => (
-          <Listing key={listing.id} data={listing.data()} id={listing.id} />
-        ))}
+        {savedListings && <h2 className={styles.header}>Saved listings</h2>}
+        {isLoading && <ListingLoader />}
+        {!isLoading &&
+          savedListings?.map((listing) => (
+            <Listing key={listing.id} data={listing.data()} id={listing.id} />
+          ))}
+        {!savedListings && (
+          <div className={styles.empty}>No listings saved</div>
+        )}
       </div>
     </Wrapper>
   );

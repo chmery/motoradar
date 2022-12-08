@@ -71,6 +71,7 @@ export const AuthContextProvider = ({ children }: Props) => {
       displayName: userData.user.displayName,
       phoneNumber: '',
       location: '',
+      saved: [],
     });
   };
 
