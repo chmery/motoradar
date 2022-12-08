@@ -9,8 +9,8 @@ import {
 } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { db } from '../../../firebase/firebase';
+import Listing from '../../Listing/Listing';
 import ListingLoader from '../../UI/Loaders/ListingLoader/ListingLoader';
-import Listing from './Listing/Listing';
 
 type Props = {
   uid: string | string[] | undefined;

@@ -8,7 +8,7 @@ export type UserType = {
   photoURL: string | null;
   location: string | null;
   phoneNumber: string | null;
-  saved: string[] | null;
+  saved: string[];
 };
 
 /**
