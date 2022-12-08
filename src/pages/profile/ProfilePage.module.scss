@@ -1,0 +1,81 @@
+@use '../../styles/mixins' as *;
+
+.main {
+  width: 100%;
+  min-height: calc(100vh - 80px);
+  display: flex;
+
+  @include mobileL {
+    flex-direction: column;
+  }
+}
+
+.user {
+  width: 35%;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 2em 20px 2em 0;
+
+  & > button {
+    margin-bottom: 10px;
+  }
+
+  @include mobileL {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding-right: 0;
+  }
+}
+
+.listings {
+  flex-grow: 1;
+  padding: 2em 0 2em 20px;
+}
+
+.header {
+  margin-bottom: 2rem;
+}
+
+.user-container {
+  display: flex;
+  align-items: center;
+
+  @include mobileL {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+.image-container {
+  position: relative;
+  margin-right: 1rem;
+
+  @include mobileL {
+    margin-bottom: 1em;
+    margin-right: 0;
+  }
+}
+
+.image {
+  border-radius: 50%;
+}
+
+.image-placeholder {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: var(--border);
+}
+
+.text {
+  font-size: 0.9rem;
+  color: var(--gray-text);
+}
+
+// .name {
+//   @include mobileL {
+//     text-align: center;
+//   }
+// }
