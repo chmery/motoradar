@@ -9,13 +9,14 @@ import {
 } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { db } from '../../../firebase/firebase';
-import { AuthType, useAuth } from '../../../store/AuthContext';
+import Listing from '../../Listing/Listing';
 import ListingLoader from '../../UI/Loaders/ListingLoader/ListingLoader';
-import Listing from './Listing';
 
-const Listings = () => {
-  const { userData } = useAuth() as AuthType;
+type Props = {
+  uid: string | string[] | undefined;
+};
 
+const Listings = ({ uid }: Props) => {
   const [listings, setListings] = useState<
     QueryDocumentSnapshot<Listing>[] | undefined
   >(undefined);
@@ -24,10 +25,10 @@ const Listings = () => {
   useEffect(() => {
     const getListings = async () => {
       setIsLoading(true);
-      if (userData) {
+      if (uid) {
         const listingsQuery = query(
           collection(db, 'listings') as CollectionReference<Listing>,
-          where('uid', '==', userData.uid),
+          where('uid', '==', uid),
           orderBy('date', 'desc')
         );
 
@@ -39,7 +40,7 @@ const Listings = () => {
     };
 
     getListings();
-  }, [userData]);
+  }, [uid]);
 
   return (
     <section>

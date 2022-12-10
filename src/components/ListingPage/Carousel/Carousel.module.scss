@@ -1,0 +1,52 @@
+@use '../../../styles/mixins' as *;
+
+.container {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  border-radius: 5px;
+  background-color: var(--border);
+  position: relative;
+  overflow: hidden;
+
+  @include mobileL {
+    order: 0;
+  }
+}
+
+.image-container {
+  user-select: none;
+  height: 100%;
+  position: relative;
+}
+
+.image {
+  height: 100%;
+  object-fit: contain;
+}
+
+.image-counter {
+  z-index: 100;
+  position: absolute;
+  color: #fff;
+  bottom: 10px;
+  right: 10px;
+  font-size: 0.9rem;
+  background-color: rgba(34, 34, 34, 0.6);
+  padding: 2px 5px;
+  border-radius: 5px;
+  user-select: none;
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #fff;
+  filter: drop-shadow(0 0 3px rgb(0 0 0 / 0.6));
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.arrow-right {
+  right: 0;
+}

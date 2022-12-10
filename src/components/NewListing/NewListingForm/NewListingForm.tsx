@@ -28,7 +28,6 @@ const NewListingForm = ({ onPublish }: Props) => {
   const [images, setImages] = useState<File[] | []>([]);
 
   const [dropdownData, setDropdownData] = useState<DropdownData | null>(null);
-
   const { user } = useAuth() as AuthType;
 
   useEffect(() => {
@@ -72,7 +71,7 @@ const NewListingForm = ({ onPublish }: Props) => {
 
   const publishHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!user) return;
+    if (!userData) return;
 
     const listingData = {
       location,

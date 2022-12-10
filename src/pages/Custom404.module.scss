@@ -1,0 +1,19 @@
+@use '../styles/mixins' as *;
+
+.container {
+  width: 100%;
+  height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.text {
+  font-size: 4rem;
+  color: var(--dark-text);
+
+  @include mobileL {
+    font-size: 2rem;
+  }
+}

@@ -8,24 +8,28 @@ import { HiOutlineHeart } from 'react-icons/hi';
 import { FiLogIn } from 'react-icons/fi';
 import { IconContext } from 'react-icons';
 import { AuthType, useAuth } from '../../../../../store/AuthContext';
+import { useUser } from '../../../../../hooks/useUser';
 
 type Props = {
   closeMenu: () => void;
 };
 
 const Authorized = ({ closeMenu }: Props) => {
-  const { user, signOut } = useAuth() as AuthType;
+  const { userData, signOut } = useAuth() as AuthType;
+  const user = useUser(userData?.uid);
 
   return (
     <>
       <div className={styles.user}>
-        <Image
-          src={user?.photoURL!}
-          alt='profile picture'
-          width={50}
-          height={50}
-          className={styles['profile-pic']}
-        />
+        {user && (
+          <Image
+            src={user.photoURL as string}
+            alt='profile picture'
+            width={50}
+            height={50}
+            className={styles['profile-pic']}
+          />
+        )}
         <div>
           <h2>{user?.displayName}</h2>
           <p className={styles.email}>{user?.email}</p>

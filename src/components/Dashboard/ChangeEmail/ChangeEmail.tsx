@@ -1,7 +1,9 @@
 import { FirebaseError } from 'firebase/app';
 import { updateEmail } from 'firebase/auth';
+import { doc, updateDoc } from 'firebase/firestore';
 import { Dispatch, FormEvent, SetStateAction, useState } from 'react';
-import { auth } from '../../../firebase/firebase';
+import { auth, db } from '../../../firebase/firebase';
+import { useUser } from '../../../hooks/useUser';
 import { AuthType, useAuth } from '../../../store/AuthContext';
 import { getAuthErrorMessage } from '../../../utils/getAuthErrorMessage';
 import ErrorBox from '../../Auth/ErrorBox/ErrorBox';
@@ -19,7 +21,8 @@ const ChangeEmail = ({
   setIsSuccessAlertOpen,
   setSuccessText,
 }: Props) => {
-  const { user } = useAuth() as AuthType;
+  const { userData } = useAuth() as AuthType;
+  const user = useUser(userData?.uid);
 
   const [email, setEmail] = useState(user?.email || '');
   const [isLoading, setIsLoading] = useState(false);
@@ -54,8 +57,14 @@ const ChangeEmail = ({
     }
 
     try {
-      if (auth.currentUser) {
+      if (auth.currentUser && userData) {
         await updateEmail(auth.currentUser, email);
+
+        const userRef = doc(db, 'users', userData.uid);
+        await updateDoc(userRef, {
+          email: email,
+        });
+
         setSuccessText('E-mail successfuly changed!');
         setIsSuccessAlertOpen(true);
         handleChangeEmailOpen();

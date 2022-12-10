@@ -2,6 +2,7 @@ import { FirebaseError } from 'firebase/app';
 import { updatePassword } from 'firebase/auth';
 import { Dispatch, FormEvent, SetStateAction, useState } from 'react';
 import { auth } from '../../../firebase/firebase';
+import { useUser } from '../../../hooks/useUser';
 import { AuthType, useAuth } from '../../../store/AuthContext';
 import { getAuthErrorMessage } from '../../../utils/getAuthErrorMessage';
 import ErrorBox from '../../Auth/ErrorBox/ErrorBox';
@@ -19,8 +20,6 @@ const ChangePassword = ({
   setIsSuccessAlertOpen,
   setSuccessText,
 }: Props) => {
-  const { user } = useAuth() as AuthType;
-
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
