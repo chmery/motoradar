@@ -1,5 +1,4 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { useUser } from '../../../hooks/useUser';
 import { AuthType, useAuth } from '../../../store/AuthContext';
 import { DropdownData, getDropdownData } from '../../../utils/getDropdownData';
 import Button from '../../UI/Button/Button';
@@ -30,7 +29,6 @@ const NewListingForm = ({ onPublish }: Props) => {
 
   const [dropdownData, setDropdownData] = useState<DropdownData | null>(null);
   const { userData } = useAuth() as AuthType;
-  const user = useUser(userData?.uid);
 
   useEffect(() => {
     const fetchDropdownData = async () =>
@@ -58,7 +56,7 @@ const NewListingForm = ({ onPublish }: Props) => {
     images.length &&
     brand &&
     model &&
-    user &&
+    userData &&
     productionYear &&
     mileage &&
     power &&
@@ -78,9 +76,6 @@ const NewListingForm = ({ onPublish }: Props) => {
     const listingData = {
       location,
       uid: userData.uid,
-      username: userData.displayName as string,
-      email: userData.email as string,
-      photoURL: userData.photoURL as string,
       date: Date.now(),
       imageUrls: [],
       brand,
