@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { AuthType, useAuth } from '../../../store/AuthContext';
-import { dropdownData, getDropdownData } from '../../../utils/getDropdownData';
+import { DropdownData, getDropdownData } from '../../../utils/getDropdownData';
 import Button from '../../UI/Button/Button';
 import CustomCheckbox from '../../UI/CustomCheckbox/CustomCheckbox';
 import DropdownList from '../../UI/DropdownList/DropdownList';
@@ -27,7 +27,7 @@ const NewListingForm = ({ onPublish }: Props) => {
   const [isAccidentFree, setIsAccidentFree] = useState(false);
   const [images, setImages] = useState<File[] | []>([]);
 
-  const [dropdownData, setDropdownData] = useState<dropdownData | null>(null);
+  const [dropdownData, setDropdownData] = useState<DropdownData | null>(null);
 
   const { user } = useAuth() as AuthType;
 

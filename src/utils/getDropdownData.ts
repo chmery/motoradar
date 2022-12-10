@@ -1,7 +1,7 @@
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
 
-export type dropdownData = {
+export type DropdownData = {
   gearboxTypes: string[];
   drivetrainTypes: string[];
   fuelTypes: string[];

@@ -55,8 +55,8 @@ const ImageLoader = ({ onImageUpload }: Props) => {
     if (!imagesToAdd.length) return;
 
     if (uploadedImages.length) {
-      const newImages = imagesToAdd.filter((newImage) =>
-        uploadedImages.every((image) => image.name !== newImage.name)
+      const newImages = imagesToAdd.filter((imageToAdd) =>
+        uploadedImages.every((image) => image.name !== imageToAdd.name)
       );
 
       if (!newImages.length) return;
