@@ -28,7 +28,7 @@ const NewListingForm = ({ onPublish }: Props) => {
   const [images, setImages] = useState<File[] | []>([]);
 
   const [dropdownData, setDropdownData] = useState<DropdownData | null>(null);
-  const { user } = useAuth() as AuthType;
+  const { userData } = useAuth() as AuthType;
 
   useEffect(() => {
     const fetchDropdownData = async () =>
@@ -56,7 +56,7 @@ const NewListingForm = ({ onPublish }: Props) => {
     images.length &&
     brand &&
     model &&
-    user &&
+    userData &&
     productionYear &&
     mileage &&
     power &&
@@ -75,10 +75,7 @@ const NewListingForm = ({ onPublish }: Props) => {
 
     const listingData = {
       location,
-      uid: user.uid,
-      username: user.displayName as string,
-      email: user.email as string,
-      photoURL: user.photoURL as string,
+      uid: userData.uid,
       date: Date.now(),
       imageUrls: [],
       brand,

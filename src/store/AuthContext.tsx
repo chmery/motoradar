@@ -10,7 +10,6 @@ import { auth, db } from '../firebase/firebase';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { createRandomUsername } from '../utils/createRandomUsername';
 import { doc, setDoc } from 'firebase/firestore';
-import { useRouter } from 'next/router';
 
 type Props = {
   children: React.ReactNode;
