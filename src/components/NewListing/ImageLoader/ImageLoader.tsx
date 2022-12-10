@@ -10,7 +10,12 @@ type Props = {
 
 const ImageLoader = ({ onImageUpload }: Props) => {
   const [uploadedImages, setUploadedImages] = useState<File[] | []>([]);
+  const [imagesUrls, setImagesUrls] = useState<{ url: string; name: string }[]>(
+    []
+  );
+
   const uploadInputRef = useRef<HTMLInputElement>(null);
+  const MAX_IMAGES = 12;
 
   useEffect(() => {
     onImageUpload(uploadedImages);
@@ -23,7 +28,7 @@ const ImageLoader = ({ onImageUpload }: Props) => {
   };
 
   const getImagesToAdd = (newUploadedImages: File[]) => {
-    const remainingSpace = 12 - uploadedImages.length;
+    const remainingSpace = MAX_IMAGES - uploadedImages.length;
 
     if (remainingSpace < 0) return [];
 
@@ -32,6 +37,14 @@ const ImageLoader = ({ onImageUpload }: Props) => {
     });
 
     return imagesToAdd;
+  };
+
+  const createImagesUrls = (images: File[]) => {
+    const urls: { url: string; name: string }[] = [];
+    images.forEach((image) =>
+      urls.push({ url: URL.createObjectURL(image), name: image.name })
+    );
+    return urls;
   };
 
   const setImagesHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -48,6 +61,10 @@ const ImageLoader = ({ onImageUpload }: Props) => {
 
       if (!newImages.length) return;
 
+      setImagesUrls((prevState) => {
+        return [...prevState, ...createImagesUrls(newImages)];
+      });
+
       setUploadedImages((prevState) => {
         return [...prevState, ...newImages];
       });
@@ -55,6 +72,7 @@ const ImageLoader = ({ onImageUpload }: Props) => {
       return;
     }
 
+    setImagesUrls(createImagesUrls(imagesToAdd));
     setUploadedImages(imagesToAdd);
   };
 
@@ -62,6 +80,12 @@ const ImageLoader = ({ onImageUpload }: Props) => {
     const updatedUploadedImages = uploadedImages.filter(
       (image) => image.name !== imageToRemove
     );
+
+    const updatedImagesUrls = imagesUrls.filter(
+      (image) => image.name !== imageToRemove
+    );
+
+    setImagesUrls(updatedImagesUrls);
     setUploadedImages(updatedUploadedImages);
     uploadInputRef!.current!.value = '';
   };
@@ -80,14 +104,10 @@ const ImageLoader = ({ onImageUpload }: Props) => {
   const ImagesList = () => {
     return (
       <div className={styles['images-list']}>
-        {uploadedImages.map((image) => (
-          <ImageItem
-            src={URL.createObjectURL(image)}
-            key={image.name}
-            id={image.name}
-          />
+        {imagesUrls.map((image) => (
+          <ImageItem src={image.url} key={image.name} id={image.name} />
         ))}
-        {uploadedImages.length < 12 && (
+        {uploadedImages.length < MAX_IMAGES && (
           <button onClick={startUploadingHandler}>
             <BsPlus />
           </button>
