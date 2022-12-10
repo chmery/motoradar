@@ -1,21 +1,18 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
-import { useUser } from '../../../hooks/useUser';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { AuthType, useAuth } from '../../../store/AuthContext';
+import { DropdownData, getDropdownData } from '../../../utils/getDropdownData';
 import Button from '../../UI/Button/Button';
 import CustomCheckbox from '../../UI/CustomCheckbox/CustomCheckbox';
 import DropdownList from '../../UI/DropdownList/DropdownList';
 import ImageLoader from '../ImageLoader/ImageLoader';
 import styles from './NewListingForm.module.scss';
 
-const TEST_DATA = {
-  options: ['Audi', 'BMW', 'Mercedes'],
-};
-
 type Props = {
   onPublish: (listingData: Listing, images: File[]) => void;
 };
 
 const NewListingForm = ({ onPublish }: Props) => {
+  const [location, setLocation] = useState('');
   const [brand, setBrand] = useState('');
   const [model, setModel] = useState('');
   const [productionYear, setProductionYear] = useState('');
@@ -30,18 +27,58 @@ const NewListingForm = ({ onPublish }: Props) => {
   const [isAccidentFree, setIsAccidentFree] = useState(false);
   const [images, setImages] = useState<File[] | []>([]);
 
-  const { userData } = useAuth() as AuthType;
-  const user = useUser(userData?.uid);
+  const [dropdownData, setDropdownData] = useState<DropdownData | null>(null);
+  const { user } = useAuth() as AuthType;
+
+  useEffect(() => {
+    const fetchDropdownData = async () =>
+      setDropdownData(await getDropdownData());
+    fetchDropdownData();
+  }, []);
+
+  const setImagesHandler = (uploadedImages: File[] | []) =>
+    setImages(uploadedImages);
+
+  const numInputsHandler = (
+    event: ChangeEvent<HTMLInputElement>,
+    input: string
+  ) => {
+    const value = event.target.value.replace(/\D/g, '');
+
+    if (value === '0') return;
+
+    if (input === 'power') setPower(value);
+    if (input === 'mileage') setMileage(value);
+    if (input === 'price') setPrice(value);
+  };
+
+  const canPublish =
+    images.length &&
+    brand &&
+    model &&
+    user &&
+    productionYear &&
+    mileage &&
+    power &&
+    powertrain &&
+    gearbox &&
+    fuelType &&
+    description &&
+    price &&
+    (isDamaged || isAccidentFree)
+      ? true
+      : false;
 
   const publishHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!userData) return;
 
     const listingData = {
-      uid: userData.uid,
-      username: userData.displayName as string,
-      email: userData.email as string,
-      photoURL: userData.photoURL as string,
+      location,
+      uid: user.uid,
+      username: user.displayName as string,
+      email: user.email as string,
+      photoURL: user.photoURL as string,
       date: Date.now(),
       imageUrls: [],
       brand,
@@ -61,101 +98,109 @@ const NewListingForm = ({ onPublish }: Props) => {
     onPublish(listingData, images);
   };
 
-  const setImagesHandler = (uploadedImages: File[] | []) =>
-    setImages(uploadedImages);
-
-  const setDescriptionHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    const description = event.target.value;
-    if (description.length > 250) return;
-    setDescription(description);
-  };
-
-  const canPublish =
-    images.length &&
-    brand &&
-    model &&
-    productionYear &&
-    mileage &&
-    power &&
-    powertrain &&
-    gearbox &&
-    fuelType &&
-    description &&
-    price &&
-    (isDamaged || isAccidentFree)
-      ? true
-      : false;
-
   return (
     <form className={styles['new-listing-form']} onSubmit={publishHandler}>
       <h1>Add New Listing</h1>
       <ImageLoader onImageUpload={setImagesHandler} />
       <div>
         <span className={styles.title}>Brand</span>
-        <DropdownList
-          options={TEST_DATA.options}
-          onSelect={(selected) => setBrand(selected)}
-        />
+        {dropdownData && (
+          <DropdownList
+            options={dropdownData.brands}
+            placeholder={'Brand'}
+            onSelect={(selected) => setBrand(selected)}
+          />
+        )}
       </div>
+
       <div>
         <span className={styles.title}>Model</span>
-        <input type='text' onChange={(event) => setModel(event.target.value)} />
+        <input
+          type='text'
+          maxLength={40}
+          onChange={(event) => setModel(event.target.value)}
+        />
       </div>
       <div>
         <span className={styles.title}>Production Year</span>
-        <input
-          type='number'
-          onChange={(event) => setProductionYear(event.target.value)}
-        />
+        {dropdownData && (
+          <DropdownList
+            options={dropdownData.productionYears}
+            placeholder={'Production Year'}
+            onSelect={(selected) => setProductionYear(selected)}
+          />
+        )}
       </div>
       <div>
         <span className={styles.title}>Mileage</span>
         <input
-          type='number'
-          onChange={(event) => setMileage(event.target.value)}
+          type='text'
+          value={mileage}
+          onChange={(event) => numInputsHandler(event, 'mileage')}
         />
       </div>
       <div>
         <span className={styles.title}>Power</span>
         <input
-          type='number'
-          onChange={(event) => setPower(event.target.value)}
+          type='text'
+          value={power}
+          onChange={(event) => numInputsHandler(event, 'power')}
         />
       </div>
       <div>
         <span className={styles.title}>Gearbox</span>
-        <DropdownList
-          options={TEST_DATA.options}
-          onSelect={(selected) => setGearbox(selected)}
-        />
+        {dropdownData && (
+          <DropdownList
+            options={dropdownData.gearboxTypes}
+            placeholder={'Gearbox'}
+            onSelect={(selected) => setGearbox(selected)}
+          />
+        )}
       </div>
       <div>
-        <span className={styles.title}>Powertrain</span>
-        <DropdownList
-          options={TEST_DATA.options}
-          onSelect={(selected) => setPowertrain(selected)}
-        />
+        <span className={styles.title}>Drivetrain</span>
+        {dropdownData && (
+          <DropdownList
+            options={dropdownData.drivetrainTypes}
+            placeholder={'Drivetrain'}
+            onSelect={(selected) => setPowertrain(selected)}
+          />
+        )}
       </div>
       <div>
         <span className={styles.title}>Fuel Type</span>
-        <DropdownList
-          options={TEST_DATA.options}
-          onSelect={(selected) => setFuelType(selected)}
+        {dropdownData && (
+          <DropdownList
+            options={dropdownData.fuelTypes}
+            placeholder={'Fuel Type'}
+            onSelect={(selected) => setFuelType(selected)}
+          />
+        )}
+      </div>
+      <div>
+        <span className={styles.title}>Location</span>
+        <input
+          type='text'
+          maxLength={40}
+          onChange={(event) => setLocation(event.target.value)}
         />
       </div>
       <div>
-        <span className={styles.title}>Description</span>
-        <input
-          type='text'
+        <span className={styles['description-title']}>Description</span>
+        <textarea
+          maxLength={300}
+          className={styles.description}
+          onChange={(event) => setDescription(event.target.value)}
           value={description}
-          onChange={setDescriptionHandler}
+          placeholder={'Describe your vehicle in detail'}
         />
       </div>
       <div>
         <span className={styles.title}>Price</span>
         <input
-          type='number'
-          onChange={(event) => setPrice(event.target.value)}
+          type='text'
+          value={price}
+          onChange={(event) => numInputsHandler(event, 'price')}
         />
       </div>
       <div className={styles.status}>
@@ -165,11 +210,13 @@ const NewListingForm = ({ onPublish }: Props) => {
             label={'Damaged'}
             onChange={(isChecked) => setIsDamaged(isChecked)}
             dark
+            isChecked={isDamaged}
           />
           <CustomCheckbox
             label={'Accident-free'}
             onChange={(isChecked) => setIsAccidentFree(isChecked)}
             dark
+            isChecked={isAccidentFree}
           />
         </div>
       </div>

@@ -1,3 +1,5 @@
+@use '../../../styles/mixins';
+
 .button {
   display: flex;
   justify-content: center;
@@ -13,9 +15,18 @@
   cursor: pointer;
   outline: none;
 
+  @include mixins.mobile {
+    font-size: 0.875rem;
+  }
+
   & svg {
     font-size: 2rem;
     margin-left: -0.5em;
+
+    @include mixins.mobile {
+      font-size: 1.5rem;
+      margin-left: -0.5em;
+    }
   }
 
   &:disabled {

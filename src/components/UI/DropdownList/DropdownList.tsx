@@ -5,10 +5,11 @@ import styles from './DropdownList.module.scss';
 type Props = {
   options: string[];
   title?: string;
+  placeholder: string;
   onSelect: (selected: string) => void;
 };
 
-const DropdownList = ({ options, title, onSelect }: Props) => {
+const DropdownList = ({ options, title, placeholder, onSelect }: Props) => {
   const [selectedOption, setSelectedOption] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -45,7 +46,9 @@ const DropdownList = ({ options, title, onSelect }: Props) => {
     <div className={styles.dropdown} ref={dropdownRef}>
       <span>{title}</span>
       <div className={styles.selected} onClick={dropdownHandler}>
-        <span>{selectedOption ? selectedOption : options[0]}</span>
+        <span className={`${selectedOption ? styles.active : ''}`}>
+          {selectedOption ? selectedOption : placeholder}
+        </span>
         {!isDropdownOpen && <TbChevronDown />}
         {isDropdownOpen && <TbChevronUp />}
       </div>

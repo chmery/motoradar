@@ -1,8 +1,10 @@
+@use '../../../styles/mixins';
+
 .new-listing-form {
   margin: 2rem 0;
   display: flex;
   flex-direction: column;
-  row-gap: 1em;
+  row-gap: 1.5em;
   & input {
     border: none;
     border-bottom: 1px solid var(--placeholder);
@@ -14,15 +16,49 @@
   & > div {
     display: flex;
     align-items: center;
+
+    @include mixins.mobile {
+      &:not(:first-of-type) {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
   }
 }
 
-.title {
+.title,
+.description-title {
   width: 40rem;
+}
+
+.description-title {
+  align-self: flex-start;
 }
 
 .checkboxes {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-evenly;
   column-gap: 2rem;
+  margin: 2rem 0;
+  width: 100%;
+  @include mixins.mobile {
+    column-gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    row-gap: 1rem;
+  }
+}
+
+.description {
+  outline: none;
+  border: none;
+  border-bottom: 1px solid var(--placeholder);
+  padding: 0.5em 0;
+  width: 100%;
+  resize: none;
+  height: 8rem;
+
+  &::placeholder {
+    color: var(--placeholder);
+  }
 }

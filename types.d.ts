@@ -10,6 +10,7 @@ interface Listing {
   username: string;
   email: string;
   photoURL: string;
+  location: string;
   brand: string;
   date: number;
   model: string;
