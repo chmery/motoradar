@@ -9,9 +9,10 @@ import styles from './NewListingForm.module.scss';
 
 type Props = {
   onPublish: (listingData: Listing, images: File[]) => void;
+  isLoading: boolean;
 };
 
-const NewListingForm = ({ onPublish }: Props) => {
+const NewListingForm = ({ onPublish, isLoading }: Props) => {
   const [location, setLocation] = useState('');
   const [brand, setBrand] = useState('');
   const [model, setModel] = useState('');
@@ -222,6 +223,7 @@ const NewListingForm = ({ onPublish }: Props) => {
         text='Publish'
         disabled={!canPublish}
         active={canPublish ? true : false}
+        isLoading={isLoading}
       />
     </form>
   );
