@@ -1,3 +1,5 @@
+@use '../../../styles/mixins';
+
 .range-slider {
   display: flex;
   flex-direction: column;
@@ -7,10 +9,16 @@
 
 .title {
   font-weight: 600;
+  text-align: center;
 }
 
 .range {
   margin-top: 0.2em;
   font-size: 1.5rem;
   font-weight: 900;
+
+  @include mixins.mobile {
+    font-weight: 700;
+    font-size: 1.25rem;
+  }
 }
