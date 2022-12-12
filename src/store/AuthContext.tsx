@@ -4,12 +4,13 @@ import {
   signInWithEmailAndPassword,
   signOut,
   updateProfile,
-  UserCredential,
 } from 'firebase/auth';
 import { auth, db } from '../firebase/firebase';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { createRandomUsername } from '../utils/createRandomUsername';
 import { doc, setDoc } from 'firebase/firestore';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
 
 type Props = {
   children: React.ReactNode;
@@ -25,7 +26,7 @@ export type UserType = {
 export type AuthType = {
   userData: UserType | null;
   signUp: (email: string, password: string) => Promise<void>;
-  signIn: (email: string, password: string) => Promise<UserCredential>;
+  signIn: (email: string, password: string) => Promise<void>;
   signOut: () => void;
 };
 
@@ -36,8 +37,10 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthContextProvider = ({ children }: Props) => {
   const [user, setUser] = useState<UserType | null>(null);
 
+  const router = useRouter();
+
   useEffect(() => {
-    return onAuthStateChanged(auth, (user) => {
+    return onAuthStateChanged(auth, async (user) => {
       if (user) {
         setUser({
           uid: user.uid,
@@ -49,6 +52,17 @@ export const AuthContextProvider = ({ children }: Props) => {
         setUser(null);
       }
     });
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const uidCookie = Cookies.get('uid');
+      if (!uidCookie && auth.currentUser) {
+        logOut();
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const signUp = async (email: string, password: string) => {
@@ -72,15 +86,23 @@ export const AuthContextProvider = ({ children }: Props) => {
       location: '',
       saved: [],
     });
+
+    const inOneHour = new Date(new Date().getTime() + 240 * 60 * 1000);
+    Cookies.set('uid', userData.user.uid, { expires: inOneHour });
   };
 
-  const signIn = (email: string, password: string) => {
-    return signInWithEmailAndPassword(auth, email, password);
+  const signIn = async (email: string, password: string) => {
+    const userData = await signInWithEmailAndPassword(auth, email, password);
+
+    const inOneHour = new Date(new Date().getTime() + 240 * 60 * 1000);
+    Cookies.set('uid', userData.user.uid, { expires: inOneHour });
   };
 
   const logOut = () => {
+    Cookies.remove('uid');
     setUser(null);
     signOut(auth);
+    router.push('/');
   };
 
   const value: AuthType = {
