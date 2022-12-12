@@ -70,12 +70,14 @@ const Filter = () => {
           placeholder={'Brand'}
           options={brands}
           onSelect={brandSelectHandler}
+          dark
         />
         <DropdownList
           title={'Drivetrain'}
           placeholder={'Drivetrain'}
           options={drivetrainTypes}
           onSelect={drivetrainSelectHandler}
+          dark
         />
       </div>
       <RangeSlider
