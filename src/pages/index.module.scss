@@ -1,8 +1,14 @@
+@use '../styles/mixins';
+
 .background {
   background-image: url('../images/background-car.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  @include mixins.mobile {
+    background-image: none;
+    background: #0c1116;
+  }
 }
 
 .gradient {

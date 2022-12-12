@@ -1,6 +1,7 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
+import { ranges } from '../../../constants/constants';
+import { useDropdownData } from '../../../hooks/useDropdownData';
 import { AuthType, useAuth } from '../../../store/AuthContext';
-import { DropdownData, getDropdownData } from '../../../utils/getDropdownData';
 import Button from '../../UI/Button/Button';
 import CustomCheckbox from '../../UI/CustomCheckbox/CustomCheckbox';
 import DropdownList from '../../UI/DropdownList/DropdownList';
@@ -28,14 +29,10 @@ const NewListingForm = ({ onPublish, isLoading }: Props) => {
   const [isAccidentFree, setIsAccidentFree] = useState(false);
   const [images, setImages] = useState<File[] | []>([]);
 
-  const [dropdownData, setDropdownData] = useState<DropdownData | null>(null);
   const { userData } = useAuth() as AuthType;
-
-  useEffect(() => {
-    const fetchDropdownData = async () =>
-      setDropdownData(await getDropdownData());
-    fetchDropdownData();
-  }, []);
+  const { POWER, MILEAGE, PRICE } = ranges;
+  const { gearboxTypes, drivetrainTypes, productionYears, fuelTypes, brands } =
+    useDropdownData();
 
   const setImagesHandler = (uploadedImages: File[] | []) =>
     setImages(uploadedImages);
@@ -48,9 +45,9 @@ const NewListingForm = ({ onPublish, isLoading }: Props) => {
 
     if (value === '0') return;
 
-    if (input === 'power') setPower(value);
-    if (input === 'mileage') setMileage(value);
-    if (input === 'price') setPrice(value);
+    if (input === 'power' && Number(value) <= POWER.max) setPower(value);
+    if (input === 'mileage' && Number(value) <= MILEAGE.max) setMileage(value);
+    if (input === 'price' && Number(value) <= PRICE.max) setPrice(value);
   };
 
   const canPublish =
@@ -102,13 +99,11 @@ const NewListingForm = ({ onPublish, isLoading }: Props) => {
       <ImageLoader onImageUpload={setImagesHandler} />
       <div>
         <span className={styles.title}>Brand</span>
-        {dropdownData && (
-          <DropdownList
-            options={dropdownData.brands}
-            placeholder={'Brand'}
-            onSelect={(selected) => setBrand(selected)}
-          />
-        )}
+        <DropdownList
+          options={brands}
+          placeholder={'Brand'}
+          onSelect={(selected) => setBrand(selected)}
+        />
       </div>
 
       <div>
@@ -121,13 +116,11 @@ const NewListingForm = ({ onPublish, isLoading }: Props) => {
       </div>
       <div>
         <span className={styles.title}>Production Year</span>
-        {dropdownData && (
-          <DropdownList
-            options={dropdownData.productionYears}
-            placeholder={'Production Year'}
-            onSelect={(selected) => setProductionYear(selected)}
-          />
-        )}
+        <DropdownList
+          options={productionYears}
+          placeholder={'Production Year'}
+          onSelect={(selected) => setProductionYear(selected)}
+        />
       </div>
       <div>
         <span className={styles.title}>Mileage</span>
@@ -147,33 +140,27 @@ const NewListingForm = ({ onPublish, isLoading }: Props) => {
       </div>
       <div>
         <span className={styles.title}>Gearbox</span>
-        {dropdownData && (
-          <DropdownList
-            options={dropdownData.gearboxTypes}
-            placeholder={'Gearbox'}
-            onSelect={(selected) => setGearbox(selected)}
-          />
-        )}
+        <DropdownList
+          options={gearboxTypes}
+          placeholder={'Gearbox'}
+          onSelect={(selected) => setGearbox(selected)}
+        />
       </div>
       <div>
         <span className={styles.title}>Drivetrain</span>
-        {dropdownData && (
-          <DropdownList
-            options={dropdownData.drivetrainTypes}
-            placeholder={'Drivetrain'}
-            onSelect={(selected) => setPowertrain(selected)}
-          />
-        )}
+        <DropdownList
+          options={drivetrainTypes}
+          placeholder={'Drivetrain'}
+          onSelect={(selected) => setPowertrain(selected)}
+        />
       </div>
       <div>
         <span className={styles.title}>Fuel Type</span>
-        {dropdownData && (
-          <DropdownList
-            options={dropdownData.fuelTypes}
-            placeholder={'Fuel Type'}
-            onSelect={(selected) => setFuelType(selected)}
-          />
-        )}
+        <DropdownList
+          options={fuelTypes}
+          placeholder={'Fuel Type'}
+          onSelect={(selected) => setFuelType(selected)}
+        />
       </div>
       <div>
         <span className={styles.title}>Location</span>
