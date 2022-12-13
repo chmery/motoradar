@@ -14,9 +14,13 @@ const Filter = () => {
   const { PRICE, PRODUCTION_YEAR, MILEAGE } = ranges;
   const { brands, drivetrainTypes } = useDropdownData();
 
-  const [isDamaged, setIsDamaged] = useState(false);
-  const [isAccidentFree, setIsAccidentFree] = useState(false);
-  const [brand, setBrand] = useState('');
+  const [isDamaged, setIsDamaged] = useState(
+    router.query.isDamaged === 'true' || false
+  );
+  const [isAccidentFree, setIsAccidentFree] = useState(
+    router.query.isAccidentFree === 'true' || false
+  );
+  const [brand, setBrand] = useState(router.query.brand || '');
   const [drivetrain, setDrivetrain] = useState('');
   const [yearRange, setYearRange] = useState<number[]>([
     PRODUCTION_YEAR.min,
@@ -61,50 +65,73 @@ const Filter = () => {
     });
   };
 
+  let yearRangeDefault = yearRange;
+  if (router.query.yearFrom && router.query.yearTo) {
+    yearRangeDefault = [+router.query.yearFrom, +router.query.yearTo];
+  }
+  let mileageRangeDefault = mileageRange;
+  if (router.query.mileageFrom && router.query.mileageTo) {
+    mileageRangeDefault = [+router.query.mileageFrom, +router.query.mileageTo];
+  }
+  let priceRangeDefault = priceRange;
+  if (router.query.priceFrom && router.query.priceTo) {
+    priceRangeDefault = [+router.query.priceFrom, +router.query.priceTo];
+  }
+
   return (
-    <form className={styles.filter} onSubmit={searchHandler}>
-      <h3>What you're looking for?</h3>
+    <form
+      className={`${styles.filter} ${router.pathname !== '/' && styles.dark}`}
+      onSubmit={searchHandler}
+    >
+      <h3>{router.pathname === '/' ? `What you're looking for?` : `Filter`}</h3>
       <div className={styles.dropdowns}>
         <DropdownList
           title={'Brand'}
-          placeholder={'Brand'}
+          placeholder={(router.query.brand as string) || 'Brand'}
           options={brands}
           onSelect={brandSelectHandler}
-          dark
+          dark={router.pathname === '/'}
         />
         <DropdownList
           title={'Drivetrain'}
-          placeholder={'Drivetrain'}
+          placeholder={(router.query.drivetrain as string) || 'Drivetrain'}
           options={drivetrainTypes}
           onSelect={drivetrainSelectHandler}
-          dark
+          dark={router.pathname === '/'}
         />
       </div>
       <RangeSlider
         title={'Production Year'}
-        defaultValue={PRODUCTION_YEAR.midRange}
+        defaultValue={yearRangeDefault}
         range={PRODUCTION_YEAR.range}
         onChange={yearRangeSelectHandler}
       />
       <RangeSlider
         title={'Mileage'}
-        defaultValue={MILEAGE.midRange}
+        defaultValue={mileageRangeDefault}
         range={MILEAGE.range}
         onChange={mileageRangeSelectHandler}
         step={10000}
       />
       <RangeSlider
         title={'Price'}
-        defaultValue={PRICE.midRange}
+        defaultValue={priceRangeDefault}
         range={PRICE.range}
         onChange={priceRangeSelectHandler}
         step={1000}
       />
       <div className={styles.checkboxes}>
-        <CustomCheckbox label={'damaged'} onChange={damagedCheckHandler} />
+        <CustomCheckbox
+          label={'damaged'}
+          onChange={damagedCheckHandler}
+          isChecked={isDamaged}
+          dark={router.pathname !== '/'}
+        />
         <CustomCheckbox
           label={'accident-free'}
           onChange={accidentFreeCheckHandler}
+          isChecked={isAccidentFree}
+          dark={router.pathname !== '/'}
         />
       </div>
       <Button text='Search' type='submit' active />

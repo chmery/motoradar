@@ -14,6 +14,13 @@
   }
 }
 
+.dark {
+  & > h3 {
+    color: var(--dark-text);
+    text-align: left;
+  }
+}
+
 .dropdowns {
   display: flex;
   column-gap: 2em;
