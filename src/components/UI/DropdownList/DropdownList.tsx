@@ -7,9 +7,16 @@ type Props = {
   title?: string;
   placeholder: string;
   onSelect: (selected: string) => void;
+  dark?: boolean;
 };
 
-const DropdownList = ({ options, title, placeholder, onSelect }: Props) => {
+const DropdownList = ({
+  options,
+  title,
+  placeholder,
+  onSelect,
+  dark,
+}: Props) => {
   const [selectedOption, setSelectedOption] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -46,7 +53,11 @@ const DropdownList = ({ options, title, placeholder, onSelect }: Props) => {
     <div className={styles.dropdown} ref={dropdownRef}>
       <span>{title}</span>
       <div className={styles.selected} onClick={dropdownHandler}>
-        <span className={`${selectedOption ? styles.active : ''}`}>
+        <span
+          className={`${selectedOption && !dark ? styles.active : ''} ${
+            selectedOption && dark ? styles['active-dark'] : ''
+          }`}
+        >
           {selectedOption ? selectedOption : placeholder}
         </span>
         {!isDropdownOpen && <TbChevronDown />}

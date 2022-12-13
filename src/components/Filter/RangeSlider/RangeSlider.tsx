@@ -1,21 +1,22 @@
-import styles from './RangeSlider.module.scss'
-import { Slider } from '@mui/material'
-import { useState } from 'react'
+import styles from './RangeSlider.module.scss';
+import { Slider } from '@mui/material';
+import { useState } from 'react';
 
 type Props = {
-  range: number[]
-  defaultValue: number[]
-  title: string
-  onChange: (range: number[]) => void
-}
+  range: number[];
+  defaultValue: number[];
+  title: string;
+  onChange: (range: number[]) => void;
+  step?: number;
+};
 
-const RangeSlider = ({ range, title, defaultValue, onChange }: Props) => {
-  const [value, setValue] = useState(defaultValue)
+const RangeSlider = ({ range, title, defaultValue, onChange, step }: Props) => {
+  const [value, setValue] = useState(defaultValue);
 
   const changeHandler = (event: Event, newValue: number | number[]) => {
-    setValue(newValue as number[])
-    onChange(newValue as number[])
-  }
+    setValue(newValue as number[]);
+    onChange(newValue as number[]);
+  };
 
   return (
     <div className={styles['range-slider']}>
@@ -24,6 +25,7 @@ const RangeSlider = ({ range, title, defaultValue, onChange }: Props) => {
         {value[0]} - {value[1]}
       </span>
       <Slider
+        step={step}
         min={range[0]}
         max={range[1]}
         value={value}
@@ -38,7 +40,7 @@ const RangeSlider = ({ range, title, defaultValue, onChange }: Props) => {
         }}
       />
     </div>
-  )
-}
+  );
+};
 
-export default RangeSlider
+export default RangeSlider;
