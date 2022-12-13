@@ -1,4 +1,5 @@
 import Filter from '../components/Filter/Filter';
+import RecentlyAdded from '../components/RecentlyAdded/RecentlyAdded';
 import Wrapper from '../components/UI/Wrapper/Wrapper';
 import styles from './index.module.scss';
 
@@ -10,6 +11,7 @@ export default function Home() {
           <div className={styles.filter}>
             <Filter />
           </div>
+          <RecentlyAdded />
         </Wrapper>
       </div>
     </div>

@@ -1,6 +1,4 @@
 import Image from 'next/image';
-import Link from 'next/link';
-import { BiEditAlt } from 'react-icons/bi';
 import { IoLocationOutline } from 'react-icons/io5';
 import { FaCheck } from 'react-icons/fa';
 import styles from './Listing.module.scss';

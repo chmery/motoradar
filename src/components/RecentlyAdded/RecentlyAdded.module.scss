@@ -1,0 +1,21 @@
+.recently-added {
+  //position: absolute;
+  margin-top: 2rem;
+
+  & > h3 {
+    color: #fff;
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+}
+
+.listings {
+  margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  & > div {
+    background: #fff;
+  }
+}
