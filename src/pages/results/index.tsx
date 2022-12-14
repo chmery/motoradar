@@ -3,7 +3,19 @@ import { useRouter } from 'next/router';
 import Wrapper from '../../components/UI/Wrapper/Wrapper';
 import Filter from '../../components/Filter/Filter';
 import DropdownList from '../../components/UI/DropdownList/DropdownList';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import {
+  collection,
+  CollectionReference,
+  getDocs,
+  orderBy,
+  query,
+  QueryDocumentSnapshot,
+  where,
+} from 'firebase/firestore';
+import { db } from '../../firebase/firebase';
+import Listing from '../../components/Listing/Listing';
+import { getSearchQuery } from '../../utils/getSearchQuery';
 
 const SORT_OPTIONS = [
   'Recently Added',
@@ -17,12 +29,50 @@ const SORT_OPTIONS = [
 
 const ResultsPage = () => {
   const [sortOption, setSortOption] = useState('date');
+  const [listings, setListings] = useState<QueryDocumentSnapshot<Listing>[]>();
 
   const router = useRouter();
+  const {
+    brand,
+    drivetrain,
+    isDamaged,
+    isAccidentFree,
+    yearFrom,
+    yearTo,
+    priceFrom,
+    priceTo,
+    mileageFrom,
+    mileageTo,
+  } = router.query;
 
   const handleSortOption = (selected: string) => {
     setSortOption(selected);
   };
+
+  useEffect(() => {
+    const getListings = async () => {
+      const listingsQuery = getSearchQuery(
+        brand,
+        drivetrain,
+        isDamaged,
+        isAccidentFree,
+        yearFrom,
+        yearTo,
+        priceFrom,
+        priceTo,
+        mileageFrom,
+        mileageTo,
+        sortOption,
+        'desc'
+      );
+      const listingsDocs = await getDocs(listingsQuery);
+      console.log(listingsDocs.size);
+
+      setListings(listingsDocs.docs);
+    };
+
+    getListings();
+  }, [router.query]);
 
   return (
     <Wrapper>
@@ -39,7 +89,14 @@ const ResultsPage = () => {
           </div>
           <Filter />
         </div>
-        <div className={styles.listings}>aha</div>
+        <div className={styles.listings}>
+          <h3 className={styles.header}>{listings?.length} Results</h3>
+          {listings?.map((listing) => {
+            return (
+              <Listing key={listing.id} data={listing.data()} id={listing.id} />
+            );
+          })}
+        </div>
       </div>
     </Wrapper>
   );

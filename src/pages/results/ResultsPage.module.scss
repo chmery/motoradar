@@ -14,7 +14,18 @@
 
 .listings {
   flex-grow: 1;
-  padding: 2em 0 2em 20px;
+  padding: 2em 1rem 2em 20px;
+  height: calc(100vh - 80px);
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    width: 5px;
+    background-color: var(--border);
+  }
 }
 
 .sort-container {
