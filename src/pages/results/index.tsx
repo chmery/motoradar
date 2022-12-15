@@ -29,6 +29,7 @@ const SORT_OPTIONS = [
 
 const ResultsPage = () => {
   const [sortOption, setSortOption] = useState('date');
+  const [sortDirection, setSortDirection] = useState('asc');
   const [listings, setListings] = useState<QueryDocumentSnapshot<Listing>[]>();
 
   const router = useRouter();
@@ -46,6 +47,7 @@ const ResultsPage = () => {
   } = router.query;
 
   const handleSortOption = (selected: string) => {
+    console.log(selected);
     setSortOption(selected);
   };
 
@@ -56,17 +58,10 @@ const ResultsPage = () => {
         drivetrain,
         isDamaged,
         isAccidentFree,
-        yearFrom,
-        yearTo,
-        priceFrom,
-        priceTo,
-        mileageFrom,
-        mileageTo,
         sortOption,
         'desc'
       );
       const listingsDocs = await getDocs(listingsQuery);
-      console.log(listingsDocs.size);
 
       setListings(listingsDocs.docs);
     };
