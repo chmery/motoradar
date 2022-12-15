@@ -9,6 +9,7 @@ import {
   CollectionReference,
   getDocs,
   orderBy,
+  OrderByDirection,
   query,
   QueryDocumentSnapshot,
   where,
@@ -19,17 +20,18 @@ import { getSearchQuery } from '../../utils/getSearchQuery';
 
 const SORT_OPTIONS = [
   'Recently Added',
+  'Oldest',
   'Price Ascending',
   'Price Descending',
   'Mileage Ascending',
   'Mileage Descending',
   'Production Year Ascending',
-  'Production Year descending',
+  'Production Year Descending',
 ];
 
 const ResultsPage = () => {
   const [sortOption, setSortOption] = useState('date');
-  const [sortDirection, setSortDirection] = useState('asc');
+  const [sortDirection, setSortDirection] = useState('desc');
   const [listings, setListings] = useState<QueryDocumentSnapshot<Listing>[]>();
 
   const router = useRouter();
@@ -47,8 +49,44 @@ const ResultsPage = () => {
   } = router.query;
 
   const handleSortOption = (selected: string) => {
-    console.log(selected);
-    setSortOption(selected);
+    switch (selected) {
+      case 'Recently Added':
+        setSortOption('date');
+        setSortDirection('desc');
+        break;
+      case 'Oldest':
+        setSortOption('date');
+        setSortDirection('asc');
+        break;
+      case 'Price Ascending':
+        setSortOption('price');
+        setSortDirection('asc');
+        break;
+      case 'Price Descending':
+        setSortOption('price');
+        setSortDirection('desc');
+        break;
+      case 'Mileage Ascending':
+        setSortOption('mileage');
+        setSortDirection('asc');
+        break;
+      case 'Mileage Descending':
+        setSortOption('mileage');
+        setSortDirection('desc');
+        break;
+      case 'Production Year Ascending':
+        setSortOption('productionYear');
+        setSortDirection('asc');
+        break;
+      case 'Production Year Descending':
+        setSortOption('productionYear');
+        setSortDirection('desc');
+        break;
+      default:
+        setSortOption('date');
+        setSortDirection('desc');
+        break;
+    }
   };
 
   useEffect(() => {
@@ -59,7 +97,7 @@ const ResultsPage = () => {
         isDamaged,
         isAccidentFree,
         sortOption,
-        'desc'
+        sortDirection as OrderByDirection | undefined
       );
       const listingsDocs = await getDocs(listingsQuery);
 
@@ -67,7 +105,7 @@ const ResultsPage = () => {
     };
 
     getListings();
-  }, [router.query]);
+  }, [router.query, sortOption, sortDirection]);
 
   return (
     <Wrapper>

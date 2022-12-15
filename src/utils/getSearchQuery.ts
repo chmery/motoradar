@@ -2,6 +2,7 @@ import {
   collection,
   CollectionReference,
   orderBy,
+  OrderByDirection,
   query,
   where,
 } from 'firebase/firestore';
@@ -13,28 +14,28 @@ export const getSearchQuery = <Type>(
   isDamaged: Type,
   isAccidentFree: Type,
   sortOption: string,
-  direction: string
+  direction: OrderByDirection | undefined
 ) => {
   const accidentFree = isAccidentFree === 'true' ? true : false;
   const damaged = isDamaged === 'true' ? true : false;
 
   let listingsQuery = query(
     collection(db, 'listings') as CollectionReference<Listing>,
-    orderBy(sortOption, 'asc')
+    orderBy(sortOption, direction)
   );
 
   if (brand && !drivetrain && !accidentFree && !damaged) {
     listingsQuery = query(
       collection(db, 'listings') as CollectionReference<Listing>,
       where('brand', '==', brand),
-      orderBy(sortOption, 'desc')
+      orderBy(sortOption, direction)
     );
   } else if (brand && drivetrain && !accidentFree && !damaged) {
     listingsQuery = query(
       collection(db, 'listings') as CollectionReference<Listing>,
       where('brand', '==', brand),
       where('powertrain', '==', drivetrain),
-      orderBy(sortOption, 'asc')
+      orderBy(sortOption, direction)
     );
   } else if (brand && drivetrain && accidentFree && !damaged) {
     listingsQuery = query(
@@ -42,7 +43,7 @@ export const getSearchQuery = <Type>(
       where('brand', '==', brand),
       where('powertrain', '==', drivetrain),
       where('isAccidentFree', '==', accidentFree),
-      orderBy(sortOption, 'asc')
+      orderBy(sortOption, direction)
     );
   } else if (brand && drivetrain && !accidentFree && damaged) {
     listingsQuery = query(
@@ -50,7 +51,7 @@ export const getSearchQuery = <Type>(
       where('brand', '==', brand),
       where('powertrain', '==', drivetrain),
       where('isDamaged', '==', damaged),
-      orderBy(sortOption, 'desc')
+      orderBy(sortOption, direction)
     );
   } else if (brand && drivetrain && accidentFree && damaged) {
     listingsQuery = query(
@@ -59,14 +60,14 @@ export const getSearchQuery = <Type>(
       where('powertrain', '==', drivetrain),
       where('isAccidentFree', '==', accidentFree),
       where('isDamaged', '==', damaged),
-      orderBy(sortOption, 'desc')
+      orderBy(sortOption, direction)
     );
   } else if (brand && !drivetrain && accidentFree && !damaged) {
     listingsQuery = query(
       collection(db, 'listings') as CollectionReference<Listing>,
       where('brand', '==', brand),
       where('isAccidentFree', '==', accidentFree),
-      orderBy(sortOption, 'desc')
+      orderBy(sortOption, direction)
     );
   } else if (brand && !drivetrain && accidentFree && damaged) {
     listingsQuery = query(
@@ -74,27 +75,27 @@ export const getSearchQuery = <Type>(
       where('brand', '==', brand),
       where('isAccidentFree', '==', accidentFree),
       where('isDamaged', '==', damaged),
-      orderBy(sortOption, 'asc')
+      orderBy(sortOption, direction)
     );
   } else if (brand && !drivetrain && !accidentFree && damaged) {
     listingsQuery = query(
       collection(db, 'listings') as CollectionReference<Listing>,
       where('brand', '==', brand),
       where('isDamaged', '==', damaged),
-      orderBy(sortOption, 'desc')
+      orderBy(sortOption, direction)
     );
   } else if (!brand && drivetrain && !accidentFree && !damaged) {
     listingsQuery = query(
       collection(db, 'listings') as CollectionReference<Listing>,
       where('powertrain', '==', drivetrain),
-      orderBy(sortOption, 'asc')
+      orderBy(sortOption, direction)
     );
   } else if (!brand && drivetrain && accidentFree && !damaged) {
     listingsQuery = query(
       collection(db, 'listings') as CollectionReference<Listing>,
       where('powertrain', '==', drivetrain),
       where('isAccidentFree', '==', accidentFree),
-      orderBy(sortOption, 'asc')
+      orderBy(sortOption, direction)
     );
   } else if (!brand && drivetrain && accidentFree && damaged) {
     listingsQuery = query(
@@ -102,33 +103,33 @@ export const getSearchQuery = <Type>(
       where('powertrain', '==', drivetrain),
       where('isAccidentFree', '==', accidentFree),
       where('isDamaged', '==', damaged),
-      orderBy(sortOption, 'asc')
+      orderBy(sortOption, direction)
     );
   } else if (!brand && drivetrain && !accidentFree && damaged) {
     listingsQuery = query(
       collection(db, 'listings') as CollectionReference<Listing>,
       where('powertrain', '==', drivetrain),
       where('isDamaged', '==', damaged),
-      orderBy(sortOption, 'asc')
+      orderBy(sortOption, direction)
     );
   } else if (!brand && !drivetrain && accidentFree && !damaged) {
     listingsQuery = query(
       collection(db, 'listings') as CollectionReference<Listing>,
       where('isAccidentFree', '==', accidentFree),
-      orderBy(sortOption, 'asc')
+      orderBy(sortOption, direction)
     );
   } else if (!brand && !drivetrain && accidentFree && damaged) {
     listingsQuery = query(
       collection(db, 'listings') as CollectionReference<Listing>,
       where('isAccidentFree', '==', accidentFree),
       where('isDamaged', '==', damaged),
-      orderBy(sortOption, 'asc')
+      orderBy(sortOption, direction)
     );
   } else if (!brand && !drivetrain && !accidentFree && damaged) {
     listingsQuery = query(
       collection(db, 'listings') as CollectionReference<Listing>,
       where('isDamaged', '==', damaged),
-      orderBy(sortOption, 'desc')
+      orderBy(sortOption, direction)
     );
   }
 
