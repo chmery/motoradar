@@ -1,25 +1,46 @@
 @use '../styles/mixins';
 
 .background {
-  background-image: url('../images/background-car.jpg');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
+  position: relative;
+
+  &::before,
+  &::after {
+    width: 100%;
+    height: 60rem;
+    top: 0;
+    left: 0;
+    display: block;
+    position: absolute;
+    content: '';
+  }
+
+  &::before {
+    background-image: url('../images/background-car.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  &::after {
+    background: linear-gradient(
+      61.55deg,
+      #0c1116 39.1%,
+      rgba(0, 11, 17, 0.53) 143.6%
+    );
+  }
+
   @include mixins.mobile {
-    background-image: none;
-    background: #0c1116;
+    &::before {
+      height: 70rem;
+      background-image: none;
+      background: #0c1116;
+    }
   }
 }
 
-.gradient {
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    61.55deg,
-    #0c1116 39.1%,
-    rgba(0, 11, 17, 0.53) 143.6%
-  );
-  padding-bottom: 10rem;
+.content {
+  position: relative;
+  z-index: 10;
 }
 
 .filter {

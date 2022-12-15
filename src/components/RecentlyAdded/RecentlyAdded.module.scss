@@ -1,6 +1,7 @@
+@use '../../styles/mixins';
+
 .recently-added {
-  //position: absolute;
-  margin-top: 2rem;
+  margin-top: 4rem;
 
   & > h3 {
     color: #fff;
@@ -11,10 +12,19 @@
 }
 
 .listings {
-  margin-top: 2rem;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  margin-top: 4rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 1em;
+
+  @include mixins.mobileL {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include mixins.mobile {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
   & > div {
     background: #fff;
   }

@@ -6,7 +6,7 @@ import styles from './index.module.scss';
 export default function Home() {
   return (
     <div className={styles.background}>
-      <div className={styles.gradient}>
+      <div className={styles.content}>
         <Wrapper>
           <div className={styles.filter}>
             <Filter />

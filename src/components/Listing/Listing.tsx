@@ -5,6 +5,7 @@ import styles from './Listing.module.scss';
 import { IconContext } from 'react-icons';
 import { useRouter } from 'next/router';
 import { getNumberWithSpaces } from '../../utils/getNumberWithSpaces';
+import { useEffect, useState } from 'react';
 
 type Props = {
   data: Listing;
@@ -12,12 +13,21 @@ type Props = {
 };
 
 const Listing = ({ data, id }: Props) => {
+  const [isOnLandingPage, setIsOnLandingPage] = useState(false);
+
   const router = useRouter();
+
+  useEffect(() => {
+    const url = router.pathname;
+    if (url === '/') setIsOnLandingPage(true);
+  }, []);
 
   return (
     <div
       onClick={() => router.push(`/listing/${id}`)}
-      className={styles.listing}
+      className={`${styles.listing} ${
+        isOnLandingPage ? styles['landing-listing'] : ''
+      }`}
     >
       <div className={styles['image-container']}>
         <Image
