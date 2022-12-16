@@ -1,12 +1,11 @@
 import Image from 'next/image';
-import Link from 'next/link';
-import { BiEditAlt } from 'react-icons/bi';
 import { IoLocationOutline } from 'react-icons/io5';
 import { FaCheck } from 'react-icons/fa';
 import styles from './Listing.module.scss';
 import { IconContext } from 'react-icons';
 import { useRouter } from 'next/router';
 import { getNumberWithSpaces } from '../../utils/getNumberWithSpaces';
+import { useEffect, useState } from 'react';
 
 type Props = {
   data: Listing;
@@ -15,11 +14,14 @@ type Props = {
 
 const Listing = ({ data, id }: Props) => {
   const router = useRouter();
+  const url = router.pathname;
 
   return (
     <div
       onClick={() => router.push(`/listing/${id}`)}
-      className={styles.listing}
+      className={`${styles.listing} ${
+        url === '/' ? styles['landing-listing'] : ''
+      }`}
     >
       <div className={styles['image-container']}>
         <Image
