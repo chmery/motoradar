@@ -5,7 +5,6 @@ import styles from './Listing.module.scss';
 import { IconContext } from 'react-icons';
 import { useRouter } from 'next/router';
 import { getNumberWithSpaces } from '../../utils/getNumberWithSpaces';
-import { useEffect, useState } from 'react';
 
 type Props = {
   data: Listing;

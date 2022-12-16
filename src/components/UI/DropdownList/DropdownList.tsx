@@ -3,10 +3,10 @@ import { TbChevronDown, TbChevronUp } from 'react-icons/tb';
 import styles from './DropdownList.module.scss';
 
 type Props = {
-  options: string[];
+  options: string[] | number[];
   title?: string;
   placeholder: string;
-  onSelect: (selected: string) => void;
+  onSelect: (selected: string | number) => void;
   dark?: boolean;
 };
 
@@ -17,7 +17,9 @@ const DropdownList = ({
   onSelect,
   dark,
 }: Props) => {
-  const [selectedOption, setSelectedOption] = useState('');
+  const [selectedOption, setSelectedOption] = useState<number | string | null>(
+    null
+  );
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -26,9 +28,17 @@ const DropdownList = ({
 
   const selectOptionHandler = (event: React.MouseEvent) => {
     const selectedOption = (event.target as HTMLDivElement).innerText;
-    setSelectedOption(selectedOption);
+
+    if (typeof options[0] === 'number') {
+      const selectedOptionNum = Number(selectedOption);
+      setSelectedOption(selectedOptionNum);
+      onSelect(selectedOptionNum);
+    } else {
+      setSelectedOption(selectedOption);
+      onSelect(selectedOption);
+    }
+
     setIsDropdownOpen(false);
-    onSelect(selectedOption);
   };
 
   useEffect(() => {
