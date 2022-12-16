@@ -7,7 +7,7 @@ export type DropdownData = {
   gearboxTypes: string[];
   drivetrainTypes: string[];
   fuelTypes: string[];
-  productionYears: string[];
+  productionYears: number[];
   brands: string[];
 };
 
@@ -35,9 +35,9 @@ export const useDropdownData = () => {
     'Rear-wheel drive',
   ];
   const fuelTypes = ['Petrol', 'Diesel', 'Electric', 'Hybrid'];
-  const productionYears: string[] = [];
+  const productionYears: number[] = [];
   for (let i = PRODUCTION_YEAR.min; i <= PRODUCTION_YEAR.max; i++) {
-    productionYears.push(i.toString());
+    productionYears.push(i);
   }
 
   return {
