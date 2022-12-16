@@ -17,14 +17,14 @@ const NewListingForm = ({ onPublish, isLoading }: Props) => {
   const [location, setLocation] = useState('');
   const [brand, setBrand] = useState('');
   const [model, setModel] = useState('');
-  const [productionYear, setProductionYear] = useState('');
-  const [mileage, setMileage] = useState('');
+  const [productionYear, setProductionYear] = useState<number>();
+  const [mileage, setMileage] = useState<number>();
   const [power, setPower] = useState('');
   const [powertrain, setPowertrain] = useState('');
   const [gearbox, setGearbox] = useState('');
   const [fuelType, setFuelType] = useState('');
   const [description, setDescription] = useState('');
-  const [price, setPrice] = useState('');
+  const [price, setPrice] = useState<number>();
   const [isDamaged, setIsDamaged] = useState(false);
   const [isAccidentFree, setIsAccidentFree] = useState(false);
   const [images, setImages] = useState<File[] | []>([]);
@@ -42,12 +42,13 @@ const NewListingForm = ({ onPublish, isLoading }: Props) => {
     input: string
   ) => {
     const value = event.target.value.replace(/\D/g, '');
+    const numValue = Number(value);
 
     if (value === '0') return;
 
-    if (input === 'power' && Number(value) <= POWER.max) setPower(value);
-    if (input === 'mileage' && Number(value) <= MILEAGE.max) setMileage(value);
-    if (input === 'price' && Number(value) <= PRICE.max) setPrice(value);
+    if (input === 'power' && numValue <= POWER.max) setPower(value);
+    if (input === 'mileage' && numValue <= MILEAGE.max) setMileage(numValue);
+    if (input === 'price' && numValue <= PRICE.max) setPrice(numValue);
   };
 
   const canPublish =
@@ -78,14 +79,14 @@ const NewListingForm = ({ onPublish, isLoading }: Props) => {
       imageUrls: [],
       brand,
       model,
-      productionYear,
-      mileage,
+      productionYear: productionYear!,
+      mileage: mileage!,
+      price: price!,
       power,
       powertrain,
       gearbox,
       fuelType,
       description,
-      price,
       isDamaged,
       isAccidentFree,
     };
@@ -102,7 +103,7 @@ const NewListingForm = ({ onPublish, isLoading }: Props) => {
         <DropdownList
           options={brands}
           placeholder={'Brand'}
-          onSelect={(selected) => setBrand(selected)}
+          onSelect={(selected) => setBrand(selected as string)}
         />
       </div>
 
@@ -119,7 +120,7 @@ const NewListingForm = ({ onPublish, isLoading }: Props) => {
         <DropdownList
           options={productionYears}
           placeholder={'Production Year'}
-          onSelect={(selected) => setProductionYear(selected)}
+          onSelect={(selected) => setProductionYear(selected as number)}
         />
       </div>
       <div>
@@ -143,7 +144,7 @@ const NewListingForm = ({ onPublish, isLoading }: Props) => {
         <DropdownList
           options={gearboxTypes}
           placeholder={'Gearbox'}
-          onSelect={(selected) => setGearbox(selected)}
+          onSelect={(selected) => setGearbox(selected as string)}
         />
       </div>
       <div>
@@ -151,7 +152,7 @@ const NewListingForm = ({ onPublish, isLoading }: Props) => {
         <DropdownList
           options={drivetrainTypes}
           placeholder={'Drivetrain'}
-          onSelect={(selected) => setPowertrain(selected)}
+          onSelect={(selected) => setPowertrain(selected as string)}
         />
       </div>
       <div>
@@ -159,7 +160,7 @@ const NewListingForm = ({ onPublish, isLoading }: Props) => {
         <DropdownList
           options={fuelTypes}
           placeholder={'Fuel Type'}
-          onSelect={(selected) => setFuelType(selected)}
+          onSelect={(selected) => setFuelType(selected as string)}
         />
       </div>
       <div>
