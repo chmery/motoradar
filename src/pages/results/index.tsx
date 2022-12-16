@@ -123,7 +123,9 @@ const ResultsPage = () => {
           <Filter />
         </div>
         <div className={styles.listings}>
-          <h3 className={styles.header}>{listings?.length} Results</h3>
+          <h3 className={styles['results-header']}>
+            {listings?.length} Results
+          </h3>
           {listings?.map((listing) => {
             return (
               <Listing key={listing.id} data={listing.data()} id={listing.id} />
