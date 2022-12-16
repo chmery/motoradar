@@ -1,6 +1,6 @@
 import {
   collection,
-  DocumentData,
+  CollectionReference,
   getDocs,
   limit,
   orderBy,
@@ -14,13 +14,13 @@ import styles from './RecentlyAdded.module.scss';
 
 const RecentlyAdded = () => {
   const [recentListings, setRecentListings] = useState<
-    QueryDocumentSnapshot<DocumentData>[]
+    QueryDocumentSnapshot<Listing>[]
   >([]);
 
   useEffect(() => {
     const fetchRecentListings = async () => {
       const recentListingsQuery = query(
-        collection(db, 'listings'),
+        collection(db, 'listings') as CollectionReference<Listing>,
         orderBy('date', 'desc'),
         limit(6)
       );
@@ -35,11 +35,7 @@ const RecentlyAdded = () => {
       <h3>Recently Added</h3>
       <div className={styles.listings}>
         {recentListings.map((listing) => (
-          <Listing
-            data={listing.data() as Listing}
-            id={listing.id}
-            key={listing.id}
-          />
+          <Listing data={listing.data()} id={listing.id} key={listing.id} />
         ))}
       </div>
     </div>

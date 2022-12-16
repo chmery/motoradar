@@ -14,15 +14,13 @@ type Props = {
 
 const Listing = ({ data, id }: Props) => {
   const router = useRouter();
-
   const url = router.pathname;
-  const isOnLandingPage = url === '/' ? true : false;
 
   return (
     <div
       onClick={() => router.push(`/listing/${id}`)}
       className={`${styles.listing} ${
-        isOnLandingPage ? styles['landing-listing'] : ''
+        url === '/' ? styles['landing-listing'] : ''
       }`}
     >
       <div className={styles['image-container']}>
