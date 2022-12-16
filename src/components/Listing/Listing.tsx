@@ -13,14 +13,10 @@ type Props = {
 };
 
 const Listing = ({ data, id }: Props) => {
-  const [isOnLandingPage, setIsOnLandingPage] = useState(false);
-
   const router = useRouter();
 
-  useEffect(() => {
-    const url = router.pathname;
-    if (url === '/') setIsOnLandingPage(true);
-  }, []);
+  const url = router.pathname;
+  const isOnLandingPage = url === '/' ? true : false;
 
   return (
     <div
