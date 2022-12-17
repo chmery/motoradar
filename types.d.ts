@@ -21,5 +21,6 @@ interface Listing {
   price: number;
   isDamaged: boolean;
   isAccidentFree: boolean;
+  storageRef: string;
   imageUrls: string[];
 }

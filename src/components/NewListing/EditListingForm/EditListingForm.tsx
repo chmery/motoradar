@@ -10,19 +10,27 @@ import ImageLoader from '../ImageLoader/ImageLoader';
 import styles from './EditListingForm.module.scss';
 
 type Props = {
-  onPublish: (listingData: Listing, images: File[]) => void;
+  onUpdate: (listingData: Listing, images: Images) => void;
   isLoading: boolean;
   editId: string;
 };
 
-const EditListingForm = ({ onPublish, isLoading, editId }: Props) => {
-  const [images, setImages] = useState<File[] | []>([]);
+export type Images = {
+  new: File[];
+  old?: string[];
+};
+
+const EditListingForm = ({ onUpdate, isLoading, editId }: Props) => {
+  const [images, setImages] = useState<Images | null>(null);
+  const [dataToEdit, setDataToEdit] = useState<Listing | null>(null);
 
   const { POWER, MILEAGE, PRICE } = ranges;
   const { gearboxTypes, drivetrainTypes, productionYears, fuelTypes, brands } =
     useDropdownData();
 
-  const [dataToEdit, setDataToEdit] = useState<Listing | null>(null);
+  const canUpdate = Object.values(
+    dataToEdit ? dataToEdit : { canUpdate: false }
+  ).every((value) => value !== '');
 
   useEffect(() => {
     if (!editId) return;
@@ -38,7 +46,7 @@ const EditListingForm = ({ onPublish, isLoading, editId }: Props) => {
   }, []);
 
   const setImagesHandler = (uploadedImages: File[] | []) =>
-    setImages(uploadedImages);
+    setImages({ new: uploadedImages, old: dataToEdit?.imageUrls });
 
   const numInputsHandler = (
     event: ChangeEvent<HTMLInputElement>,
@@ -57,20 +65,21 @@ const EditListingForm = ({ onPublish, isLoading, editId }: Props) => {
       setDataToEdit({ ...dataToEdit, price: numValue });
   };
 
-  const canPublish = false;
-
   const publishHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!dataToEdit) return;
-    onPublish(dataToEdit, images);
+    if (!dataToEdit || !images) return;
+    onUpdate(dataToEdit, images);
   };
 
-  if (!dataToEdit) return;
+  if (!dataToEdit) return <h1>Loading</h1>;
 
   return (
     <form className={styles['new-listing-form']} onSubmit={publishHandler}>
       <h1>Edit listing</h1>
-      <ImageLoader onImageUpload={setImagesHandler} />
+      <ImageLoader
+        onImageUpload={setImagesHandler}
+        imagesFromStorage={dataToEdit.imageUrls}
+      />
       <div>
         <span className={styles.title}>Brand</span>
         <DropdownList
@@ -208,9 +217,9 @@ const EditListingForm = ({ onPublish, isLoading, editId }: Props) => {
       </div>
       <Button
         type='submit'
-        text='Publish'
-        disabled={!canPublish}
-        active={canPublish ? true : false}
+        text='Update'
+        disabled={!canUpdate}
+        active={canUpdate ? true : false}
         isLoading={isLoading}
       />
     </form>
