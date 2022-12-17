@@ -16,6 +16,7 @@ import { getSortedListings } from '../../utils/getSortedListings';
 import { TbArrowsSort } from 'react-icons/tb';
 import { IoOptionsOutline } from 'react-icons/io5';
 import ListingLoader from '../../components/UI/Loaders/ListingLoader/ListingLoader';
+import FilterMenu from '../../components/Results/FilterMenu/FilterMenu';
 
 const SORT_OPTIONS = [
   'Recently Added',
@@ -34,6 +35,8 @@ const ResultsPage = () => {
   const [listings, setListings] =
     useState<(QueryDocumentSnapshot<Listing> | undefined)[]>();
   const [isLoading, setIsLoading] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isSortOpen, setIsSortOpen] = useState(false);
 
   const router = useRouter();
   const {
@@ -120,58 +123,75 @@ const ResultsPage = () => {
     getListings();
   }, [router.query, sortOption, sortDirection]);
 
-  return (
-    <Wrapper>
-      <div className={styles.container}>
-        <div className={styles.filters}>
-          <div className={styles['sort-container']}>
-            <h3 className={styles.header}>Sort By</h3>
-            <DropdownList
-              placeholder={'Recently Added'}
-              options={SORT_OPTIONS}
-              onSelect={(selected) => handleSortOption(selected as string)}
-              dark={router.pathname === '/'}
-            />
-          </div>
-          <Filter />
-        </div>
-        <div className={styles.listings}>
-          <header className={styles['header-container']}>
-            <button className={styles.menu}>
-              <IoOptionsOutline />
-              <span>Filter</span>
-            </button>
-            <h3 className={styles['results-header']}>
-              {listings?.length} Results
-            </h3>
-            <button className={styles.menu}>
-              <TbArrowsSort /> <span>Sort</span>
-            </button>
-          </header>
+  const handleFilterClose = () => {
+    setIsFilterOpen(false);
+  };
 
-          {isLoading && (
-            <>
-              <ListingLoader />
-              <ListingLoader />
-              <ListingLoader />
-              <ListingLoader />
-              <ListingLoader />
-            </>
-          )}
-          {!isLoading &&
-            listings?.map((listing) => {
-              if (!listing) return;
-              return (
-                <Listing
-                  key={listing.id}
-                  data={listing.data()}
-                  id={listing.id}
-                />
-              );
-            })}
+  const handleSortClose = () => {
+    setIsSortOpen(false);
+  };
+
+  return (
+    <>
+      {isFilterOpen && <FilterMenu closeMenu={handleFilterClose} />}
+      <Wrapper>
+        <div className={styles.container}>
+          <div className={styles.filters}>
+            <div className={styles['sort-container']}>
+              <h3 className={styles.header}>Sort By</h3>
+              <DropdownList
+                placeholder={'Recently Added'}
+                options={SORT_OPTIONS}
+                onSelect={(selected) => handleSortOption(selected as string)}
+                dark={router.pathname === '/'}
+              />
+            </div>
+            <Filter />
+          </div>
+          <div className={styles.listings}>
+            <header className={styles['header-container']}>
+              <button
+                className={styles.menu}
+                onClick={() => setIsFilterOpen(true)}
+              >
+                <IoOptionsOutline />
+                <span>Filter</span>
+              </button>
+              <h3 className={styles['results-header']}>
+                {listings?.length} Results
+              </h3>
+              <button
+                className={styles.menu}
+                onClick={() => setIsSortOpen(true)}
+              >
+                <TbArrowsSort /> <span>Sort</span>
+              </button>
+            </header>
+
+            {isLoading && (
+              <>
+                <ListingLoader />
+                <ListingLoader />
+                <ListingLoader />
+                <ListingLoader />
+                <ListingLoader />
+              </>
+            )}
+            {!isLoading &&
+              listings?.map((listing) => {
+                if (!listing) return;
+                return (
+                  <Listing
+                    key={listing.id}
+                    data={listing.data()}
+                    id={listing.id}
+                  />
+                );
+              })}
+          </div>
         </div>
-      </div>
-    </Wrapper>
+      </Wrapper>
+    </>
   );
 };
 

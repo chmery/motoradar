@@ -8,7 +8,11 @@ import { useDropdownData } from '../../hooks/useDropdownData';
 import { ranges } from '../../constants/constants';
 import { useRouter } from 'next/router';
 
-const Filter = () => {
+type Props = {
+  closeMenu?: () => void;
+};
+
+const Filter = ({ closeMenu }: Props) => {
   const router = useRouter();
 
   const { PRICE, PRODUCTION_YEAR, MILEAGE } = ranges;
@@ -146,9 +150,17 @@ const Filter = () => {
           dark={router.pathname !== '/'}
         />
       </div>
-      <Button text='Search' type='submit' active />
+      <Button text='Search' type='submit' active onClick={closeMenu} />
       {router.pathname !== '/' && (
-        <button className={styles.clear} onClick={handleClearSearch}>
+        <button
+          className={styles.clear}
+          onClick={() => {
+            handleClearSearch();
+            if (closeMenu) {
+              closeMenu();
+            }
+          }}
+        >
           Clear
         </button>
       )}
