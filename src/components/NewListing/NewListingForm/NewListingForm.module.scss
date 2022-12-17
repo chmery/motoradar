@@ -29,6 +29,9 @@
 .title,
 .description-title {
   width: 40rem;
+  @include mixins.mobile {
+    width: 100%;
+  }
 }
 
 .description-title {
