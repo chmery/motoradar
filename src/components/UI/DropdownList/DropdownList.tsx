@@ -7,6 +7,7 @@ type Props = {
   title?: string;
   placeholder: string;
   onSelect: (selected: string | number) => void;
+  value?: number | string;
   dark?: boolean;
 };
 
@@ -16,6 +17,7 @@ const DropdownList = ({
   placeholder,
   onSelect,
   dark,
+  value,
 }: Props) => {
   const [selectedOption, setSelectedOption] = useState<number | string | null>(
     null
@@ -40,6 +42,10 @@ const DropdownList = ({
 
     setIsDropdownOpen(false);
   };
+
+  useEffect(() => {
+    if (value) setSelectedOption(value);
+  }, []);
 
   useEffect(() => {
     const checkIfClickedOutside = (event: MouseEvent) => {

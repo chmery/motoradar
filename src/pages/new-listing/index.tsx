@@ -2,6 +2,7 @@ import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 import { getDownloadURL, listAll, ref, uploadBytes } from 'firebase/storage';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import EditListingForm from '../../components/NewListing/EditListingForm/EditListingForm';
 import NewListingForm from '../../components/NewListing/NewListingForm/NewListingForm';
 import Wrapper from '../../components/UI/Wrapper/Wrapper';
 import { db, storage } from '../../firebase/firebase';
@@ -56,11 +57,16 @@ const NewListingPage = () => {
 
   return (
     <Wrapper>
-      <NewListingForm
-        onPublish={publishHandler}
-        isLoading={isLoading}
-        editId={editId}
-      />
+      {!editId && (
+        <NewListingForm onPublish={publishHandler} isLoading={isLoading} />
+      )}
+      {editId && (
+        <EditListingForm
+          onPublish={publishHandler}
+          isLoading={isLoading}
+          editId={editId}
+        />
+      )}
     </Wrapper>
   );
 };
