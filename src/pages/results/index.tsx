@@ -17,6 +17,7 @@ import { TbArrowsSort } from 'react-icons/tb';
 import { IoOptionsOutline } from 'react-icons/io5';
 import ListingLoader from '../../components/UI/Loaders/ListingLoader/ListingLoader';
 import FilterMenu from '../../components/Results/FilterMenu/FilterMenu';
+import SortMenu from '../../components/Results/SortMenu/SortMenu';
 
 const SORT_OPTIONS = [
   'Recently Added',
@@ -134,6 +135,15 @@ const ResultsPage = () => {
   return (
     <>
       {isFilterOpen && <FilterMenu closeMenu={handleFilterClose} />}
+      {isSortOpen && (
+        <SortMenu
+          closeMenu={handleSortClose}
+          options={SORT_OPTIONS}
+          handleSortOptions={handleSortOption}
+          sortOption={sortOption}
+          sortDirection={sortDirection}
+        />
+      )}
       <Wrapper>
         <div className={styles.container}>
           <div className={styles.filters}>
