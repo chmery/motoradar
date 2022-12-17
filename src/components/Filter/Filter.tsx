@@ -1,7 +1,7 @@
 import CustomCheckbox from '../UI/CustomCheckbox/CustomCheckbox';
 import DropdownList from '../UI/DropdownList/DropdownList';
 import RangeSlider from './RangeSlider/RangeSlider';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './Filter.module.scss';
 import Button from '../UI/Button/Button';
 import { useDropdownData } from '../../hooks/useDropdownData';
@@ -65,6 +65,16 @@ const Filter = () => {
     });
   };
 
+  const handleClearSearch = () => {
+    setBrand('');
+    setDrivetrain('');
+    setYearRange([PRODUCTION_YEAR.min, PRODUCTION_YEAR.max]);
+    setMileageRange([MILEAGE.min, MILEAGE.max]);
+    setPriceRange([PRICE.min, PRICE.max]);
+    setIsAccidentFree(false);
+    setIsDamaged(false);
+  };
+
   let yearRangeDefault = yearRange;
   if (router.query.yearFrom && router.query.yearTo) {
     yearRangeDefault = [+router.query.yearFrom, +router.query.yearTo];
@@ -78,6 +88,8 @@ const Filter = () => {
     priceRangeDefault = [+router.query.priceFrom, +router.query.priceTo];
   }
 
+  useEffect(() => {}, [router.query]);
+
   return (
     <form
       className={`${styles.filter} ${router.pathname !== '/' && styles.dark}`}
@@ -89,14 +101,14 @@ const Filter = () => {
           title={'Brand'}
           placeholder={(router.query.brand as string) || 'Brand'}
           options={brands}
-          onSelect={brandSelectHandler}
+          onSelect={(selected) => brandSelectHandler(selected as string)}
           dark={router.pathname === '/'}
         />
         <DropdownList
           title={'Drivetrain'}
           placeholder={(router.query.drivetrain as string) || 'Drivetrain'}
           options={drivetrainTypes}
-          onSelect={drivetrainSelectHandler}
+          onSelect={(selected) => drivetrainSelectHandler(selected as string)}
           dark={router.pathname === '/'}
         />
       </div>
@@ -107,14 +119,14 @@ const Filter = () => {
         onChange={yearRangeSelectHandler}
       />
       <RangeSlider
-        title={'Mileage'}
+        title={'Mileage (km)'}
         defaultValue={mileageRangeDefault}
         range={MILEAGE.range}
         onChange={mileageRangeSelectHandler}
         step={10000}
       />
       <RangeSlider
-        title={'Price'}
+        title={'Price ($)'}
         defaultValue={priceRangeDefault}
         range={PRICE.range}
         onChange={priceRangeSelectHandler}
@@ -135,6 +147,11 @@ const Filter = () => {
         />
       </div>
       <Button text='Search' type='submit' active />
+      {router.pathname !== '/' && (
+        <button className={styles.clear} onClick={handleClearSearch}>
+          Clear
+        </button>
+      )}
     </form>
   );
 };

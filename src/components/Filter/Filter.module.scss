@@ -42,3 +42,25 @@
     row-gap: 0.5em;
   }
 }
+
+.clear {
+  margin-top: -1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  color: var(--dark-text);
+  border-radius: 0.5em;
+  border: solid 1px var(--placeholder);
+  font-size: 1rem;
+  font-weight: 600;
+  background: none;
+  height: 55px;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.11s;
+
+  &:hover {
+    border-color: var(--dark-text);
+  }
+}
