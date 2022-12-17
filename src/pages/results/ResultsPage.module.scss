@@ -68,6 +68,7 @@
 }
 
 .menu {
+  display: none !important;
   padding: 0.6rem 0.7rem;
   display: flex;
   align-items: center;
@@ -81,5 +82,9 @@
 
   & > span {
     margin-left: 3px;
+  }
+
+  @include tablet {
+    display: block !important;
   }
 }
