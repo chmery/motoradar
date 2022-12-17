@@ -5,29 +5,27 @@ import Filter from '../../components/Filter/Filter';
 import DropdownList from '../../components/UI/DropdownList/DropdownList';
 import React, { useEffect, useState } from 'react';
 import {
-  collection,
-  CollectionReference,
   getDocs,
-  orderBy,
   OrderByDirection,
-  query,
   QueryDocumentSnapshot,
-  where,
 } from 'firebase/firestore';
-import { db } from '../../firebase/firebase';
 import Listing from '../../components/Listing/Listing';
 import { getSearchQuery } from '../../utils/getSearchQuery';
 import { getSortedListings } from '../../utils/getSortedListings';
 
+import { TbArrowsSort } from 'react-icons/tb';
+import { IoOptionsOutline } from 'react-icons/io5';
+import ListingLoader from '../../components/UI/Loaders/ListingLoader/ListingLoader';
+
 const SORT_OPTIONS = [
   'Recently Added',
   'Oldest',
-  'Price Ascending',
-  'Price Descending',
-  'Mileage Ascending',
-  'Mileage Descending',
-  'Production Year Ascending',
-  'Production Year Descending',
+  'Price ↑',
+  'Price ↓',
+  'Mileage ↑',
+  'Mileage ↓',
+  'Production Year ↑',
+  'Production Year ↓',
 ];
 
 const ResultsPage = () => {
@@ -35,6 +33,7 @@ const ResultsPage = () => {
   const [sortDirection, setSortDirection] = useState('desc');
   const [listings, setListings] =
     useState<(QueryDocumentSnapshot<Listing> | undefined)[]>();
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
   const {
@@ -60,27 +59,27 @@ const ResultsPage = () => {
         setSortOption('date');
         setSortDirection('asc');
         break;
-      case 'Price Ascending':
+      case 'Price ↑':
         setSortOption('price');
         setSortDirection('asc');
         break;
-      case 'Price Descending':
+      case 'Price ↓':
         setSortOption('price');
         setSortDirection('desc');
         break;
-      case 'Mileage Ascending':
+      case 'Mileage ↑':
         setSortOption('mileage');
         setSortDirection('asc');
         break;
-      case 'Mileage Descending':
+      case 'Mileage ↓':
         setSortOption('mileage');
         setSortDirection('desc');
         break;
-      case 'Production Year Ascending':
+      case 'Production Year ↑':
         setSortOption('productionYear');
         setSortDirection('asc');
         break;
-      case 'Production Year Descending':
+      case 'Production Year ↓':
         setSortOption('productionYear');
         setSortDirection('desc');
         break;
@@ -93,6 +92,7 @@ const ResultsPage = () => {
 
   useEffect(() => {
     const getListings = async () => {
+      setIsLoading(true);
       const listingsQuery = getSearchQuery(
         brand,
         drivetrain,
@@ -114,6 +114,7 @@ const ResultsPage = () => {
       );
 
       setListings(sortedListings);
+      setIsLoading(false);
     };
 
     getListings();
@@ -124,7 +125,7 @@ const ResultsPage = () => {
       <div className={styles.container}>
         <div className={styles.filters}>
           <div className={styles['sort-container']}>
-            <h3 className={styles.header}>Sort</h3>
+            <h3 className={styles.header}>Sort By</h3>
             <DropdownList
               placeholder={'Recently Added'}
               options={SORT_OPTIONS}
@@ -135,15 +136,39 @@ const ResultsPage = () => {
           <Filter />
         </div>
         <div className={styles.listings}>
-          <h3 className={styles['results-header']}>
-            {listings?.length} Results
-          </h3>
-          {listings?.map((listing) => {
-            if (!listing) return;
-            return (
-              <Listing key={listing.id} data={listing.data()} id={listing.id} />
-            );
-          })}
+          <header className={styles['header-container']}>
+            <button className={styles.menu}>
+              <IoOptionsOutline />
+              <span>Filter</span>
+            </button>
+            <h3 className={styles['results-header']}>
+              {listings?.length} Results
+            </h3>
+            <button className={styles.menu}>
+              <TbArrowsSort /> <span>Sort</span>
+            </button>
+          </header>
+
+          {isLoading && (
+            <>
+              <ListingLoader />
+              <ListingLoader />
+              <ListingLoader />
+              <ListingLoader />
+              <ListingLoader />
+            </>
+          )}
+          {!isLoading &&
+            listings?.map((listing) => {
+              if (!listing) return;
+              return (
+                <Listing
+                  key={listing.id}
+                  data={listing.data()}
+                  id={listing.id}
+                />
+              );
+            })}
         </div>
       </div>
     </Wrapper>
