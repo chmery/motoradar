@@ -1,14 +1,21 @@
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 import { getDownloadURL, listAll, ref, uploadBytes } from 'firebase/storage';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import NewListingForm from '../../components/NewListing/NewListingForm/NewListingForm';
 import Wrapper from '../../components/UI/Wrapper/Wrapper';
 import { db, storage } from '../../firebase/firebase';
 
 const NewListingPage = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [editId, setEditId] = useState('');
   const router = useRouter();
+
+  useEffect(() => {
+    const editId = router.query.edit;
+    if (editId && typeof editId === 'string') setEditId(editId);
+  }, []);
+
   const uploadImagesToStorage = async (images: File[], docId: string) => {
     let imageUrls: string[] = [];
 
@@ -49,7 +56,11 @@ const NewListingPage = () => {
 
   return (
     <Wrapper>
-      <NewListingForm onPublish={publishHandler} isLoading={isLoading} />
+      <NewListingForm
+        onPublish={publishHandler}
+        isLoading={isLoading}
+        editId={editId}
+      />
     </Wrapper>
   );
 };

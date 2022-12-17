@@ -1,5 +1,7 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { doc, DocumentReference, getDoc } from 'firebase/firestore';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { ranges } from '../../../constants/constants';
+import { db } from '../../../firebase/firebase';
 import { useDropdownData } from '../../../hooks/useDropdownData';
 import { AuthType, useAuth } from '../../../store/AuthContext';
 import Button from '../../UI/Button/Button';
@@ -11,9 +13,10 @@ import styles from './NewListingForm.module.scss';
 type Props = {
   onPublish: (listingData: Listing, images: File[]) => void;
   isLoading: boolean;
+  editId: string;
 };
 
-const NewListingForm = ({ onPublish, isLoading }: Props) => {
+const NewListingForm = ({ onPublish, isLoading, editId }: Props) => {
   const [location, setLocation] = useState('');
   const [brand, setBrand] = useState('');
   const [model, setModel] = useState('');
@@ -34,6 +37,23 @@ const NewListingForm = ({ onPublish, isLoading }: Props) => {
   const { gearboxTypes, drivetrainTypes, productionYears, fuelTypes, brands } =
     useDropdownData();
 
+  // Edit part
+  const [dataToEdit, setDataToEdit] = useState<Listing | null>(null);
+
+  useEffect(() => {
+    if (!editId) return;
+
+    const fetchDataToEdit = async () => {
+      const docRef = doc(db, 'listings', editId) as DocumentReference<Listing>;
+      const docSnap = await getDoc(docRef);
+      const dataToEdit = docSnap.data();
+      if (dataToEdit) setDataToEdit(dataToEdit);
+    };
+
+    fetchDataToEdit();
+  }, []);
+
+  console.log(dataToEdit);
   const setImagesHandler = (uploadedImages: File[] | []) =>
     setImages(uploadedImages);
 
