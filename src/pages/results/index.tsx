@@ -17,6 +17,7 @@ import {
 import { db } from '../../firebase/firebase';
 import Listing from '../../components/Listing/Listing';
 import { getSearchQuery } from '../../utils/getSearchQuery';
+import { getSortedListings } from '../../utils/getSortedListings';
 
 const SORT_OPTIONS = [
   'Recently Added',
@@ -32,7 +33,8 @@ const SORT_OPTIONS = [
 const ResultsPage = () => {
   const [sortOption, setSortOption] = useState('date');
   const [sortDirection, setSortDirection] = useState('desc');
-  const [listings, setListings] = useState<QueryDocumentSnapshot<Listing>[]>();
+  const [listings, setListings] =
+    useState<(QueryDocumentSnapshot<Listing> | undefined)[]>();
 
   const router = useRouter();
   const {
@@ -101,7 +103,17 @@ const ResultsPage = () => {
       );
       const listingsDocs = await getDocs(listingsQuery);
 
-      setListings(listingsDocs.docs);
+      const sortedListings = getSortedListings(
+        yearFrom as string,
+        yearTo as string,
+        priceFrom as string,
+        priceTo as string,
+        mileageFrom as string,
+        mileageTo as string,
+        listingsDocs.docs
+      );
+
+      setListings(sortedListings);
     };
 
     getListings();
@@ -116,7 +128,7 @@ const ResultsPage = () => {
             <DropdownList
               placeholder={'Recently Added'}
               options={SORT_OPTIONS}
-              onSelect={handleSortOption}
+              onSelect={(selected) => handleSortOption(selected as string)}
               dark={router.pathname === '/'}
             />
           </div>
@@ -127,6 +139,7 @@ const ResultsPage = () => {
             {listings?.length} Results
           </h3>
           {listings?.map((listing) => {
+            if (!listing) return;
             return (
               <Listing key={listing.id} data={listing.data()} id={listing.id} />
             );
