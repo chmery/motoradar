@@ -4,8 +4,8 @@ import { IoClose } from 'react-icons/io5';
 import { IconContext } from 'react-icons';
 import Unauthorized from './Unathorized/Unauthorized';
 import { AuthType, useAuth } from '../../../../store/AuthContext';
-import Authorized from './Authorized/Authroized';
 import { useState } from 'react';
+import Authorized from './Authorized/Authorized';
 
 type Props = {
   closeMenu: () => void;

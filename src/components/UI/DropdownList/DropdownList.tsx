@@ -45,7 +45,7 @@ const DropdownList = ({
 
   useEffect(() => {
     if (value) setSelectedOption(value);
-  }, []);
+  }, [value]);
 
   useEffect(() => {
     const checkIfClickedOutside = (event: MouseEvent) => {

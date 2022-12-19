@@ -8,11 +8,11 @@ import {
 } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
 
-export const getSearchQuery = <Type>(
-  brand: Type,
-  drivetrain: Type,
-  isDamaged: Type,
-  isAccidentFree: Type,
+export const getSearchQuery = (
+  brand: string,
+  drivetrain: string,
+  isDamaged: string,
+  isAccidentFree: string,
   sortOption: string,
   direction: OrderByDirection | undefined
 ) => {

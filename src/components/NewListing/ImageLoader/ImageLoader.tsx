@@ -3,10 +3,11 @@ import { BsPlus } from 'react-icons/bs';
 import styles from './ImageLoader.module.scss';
 import { IoClose } from 'react-icons/io5';
 import Button from '../../UI/Button/Button';
+import Image from 'next/image';
 
 type Props = {
   onImageUpload: (images: File[] | []) => void;
-  imagesFromStorage: string[];
+  imagesFromStorage?: string[];
 };
 
 const ImageLoader = ({ onImageUpload, imagesFromStorage }: Props) => {
@@ -28,11 +29,11 @@ const ImageLoader = ({ onImageUpload, imagesFromStorage }: Props) => {
 
     setUploadedImages(filesInStorage);
     setImagesUrls(urlsInStorage);
-  }, []);
+  }, [imagesFromStorage]);
 
   useEffect(() => {
     onImageUpload(uploadedImages);
-  }, [uploadedImages]);
+  }, [uploadedImages, onImageUpload]);
 
   const uploadInputRef = useRef<HTMLInputElement>(null);
   const MAX_IMAGES = 12;
@@ -112,7 +113,8 @@ const ImageLoader = ({ onImageUpload, imagesFromStorage }: Props) => {
         <div onClick={() => removeImage(id)} className={styles.remove}>
           <IoClose />
         </div>
-        <img src={src} />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={src} alt='user provided image' />
       </div>
     );
   };
