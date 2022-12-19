@@ -117,3 +117,31 @@
   color: var(--blue);
   margin-right: 5px;
 }
+
+.landing-listing {
+  flex-direction: column;
+
+  & .image-container {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 1.5;
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  & .container {
+    width: 100%;
+  }
+  & .price-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  & .price {
+    margin-left: 0;
+  }
+
+  & .accident {
+    margin-bottom: 1rem;
+  }
+}

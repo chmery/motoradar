@@ -88,14 +88,14 @@ export const AuthContextProvider = ({ children }: Props) => {
     });
 
     const inOneHour = new Date(new Date().getTime() + 240 * 60 * 1000);
-    Cookies.set('uid', userData.user.uid, { expires: inOneHour });
+    await Cookies.set('uid', userData.user.uid, { expires: inOneHour });
   };
 
   const signIn = async (email: string, password: string) => {
     const userData = await signInWithEmailAndPassword(auth, email, password);
 
     const inOneHour = new Date(new Date().getTime() + 240 * 60 * 1000);
-    Cookies.set('uid', userData.user.uid, { expires: inOneHour });
+    await Cookies.set('uid', userData.user.uid, { expires: inOneHour });
   };
 
   const logOut = () => {

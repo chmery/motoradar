@@ -6,20 +6,36 @@ import Button from '../../UI/Button/Button';
 
 type Props = {
   onImageUpload: (images: File[] | []) => void;
+  imagesFromStorage: string[];
 };
 
-const ImageLoader = ({ onImageUpload }: Props) => {
+const ImageLoader = ({ onImageUpload, imagesFromStorage }: Props) => {
   const [uploadedImages, setUploadedImages] = useState<File[] | []>([]);
   const [imagesUrls, setImagesUrls] = useState<{ url: string; name: string }[]>(
     []
   );
 
-  const uploadInputRef = useRef<HTMLInputElement>(null);
-  const MAX_IMAGES = 12;
+  const areImagesUploaded =
+    uploadedImages.length > 0 || imagesUrls.length > 0 ? true : false;
+
+  useEffect(() => {
+    if (!imagesFromStorage) return;
+
+    const filesInStorage = imagesFromStorage.map((url) => new File([url], url));
+    const urlsInStorage = imagesFromStorage.map((url) => {
+      return { url, name: url };
+    });
+
+    setUploadedImages(filesInStorage);
+    setImagesUrls(urlsInStorage);
+  }, []);
 
   useEffect(() => {
     onImageUpload(uploadedImages);
   }, [uploadedImages]);
+
+  const uploadInputRef = useRef<HTMLInputElement>(null);
+  const MAX_IMAGES = 12;
 
   const startUploadingHandler = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -119,7 +135,7 @@ const ImageLoader = ({ onImageUpload }: Props) => {
   return (
     <div
       className={`${styles['image-loader']} ${
-        uploadedImages.length ? styles.active : ''
+        areImagesUploaded ? styles.active : ''
       } `}
     >
       <input
@@ -130,14 +146,14 @@ const ImageLoader = ({ onImageUpload }: Props) => {
         style={{ display: 'none' }}
         accept='image/png, image/jpeg'
       />
-      {!uploadedImages.length && (
+      {!areImagesUploaded && (
         <Button
           text={'Upload Images'}
           icon={<BsPlus />}
           onClick={startUploadingHandler}
         />
       )}
-      {uploadedImages.length > 0 && <ImagesList />}
+      {areImagesUploaded && <ImagesList />}
     </div>
   );
 };
