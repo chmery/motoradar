@@ -5,24 +5,36 @@ import { IconContext } from 'react-icons';
 import Unauthorized from './Unathorized/Unauthorized';
 import { AuthType, useAuth } from '../../../../store/AuthContext';
 import Authorized from './Authorized/Authroized';
+import { useState } from 'react';
 
 type Props = {
   closeMenu: () => void;
 };
 
 const MobileMenu = ({ closeMenu }: Props) => {
+  const [isClosing, setIsClosing] = useState(false);
+
   const { userData } = useAuth() as AuthType;
 
+  const handleClose = () => {
+    setIsClosing(true);
+
+    setTimeout(() => {
+      setIsClosing(false);
+      closeMenu();
+    }, 500);
+  };
+
   return (
-    <div className={styles.container}>
-      <nav className={styles.menu}>
+    <div className={`${styles.container} ${isClosing && styles.hide}`}>
+      <nav className={`${styles.menu} ${isClosing && styles['hide-menu']}`}>
         <IconContext.Provider value={{ className: styles.close }}>
-          <IoClose onClick={closeMenu} />
+          <IoClose onClick={handleClose} />
         </IconContext.Provider>
         {userData ? (
-          <Authorized closeMenu={closeMenu} />
+          <Authorized closeMenu={handleClose} />
         ) : (
-          <Unauthorized closeMenu={closeMenu} />
+          <Unauthorized closeMenu={handleClose} />
         )}
       </nav>
     </div>

@@ -42,11 +42,7 @@
 
 .dropdown-item {
   cursor: pointer;
-  padding: 0.3em 0;
-
-  & > span {
-    padding: 0 1em;
-  }
+  padding: 0.3em 1em;
 
   &:hover {
     background: var(--border);

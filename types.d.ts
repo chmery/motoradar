@@ -11,15 +11,16 @@ interface Listing {
   brand: string;
   date: number;
   model: string;
-  productionYear: string;
-  mileage: string;
+  productionYear: number;
+  mileage: number;
   power: string;
   powertrain: string;
   gearbox: string;
   fuelType: string;
   description: string;
-  price: string;
+  price: number;
   isDamaged: boolean;
   isAccidentFree: boolean;
+  storageRef: string;
   imageUrls: string[];
 }
