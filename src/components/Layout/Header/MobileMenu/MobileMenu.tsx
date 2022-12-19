@@ -2,9 +2,9 @@ import styles from './MobileMenu.module.scss';
 
 import { IoClose } from 'react-icons/io5';
 import { IconContext } from 'react-icons';
-import Authorized from './Authorized/Authorized';
 import Unauthorized from './Unathorized/Unauthorized';
 import { AuthType, useAuth } from '../../../../store/AuthContext';
+import Authorized from './Authorized/Authroized';
 import { useState } from 'react';
 
 type Props = {
