@@ -98,10 +98,10 @@ const ResultsPage = () => {
     const getListings = async () => {
       setIsLoading(true);
       const listingsQuery = getSearchQuery(
-        brand,
-        drivetrain,
-        isDamaged,
-        isAccidentFree,
+        brand as string,
+        drivetrain as string,
+        isDamaged as string,
+        isAccidentFree as string,
         sortOption,
         sortDirection as OrderByDirection | undefined
       );
