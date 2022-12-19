@@ -77,8 +77,8 @@ const NewListingPage = () => {
       deleteObject(toRemoveRef);
     });
 
-    const imageUrls = await uploadImagesToStorage(images.new, docId);
-    await setDoc(doc(db, 'listings', docId), { ...newListingData, imageUrls });
+    const imageUrls = await uploadImagesToStorage(images.new, docId!);
+    await setDoc(doc(db, 'listings', docId!), { ...newListingData, imageUrls });
 
     router.push('/dashboard');
     setIsLoading(false);
