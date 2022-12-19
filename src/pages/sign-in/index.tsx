@@ -10,7 +10,7 @@ const SignInPage = () => {
         <h1 className={styles.header}>Sign In</h1>
         <SignInForm />
         <p>
-          Don't have an account?{' '}
+          Don&apos;t have an account?{' '}
           <Link href='/sign-up' className={styles.link}>
             Sign Up
           </Link>

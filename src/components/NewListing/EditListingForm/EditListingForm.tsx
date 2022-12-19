@@ -43,7 +43,7 @@ const EditListingForm = ({ onUpdate, isLoading, editId }: Props) => {
     };
 
     fetchDataToEdit();
-  }, []);
+  }, [editId]);
 
   const setImagesHandler = (uploadedImages: File[] | []) =>
     setImages({ new: uploadedImages, old: dataToEdit?.imageUrls });

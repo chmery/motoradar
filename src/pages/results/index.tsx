@@ -122,7 +122,21 @@ const ResultsPage = () => {
     };
 
     getListings();
-  }, [router.query, sortOption, sortDirection]);
+  }, [
+    router.query,
+    sortOption,
+    sortDirection,
+    brand,
+    drivetrain,
+    isAccidentFree,
+    isDamaged,
+    mileageFrom,
+    mileageTo,
+    priceFrom,
+    priceTo,
+    yearFrom,
+    yearTo,
+  ]);
 
   const handleFilterClose = () => {
     setIsFilterOpen(false);

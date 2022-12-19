@@ -23,7 +23,7 @@ const NewListingPage = () => {
   useEffect(() => {
     const editId = router.query.edit;
     if (editId && typeof editId === 'string') setEditId(editId);
-  }, []);
+  }, [router.query.edit]);
 
   const uploadImagesToStorage = async (images: File[], docId: string) => {
     let imageUrls: string[] = [];
