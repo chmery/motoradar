@@ -6,7 +6,13 @@ import {
   updateProfile,
 } from 'firebase/auth';
 import { auth, db } from '../firebase/firebase';
-import { createContext, useContext, useEffect, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { createRandomUsername } from '../utils/createRandomUsername';
 import { doc, setDoc } from 'firebase/firestore';
 import Cookies from 'js-cookie';
@@ -54,6 +60,13 @@ export const AuthContextProvider = ({ children }: Props) => {
     });
   }, []);
 
+  const logOut = useCallback(() => {
+    Cookies.remove('uid');
+    setUser(null);
+    signOut(auth);
+    router.push('/');
+  }, [router]);
+
   useEffect(() => {
     const interval = setInterval(() => {
       const uidCookie = Cookies.get('uid');
@@ -63,7 +76,7 @@ export const AuthContextProvider = ({ children }: Props) => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [logOut]);
 
   const signUp = async (email: string, password: string) => {
     const userData = await createUserWithEmailAndPassword(
@@ -96,13 +109,6 @@ export const AuthContextProvider = ({ children }: Props) => {
 
     const inOneHour = new Date(new Date().getTime() + 240 * 60 * 1000);
     await Cookies.set('uid', userData.user.uid, { expires: inOneHour });
-  };
-
-  const logOut = () => {
-    Cookies.remove('uid');
-    setUser(null);
-    signOut(auth);
-    router.push('/');
   };
 
   const value: AuthType = {

@@ -11,7 +11,7 @@ type Props = {
 const SuccessAlert = ({ text, handleClose }: Props) => {
   useEffect(() => {
     setTimeout(handleClose, 5000);
-  }, []);
+  }, [handleClose]);
 
   return (
     <div className={styles.success}>

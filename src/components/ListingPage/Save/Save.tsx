@@ -37,7 +37,7 @@ const Save = ({ listingId }: Props) => {
     if (user?.saved?.find((savedListing) => savedListing === listingId)) {
       setIsSaved(true);
     }
-  }, [userData, user]);
+  }, [userData, user, listingId]);
 
   const handleSave = async () => {
     if (isSaved) {
