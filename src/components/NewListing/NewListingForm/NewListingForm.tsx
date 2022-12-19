@@ -17,14 +17,14 @@ const NewListingForm = ({ onPublish, isLoading }: Props) => {
   const [location, setLocation] = useState('');
   const [brand, setBrand] = useState('');
   const [model, setModel] = useState('');
-  const [productionYear, setProductionYear] = useState<number>();
-  const [mileage, setMileage] = useState<number>();
+  const [productionYear, setProductionYear] = useState<number>(0);
+  const [mileage, setMileage] = useState<number>(0);
   const [power, setPower] = useState('');
   const [powertrain, setPowertrain] = useState('');
   const [gearbox, setGearbox] = useState('');
   const [fuelType, setFuelType] = useState('');
   const [description, setDescription] = useState('');
-  const [price, setPrice] = useState<number>();
+  const [price, setPrice] = useState<number>(0);
   const [isDamaged, setIsDamaged] = useState(false);
   const [isAccidentFree, setIsAccidentFree] = useState(false);
   const [images, setImages] = useState<File[] | []>([]);
@@ -127,7 +127,7 @@ const NewListingForm = ({ onPublish, isLoading }: Props) => {
         <span className={styles.title}>Mileage</span>
         <input
           type='text'
-          value={mileage}
+          value={mileage === 0 ? '' : mileage}
           onChange={(event) => numInputsHandler(event, 'mileage')}
         />
       </div>
@@ -185,7 +185,7 @@ const NewListingForm = ({ onPublish, isLoading }: Props) => {
         <span className={styles.title}>Price</span>
         <input
           type='text'
-          value={price}
+          value={price === 0 ? '' : price}
           onChange={(event) => numInputsHandler(event, 'price')}
         />
       </div>

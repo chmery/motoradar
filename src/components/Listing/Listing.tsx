@@ -41,7 +41,7 @@ const Listing = ({ data, id }: Props) => {
         <div>
           <div className={styles['location-container']}>
             <IoLocationOutline />
-            <p className={styles.location}>Tu ma być lokalizacja</p>
+            <p className={styles.location}>{data.location}</p>
           </div>
           <p className={styles.car}>
             {data.brand} {data.model}
