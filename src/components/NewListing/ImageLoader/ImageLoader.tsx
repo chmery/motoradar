@@ -6,7 +6,7 @@ import Button from '../../UI/Button/Button';
 
 type Props = {
   onImageUpload: (images: File[] | []) => void;
-  imagesFromStorage: string[];
+  imagesFromStorage?: string[];
 };
 
 const ImageLoader = ({ onImageUpload, imagesFromStorage }: Props) => {
