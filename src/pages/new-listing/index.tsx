@@ -6,6 +6,7 @@ import {
   ref,
   uploadBytes,
 } from 'firebase/storage';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import EditListingForm, {
@@ -85,18 +86,34 @@ const NewListingPage = () => {
   };
 
   return (
-    <Wrapper>
-      {!editId && (
-        <NewListingForm onPublish={publishHandler} isLoading={isLoading} />
-      )}
-      {editId && (
-        <EditListingForm
-          onUpdate={updateHandler}
-          isLoading={isLoading}
-          editId={editId}
+    <>
+      <Head>
+        <title>Motoradar - {editId ? 'Edit listing' : 'Add listing'}</title>
+        <link rel='icon' href='/favicon.png' />
+        <meta
+          name='description'
+          content='Car marketplace allowing people to list or search for new or used cars.'
         />
-      )}
-    </Wrapper>
+        <meta
+          name='keywords'
+          content='car marketplace, car, cars, new car, new cars, demaged car, find car, car finder, motoradar'
+        />
+        <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+        <meta name='language' content='English' />
+      </Head>
+      <Wrapper>
+        {!editId && (
+          <NewListingForm onPublish={publishHandler} isLoading={isLoading} />
+        )}
+        {editId && (
+          <EditListingForm
+            onUpdate={updateHandler}
+            isLoading={isLoading}
+            editId={editId}
+          />
+        )}
+      </Wrapper>
+    </>
   );
 };
 
