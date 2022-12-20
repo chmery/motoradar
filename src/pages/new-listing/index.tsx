@@ -50,6 +50,7 @@ const NewListingPage = () => {
 
   const publishHandler = async (listingData: Listing, images: File[]) => {
     setIsLoading(true);
+
     const docRef = await addDoc(collection(db, 'listings'), listingData);
     const imageUrls = await uploadImagesToStorage(images, docRef.id);
 
@@ -61,6 +62,7 @@ const NewListingPage = () => {
 
     await setDoc(doc(db, 'listings', docRef.id), updatedListingData);
     router.push('/dashboard');
+
     setIsLoading(false);
   };
 

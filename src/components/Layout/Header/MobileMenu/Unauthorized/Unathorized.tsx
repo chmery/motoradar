@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import styles from './Unauthorized.module.scss';
+import styles from './Unathorized.module.scss';
 
 import { FiLogIn } from 'react-icons/fi';
 import { RiUserAddLine } from 'react-icons/ri';

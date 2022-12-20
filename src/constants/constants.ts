@@ -21,3 +21,22 @@ export const ranges = {
     max: 5000,
   },
 };
+
+export const initialNewListingState = {
+  uid: '1111',
+  location: '',
+  brand: '',
+  date: 1111,
+  model: '',
+  productionYear: 0,
+  mileage: 0,
+  power: '',
+  powertrain: '',
+  gearbox: '',
+  fuelType: '',
+  description: '',
+  price: 0,
+  isDamaged: false,
+  isAccidentFree: false,
+  imageUrls: [],
+};

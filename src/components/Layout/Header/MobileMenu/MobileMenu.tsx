@@ -2,7 +2,7 @@ import styles from './MobileMenu.module.scss';
 
 import { IoClose } from 'react-icons/io5';
 import { IconContext } from 'react-icons';
-import Unauthorized from './Unathorized/Unauthorized';
+import Unauthorized from './Unauthorized/Unathorized';
 import { AuthType, useAuth } from '../../../../store/AuthContext';
 import { useState } from 'react';
 import Authorized from './Authorized/Authorized';
