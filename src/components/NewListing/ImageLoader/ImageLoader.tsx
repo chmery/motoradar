@@ -3,7 +3,6 @@ import { BsPlus } from 'react-icons/bs';
 import styles from './ImageLoader.module.scss';
 import { IoClose } from 'react-icons/io5';
 import Button from '../../UI/Button/Button';
-import Image from 'next/image';
 
 type Props = {
   onImageUpload: (images: File[] | []) => void;
@@ -33,7 +32,7 @@ const ImageLoader = ({ onImageUpload, imagesFromStorage }: Props) => {
 
   useEffect(() => {
     onImageUpload(uploadedImages);
-  }, [uploadedImages, onImageUpload]);
+  }, [uploadedImages]);
 
   const uploadInputRef = useRef<HTMLInputElement>(null);
   const MAX_IMAGES = 12;

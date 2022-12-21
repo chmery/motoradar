@@ -1,5 +1,7 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { doc, DocumentReference, getDoc } from 'firebase/firestore';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { initialNewListingState, ranges } from '../../../constants/constants';
+import { db } from '../../../firebase/firebase';
 import { useDropdownData } from '../../../hooks/useDropdownData';
 import { AuthType, useAuth } from '../../../store/AuthContext';
 import Button from '../../UI/Button/Button';
@@ -10,32 +12,44 @@ import styles from './NewListingForm.module.scss';
 
 type Props = {
   onPublish: (listingData: Listing, images: File[]) => void;
+  onEdit: (listingData: Listing, images: EditImages) => void;
   isLoading: boolean;
+  editId: string;
 };
 
-const NewListingForm = ({ onPublish, isLoading }: Props) => {
+export type EditImages = {
+  new: File[];
+  old?: string[];
+};
+
+const NewListingForm = ({ onPublish, isLoading, editId, onEdit }: Props) => {
   const [images, setImages] = useState<File[] | []>([]);
-  const [newListingData, setNewListingData] = useState<Listing>(
+  const [editImages, setEditImages] = useState<EditImages | null>(null);
+
+  const [listingData, setListingData] = useState<Listing>(
     initialNewListingState
   );
+  const [isEditing, setIsEditing] = useState(false);
 
   const { mileage, power, description, price, isDamaged, isAccidentFree } =
-    newListingData;
-
+    listingData;
   const { POWER, MILEAGE, PRICE } = ranges;
   const { gearboxTypes, drivetrainTypes, productionYears, fuelTypes, brands } =
     useDropdownData();
 
   const { userData } = useAuth() as AuthType;
 
-  const isNewListingDataFilled = Object.values(newListingData).every(
+  const islistingDataFilled = Object.values(listingData).every(
     (value) => value !== 0 && value !== ''
   );
 
-  const canPublish = images.length && isNewListingDataFilled;
+  const canPublish = (images.length || editImages) && islistingDataFilled;
 
-  const setImagesHandler = (uploadedImages: File[] | []) =>
-    setImages(uploadedImages);
+  const setImagesHandler = () => (uploadedImages: File[] | []) => {
+    isEditing
+      ? setEditImages({ new: uploadedImages, old: listingData.imageUrls })
+      : setImages(uploadedImages);
+  };
 
   const numInputsHandler = (
     event: ChangeEvent<HTMLInputElement>,
@@ -47,36 +61,54 @@ const NewListingForm = ({ onPublish, isLoading }: Props) => {
     if (value === '0') return;
 
     if (input === 'power' && numValue <= POWER.max)
-      setNewListingData({ ...newListingData, power: value });
+      setListingData({ ...listingData, power: value });
     if (input === 'mileage' && numValue <= MILEAGE.max)
-      setNewListingData({ ...newListingData, mileage: numValue });
+      setListingData({ ...listingData, mileage: numValue });
     if (input === 'price' && numValue <= PRICE.max)
-      setNewListingData({ ...newListingData, price: numValue });
+      setListingData({ ...listingData, price: numValue });
   };
 
   const publishHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    setNewListingData({
-      ...newListingData,
+    setListingData({
+      ...listingData,
       uid: userData!.uid,
       date: Date.now(),
     });
 
-    onPublish(newListingData, images);
+    isEditing
+      ? onEdit(listingData, editImages!)
+      : onPublish(listingData, images);
   };
+
+  useEffect(() => {
+    if (!editId) return;
+    setIsEditing(true);
+
+    const fetchDataToEdit = async () => {
+      const docRef = doc(db, 'listings', editId) as DocumentReference<Listing>;
+      const docSnap = await getDoc(docRef);
+      const dataToEdit = docSnap.data();
+      if (dataToEdit) setListingData(dataToEdit);
+    };
+    fetchDataToEdit();
+  }, [editId]);
 
   return (
     <form className={styles['new-listing-form']} onSubmit={publishHandler}>
       <h1>Add New Listing</h1>
-      <ImageLoader onImageUpload={setImagesHandler} />
+      <ImageLoader
+        onImageUpload={setImagesHandler}
+        imagesFromStorage={editId ? listingData.imageUrls : undefined}
+      />
       <div>
         <span className={styles.title}>Brand</span>
         <DropdownList
           options={brands}
           placeholder={'Brand'}
           onSelect={(selected) =>
-            setNewListingData({ ...newListingData, brand: selected as string })
+            setListingData({ ...listingData, brand: selected as string })
           }
         />
       </div>
@@ -87,7 +119,7 @@ const NewListingForm = ({ onPublish, isLoading }: Props) => {
           type='text'
           maxLength={40}
           onChange={(event) =>
-            setNewListingData({ ...newListingData, model: event.target.value })
+            setListingData({ ...listingData, model: event.target.value })
           }
         />
       </div>
@@ -97,8 +129,8 @@ const NewListingForm = ({ onPublish, isLoading }: Props) => {
           options={productionYears}
           placeholder={'Production Year'}
           onSelect={(selected) =>
-            setNewListingData({
-              ...newListingData,
+            setListingData({
+              ...listingData,
               productionYear: selected as number,
             })
           }
@@ -126,8 +158,8 @@ const NewListingForm = ({ onPublish, isLoading }: Props) => {
           options={gearboxTypes}
           placeholder={'Gearbox'}
           onSelect={(selected) =>
-            setNewListingData({
-              ...newListingData,
+            setListingData({
+              ...listingData,
               gearbox: selected as string,
             })
           }
@@ -139,8 +171,8 @@ const NewListingForm = ({ onPublish, isLoading }: Props) => {
           options={drivetrainTypes}
           placeholder={'Drivetrain'}
           onSelect={(selected) =>
-            setNewListingData({
-              ...newListingData,
+            setListingData({
+              ...listingData,
               powertrain: selected as string,
             })
           }
@@ -152,8 +184,8 @@ const NewListingForm = ({ onPublish, isLoading }: Props) => {
           options={fuelTypes}
           placeholder={'Fuel Type'}
           onSelect={(selected) =>
-            setNewListingData({
-              ...newListingData,
+            setListingData({
+              ...listingData,
               fuelType: selected as string,
             })
           }
@@ -165,8 +197,8 @@ const NewListingForm = ({ onPublish, isLoading }: Props) => {
           type='text'
           maxLength={40}
           onChange={(event) =>
-            setNewListingData({
-              ...newListingData,
+            setListingData({
+              ...listingData,
               location: event.target.value,
             })
           }
@@ -178,8 +210,8 @@ const NewListingForm = ({ onPublish, isLoading }: Props) => {
           maxLength={300}
           className={styles.description}
           onChange={(event) =>
-            setNewListingData({
-              ...newListingData,
+            setListingData({
+              ...listingData,
               description: event.target.value,
             })
           }
@@ -201,7 +233,7 @@ const NewListingForm = ({ onPublish, isLoading }: Props) => {
           <CustomCheckbox
             label={'Damaged'}
             onChange={(isChecked) =>
-              setNewListingData({ ...newListingData, isDamaged: isChecked })
+              setListingData({ ...listingData, isDamaged: isChecked })
             }
             dark
             isChecked={isDamaged}
@@ -209,8 +241,8 @@ const NewListingForm = ({ onPublish, isLoading }: Props) => {
           <CustomCheckbox
             label={'Accident-free'}
             onChange={(isChecked) =>
-              setNewListingData({
-                ...newListingData,
+              setListingData({
+                ...listingData,
                 isAccidentFree: isChecked,
               })
             }

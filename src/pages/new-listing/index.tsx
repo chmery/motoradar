@@ -66,7 +66,7 @@ const NewListingPage = () => {
     setIsLoading(false);
   };
 
-  const updateHandler = async (newListingData: Listing, images: Images) => {
+  const editHandler = async (newListingData: Listing, images: Images) => {
     setIsLoading(true);
     const docId = newListingData.storageRef;
 
@@ -93,7 +93,7 @@ const NewListingPage = () => {
       )}
       {editId && (
         <EditListingForm
-          onUpdate={updateHandler}
+          onEdit={editHandler}
           isLoading={isLoading}
           editId={editId}
         />
