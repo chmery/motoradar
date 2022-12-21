@@ -8,10 +8,9 @@ import {
 } from 'firebase/storage';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import EditListingForm, {
-  Images,
-} from '../../components/NewListing/EditListingForm/EditListingForm';
-import NewListingForm from '../../components/NewListing/NewListingForm/NewListingForm';
+import NewListingForm, {
+  EditImages,
+} from '../../components/NewListing/NewListingForm/NewListingForm';
 import Wrapper from '../../components/UI/Wrapper/Wrapper';
 import { db, storage } from '../../firebase/firebase';
 
@@ -66,7 +65,7 @@ const NewListingPage = () => {
     setIsLoading(false);
   };
 
-  const editHandler = async (newListingData: Listing, images: Images) => {
+  const editHandler = async (newListingData: Listing, images: EditImages) => {
     setIsLoading(true);
     const docId = newListingData.storageRef;
 
@@ -88,16 +87,12 @@ const NewListingPage = () => {
 
   return (
     <Wrapper>
-      {!editId && (
-        <NewListingForm onPublish={publishHandler} isLoading={isLoading} />
-      )}
-      {editId && (
-        <EditListingForm
-          onEdit={editHandler}
-          isLoading={isLoading}
-          editId={editId}
-        />
-      )}
+      <NewListingForm
+        onPublish={publishHandler}
+        onEdit={editHandler}
+        isLoading={isLoading}
+        editId={editId}
+      />
     </Wrapper>
   );
 };

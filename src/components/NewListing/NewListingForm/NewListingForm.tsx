@@ -29,10 +29,24 @@ const NewListingForm = ({ onPublish, isLoading, editId, onEdit }: Props) => {
   const [listingData, setListingData] = useState<Listing>(
     initialNewListingState
   );
+
   const [isEditing, setIsEditing] = useState(false);
 
-  const { mileage, power, description, price, isDamaged, isAccidentFree } =
-    listingData;
+  const {
+    mileage,
+    brand,
+    power,
+    location,
+    gearbox,
+    powertrain,
+    model,
+    description,
+    price,
+    isDamaged,
+    isAccidentFree,
+    productionYear,
+    fuelType,
+  } = listingData;
   const { POWER, MILEAGE, PRICE } = ranges;
   const { gearboxTypes, drivetrainTypes, productionYears, fuelTypes, brands } =
     useDropdownData();
@@ -43,9 +57,17 @@ const NewListingForm = ({ onPublish, isLoading, editId, onEdit }: Props) => {
     (value) => value !== 0 && value !== ''
   );
 
-  const canPublish = (images.length || editImages) && islistingDataFilled;
+  const areImagesUploaded = () => {
+    if (isEditing && editImages) {
+      return editImages.new.length > 0 ? true : false;
+    }
 
-  const setImagesHandler = () => (uploadedImages: File[] | []) => {
+    return images.length ? true : false;
+  };
+
+  const canPublish = areImagesUploaded() && islistingDataFilled;
+
+  const setImagesHandler = (uploadedImages: File[] | []) => {
     isEditing
       ? setEditImages({ new: uploadedImages, old: listingData.imageUrls })
       : setImages(uploadedImages);
@@ -106,6 +128,7 @@ const NewListingForm = ({ onPublish, isLoading, editId, onEdit }: Props) => {
         <span className={styles.title}>Brand</span>
         <DropdownList
           options={brands}
+          value={brand}
           placeholder={'Brand'}
           onSelect={(selected) =>
             setListingData({ ...listingData, brand: selected as string })
@@ -117,6 +140,7 @@ const NewListingForm = ({ onPublish, isLoading, editId, onEdit }: Props) => {
         <span className={styles.title}>Model</span>
         <input
           type='text'
+          value={model}
           maxLength={40}
           onChange={(event) =>
             setListingData({ ...listingData, model: event.target.value })
@@ -127,6 +151,7 @@ const NewListingForm = ({ onPublish, isLoading, editId, onEdit }: Props) => {
         <span className={styles.title}>Production Year</span>
         <DropdownList
           options={productionYears}
+          value={productionYear}
           placeholder={'Production Year'}
           onSelect={(selected) =>
             setListingData({
@@ -156,6 +181,7 @@ const NewListingForm = ({ onPublish, isLoading, editId, onEdit }: Props) => {
         <span className={styles.title}>Gearbox</span>
         <DropdownList
           options={gearboxTypes}
+          value={gearbox}
           placeholder={'Gearbox'}
           onSelect={(selected) =>
             setListingData({
@@ -169,6 +195,7 @@ const NewListingForm = ({ onPublish, isLoading, editId, onEdit }: Props) => {
         <span className={styles.title}>Drivetrain</span>
         <DropdownList
           options={drivetrainTypes}
+          value={powertrain}
           placeholder={'Drivetrain'}
           onSelect={(selected) =>
             setListingData({
@@ -182,6 +209,7 @@ const NewListingForm = ({ onPublish, isLoading, editId, onEdit }: Props) => {
         <span className={styles.title}>Fuel Type</span>
         <DropdownList
           options={fuelTypes}
+          value={fuelType}
           placeholder={'Fuel Type'}
           onSelect={(selected) =>
             setListingData({
@@ -195,6 +223,7 @@ const NewListingForm = ({ onPublish, isLoading, editId, onEdit }: Props) => {
         <span className={styles.title}>Location</span>
         <input
           type='text'
+          value={location}
           maxLength={40}
           onChange={(event) =>
             setListingData({

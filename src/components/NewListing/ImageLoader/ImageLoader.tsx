@@ -28,6 +28,7 @@ const ImageLoader = ({ onImageUpload, imagesFromStorage }: Props) => {
 
     setUploadedImages(filesInStorage);
     setImagesUrls(urlsInStorage);
+    onImageUpload(uploadedImages);
   }, [imagesFromStorage]);
 
   useEffect(() => {
