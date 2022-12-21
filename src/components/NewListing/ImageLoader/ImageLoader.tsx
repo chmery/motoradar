@@ -3,6 +3,7 @@ import { BsPlus } from 'react-icons/bs';
 import styles from './ImageLoader.module.scss';
 import { IoClose } from 'react-icons/io5';
 import Button from '../../UI/Button/Button';
+import Image from 'next/image';
 
 type Props = {
   onImageUpload: (images: File[] | []) => void;
@@ -111,7 +112,7 @@ const ImageLoader = ({ onImageUpload, imagesFromStorage }: Props) => {
         <div onClick={() => removeImage(id)} className={styles.remove}>
           <IoClose />
         </div>
-        <img src={src} alt='user provided image' />
+        <Image src={src} alt='uploaded image' fill />
       </div>
     );
   };
