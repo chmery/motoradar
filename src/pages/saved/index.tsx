@@ -6,6 +6,7 @@ import {
   QueryDocumentSnapshot,
   where,
 } from 'firebase/firestore';
+import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 import Listing from '../../components/Listing/Listing';
 import ListingLoader from '../../components/UI/Loaders/ListingLoader/ListingLoader';
@@ -53,19 +54,35 @@ const SavedPage = () => {
   }, [user]);
 
   return (
-    <Wrapper>
-      <div className={styles.main}>
-        {savedListings && <h2 className={styles.header}>Saved listings</h2>}
-        {isLoading && <ListingLoader />}
-        {!isLoading &&
-          savedListings?.map((listing) => (
-            <Listing key={listing.id} data={listing.data()} id={listing.id} />
-          ))}
-        {!savedListings && (
-          <div className={styles.empty}>No listings saved</div>
-        )}
-      </div>
-    </Wrapper>
+    <>
+      <Head>
+        <title>Motoradar - Saved listings</title>
+        <link rel='icon' href='/favicon.png' />
+        <meta
+          name='description'
+          content='Car marketplace allowing people to list or search for new or used cars.'
+        />
+        <meta
+          name='keywords'
+          content='car marketplace, car, cars, new car, new cars, demaged car, find car, car finder, motoradar, saved, saved listings'
+        />
+        <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+        <meta name='language' content='English' />
+      </Head>
+      <Wrapper>
+        <div className={styles.main}>
+          {savedListings && <h2 className={styles.header}>Saved listings</h2>}
+          {isLoading && <ListingLoader />}
+          {!isLoading &&
+            savedListings?.map((listing) => (
+              <Listing key={listing.id} data={listing.data()} id={listing.id} />
+            ))}
+          {!savedListings && (
+            <div className={styles.empty}>No listings saved</div>
+          )}
+        </div>
+      </Wrapper>
+    </>
   );
 };
 

@@ -1,4 +1,5 @@
 import { doc, DocumentReference, getDoc } from 'firebase/firestore';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Page from '../../../components/ListingPage/Page';
@@ -42,13 +43,29 @@ const ListingPage = () => {
   }, [listingId]);
 
   return (
-    <Wrapper>
-      {isLoading && width <= 800 && <MobileListingPageLoader />}
-      {isLoading && width > 800 && <ListingPageLoader />}
-      {!isLoading && listing && (
-        <Page data={listing} listingId={listingId as string} />
-      )}
-    </Wrapper>
+    <>
+      <Head>
+        <title>Motoradar - Listing</title>
+        <link rel='icon' href='/favicon.png' />
+        <meta
+          name='description'
+          content='Car marketplace allowing people to list or search for new or used cars.'
+        />
+        <meta
+          name='keywords'
+          content='car marketplace, car, cars, new car, new cars, demaged car, find car, car finder, motoradar'
+        />
+        <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+        <meta name='language' content='English' />
+      </Head>
+      <Wrapper>
+        {isLoading && width <= 800 && <MobileListingPageLoader />}
+        {isLoading && width > 800 && <ListingPageLoader />}
+        {!isLoading && listing && (
+          <Page data={listing} listingId={listingId as string} />
+        )}
+      </Wrapper>
+    </>
   );
 };
 

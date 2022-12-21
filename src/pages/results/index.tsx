@@ -18,6 +18,7 @@ import { IoOptionsOutline } from 'react-icons/io5';
 import ListingLoader from '../../components/UI/Loaders/ListingLoader/ListingLoader';
 import FilterMenu from '../../components/Results/FilterMenu/FilterMenu';
 import SortMenu from '../../components/Results/SortMenu/SortMenu';
+import Head from 'next/head';
 
 const SORT_OPTIONS = [
   'Recently Added',
@@ -148,6 +149,20 @@ const ResultsPage = () => {
 
   return (
     <>
+      <Head>
+        <title>Motoradar - Results</title>
+        <link rel='icon' href='/favicon.png' />
+        <meta
+          name='description'
+          content='Car marketplace allowing people to list or search for new or used cars.'
+        />
+        <meta
+          name='keywords'
+          content='car marketplace, car, cars, new car, new cars, demaged car, find car, car finder, motoradar'
+        />
+        <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+        <meta name='language' content='English' />
+      </Head>
       {isFilterOpen && <FilterMenu closeMenu={handleFilterClose} />}
       {isSortOpen && (
         <SortMenu
