@@ -15,8 +15,7 @@ const ImageLoader = ({ onImageUpload, imagesFromStorage }: Props) => {
     []
   );
 
-  const areImagesUploaded =
-    uploadedImages.length > 0 || imagesUrls.length > 0 ? true : false;
+  const areImagesUploaded = uploadedImages.length > 0 ? true : false;
 
   useEffect(() => {
     if (!imagesFromStorage) return;
@@ -28,7 +27,7 @@ const ImageLoader = ({ onImageUpload, imagesFromStorage }: Props) => {
 
     setUploadedImages(filesInStorage);
     setImagesUrls(urlsInStorage);
-    onImageUpload(uploadedImages);
+    //onImageUpload(uploadedImages);
   }, [imagesFromStorage]);
 
   useEffect(() => {

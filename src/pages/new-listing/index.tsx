@@ -1,11 +1,5 @@
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
-import {
-  deleteObject,
-  getDownloadURL,
-  listAll,
-  ref,
-  uploadBytes,
-} from 'firebase/storage';
+import { deleteObject, ref } from 'firebase/storage';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import NewListingForm, {
@@ -13,39 +7,18 @@ import NewListingForm, {
 } from '../../components/NewListing/NewListingForm/NewListingForm';
 import Wrapper from '../../components/UI/Wrapper/Wrapper';
 import { db, storage } from '../../firebase/firebase';
+import { uploadImagesToStorage } from '../../utils/uploadImagesToStorage';
 
 const NewListingPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [editId, setEditId] = useState('');
+
   const router = useRouter();
 
   useEffect(() => {
     const editId = router.query.edit;
     if (editId && typeof editId === 'string') setEditId(editId);
   }, [router.query.edit]);
-
-  const uploadImagesToStorage = async (images: File[], docId: string) => {
-    let imageUrls: string[] = [];
-
-    for (const image of images) {
-      if (image.name.includes('firebasestorage') && !image.type) return; // Prevent the addition of already uploaded images
-      const imageRef = ref(
-        storage,
-        `${docId}/${image.name}${Math.round(Math.random() * 1000)}`
-      );
-
-      await uploadBytes(imageRef, image);
-    }
-
-    const imageItems = await listAll(ref(storage, docId));
-
-    for (const imageItem of imageItems.items) {
-      const imageUrl = await getDownloadURL(imageItem);
-      imageUrls.push(imageUrl);
-    }
-
-    return imageUrls;
-  };
 
   const publishHandler = async (listingData: Listing, images: File[]) => {
     setIsLoading(true);
