@@ -93,15 +93,15 @@ const NewListingForm = ({ onPublish, isLoading, editId, onEdit }: Props) => {
   const publishHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    setListingData({
+    const completedListingData = {
       ...listingData,
       uid: userData!.uid,
       date: Date.now(),
-    });
+    };
 
     isEditing
-      ? onEdit(listingData, editImages!)
-      : onPublish(listingData, images);
+      ? onEdit(completedListingData, editImages!)
+      : onPublish(completedListingData, images);
   };
 
   useEffect(() => {

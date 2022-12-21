@@ -52,7 +52,10 @@ const NewListingPage = () => {
     });
 
     const imageUrls = await uploadImagesToStorage(images.new, docId!);
-    await setDoc(doc(db, 'listings', docId!), { ...newListingData, imageUrls });
+    await setDoc(doc(db, 'listings', docId!), {
+      ...newListingData,
+      imageUrls: imageUrls ? imageUrls : newListingData.imageUrls,
+    });
 
     router.push('/dashboard');
     setIsLoading(false);

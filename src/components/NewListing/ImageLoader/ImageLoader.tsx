@@ -27,7 +27,6 @@ const ImageLoader = ({ onImageUpload, imagesFromStorage }: Props) => {
 
     setUploadedImages(filesInStorage);
     setImagesUrls(urlsInStorage);
-    //onImageUpload(uploadedImages);
   }, [imagesFromStorage]);
 
   useEffect(() => {
@@ -112,7 +111,6 @@ const ImageLoader = ({ onImageUpload, imagesFromStorage }: Props) => {
         <div onClick={() => removeImage(id)} className={styles.remove}>
           <IoClose />
         </div>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={src} alt='user provided image' />
       </div>
     );
