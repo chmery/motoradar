@@ -1,5 +1,6 @@
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 import { deleteObject, ref } from 'firebase/storage';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import NewListingForm, {
@@ -62,7 +63,22 @@ const NewListingPage = () => {
   };
 
   return (
-    <Wrapper>
+    <>
+      <Head>
+        <title>Motoradar - {editId ? 'Edit listing' : 'Add listing'}</title>
+        <link rel='icon' href='/favicon.png' />
+        <meta
+          name='description'
+          content='Car marketplace allowing people to list or search for new or used cars.'
+        />
+        <meta
+          name='keywords'
+          content='car marketplace, car, cars, new car, new cars, demaged car, find car, car finder, motoradar'
+        />
+        <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+        <meta name='language' content='English' />
+      </Head>
+     <Wrapper>
       <NewListingForm
         onPublish={publishHandler}
         onEdit={editHandler}
@@ -70,6 +86,7 @@ const NewListingPage = () => {
         editId={editId}
       />
     </Wrapper>
+    </>
   );
 };
 

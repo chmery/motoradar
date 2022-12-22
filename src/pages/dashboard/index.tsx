@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import Link from 'next/link';
 import { useState } from 'react';
 import { IconContext } from 'react-icons';
@@ -64,6 +65,20 @@ const DashboardPage = () => {
 
   return (
     <>
+      <Head>
+        <title>Motoradar - Dashboard</title>
+        <link rel='icon' href='/favicon.png' />
+        <meta
+          name='description'
+          content='Car marketplace allowing people to list or search for new or used cars.'
+        />
+        <meta
+          name='keywords'
+          content='car marketplace, car, cars, new car, new cars, demaged car, find car, car finder, motoradar'
+        />
+        <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+        <meta name='language' content='English' />
+      </Head>
       {isSuccessAlertOpen && (
         <SuccessAlert
           text={successText}
