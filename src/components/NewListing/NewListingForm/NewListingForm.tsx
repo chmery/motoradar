@@ -139,6 +139,7 @@ const NewListingForm = ({ onPublish, isLoading, editId, onEdit }: Props) => {
       <div>
         <span className={styles.title}>Model</span>
         <input
+          data-input='model'
           type='text'
           value={model}
           maxLength={40}
@@ -164,6 +165,7 @@ const NewListingForm = ({ onPublish, isLoading, editId, onEdit }: Props) => {
       <div>
         <span className={styles.title}>Mileage</span>
         <input
+          data-input='mileage'
           type='text'
           value={mileage === 0 ? '' : mileage}
           onChange={(event) => numInputsHandler(event, 'mileage')}
@@ -172,6 +174,7 @@ const NewListingForm = ({ onPublish, isLoading, editId, onEdit }: Props) => {
       <div>
         <span className={styles.title}>Power</span>
         <input
+          data-input='power'
           type='text'
           value={power}
           onChange={(event) => numInputsHandler(event, 'power')}
@@ -222,6 +225,7 @@ const NewListingForm = ({ onPublish, isLoading, editId, onEdit }: Props) => {
       <div>
         <span className={styles.title}>Location</span>
         <input
+          data-input='location'
           type='text'
           value={location}
           maxLength={40}
@@ -236,6 +240,7 @@ const NewListingForm = ({ onPublish, isLoading, editId, onEdit }: Props) => {
       <div>
         <span className={styles['description-title']}>Description</span>
         <textarea
+          data-input='description'
           maxLength={300}
           className={styles.description}
           onChange={(event) =>
@@ -251,6 +256,7 @@ const NewListingForm = ({ onPublish, isLoading, editId, onEdit }: Props) => {
       <div>
         <span className={styles.title}>Price</span>
         <input
+          data-input='price'
           type='text'
           value={price === 0 ? '' : price}
           onChange={(event) => numInputsHandler(event, 'price')}

@@ -68,7 +68,11 @@ const DropdownList = ({
   return (
     <div className={styles.dropdown} ref={dropdownRef}>
       <span>{title}</span>
-      <div className={styles.selected} onClick={dropdownHandler}>
+      <div
+        className={styles.selected}
+        onClick={dropdownHandler}
+        data-select={`${placeholder}`}
+      >
         <span
           className={`${selectedOption && !dark ? styles.active : ''} ${
             selectedOption && dark ? styles['active-dark'] : ''
