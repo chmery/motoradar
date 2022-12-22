@@ -16,8 +16,7 @@ const ImageLoader = ({ onImageUpload, imagesFromStorage }: Props) => {
     []
   );
 
-  const areImagesUploaded =
-    uploadedImages.length > 0 || imagesUrls.length > 0 ? true : false;
+  const areImagesUploaded = uploadedImages.length > 0 ? true : false;
 
   useEffect(() => {
     if (!imagesFromStorage) return;
@@ -33,7 +32,7 @@ const ImageLoader = ({ onImageUpload, imagesFromStorage }: Props) => {
 
   useEffect(() => {
     onImageUpload(uploadedImages);
-  }, [uploadedImages, onImageUpload]);
+  }, [uploadedImages]);
 
   const uploadInputRef = useRef<HTMLInputElement>(null);
   const MAX_IMAGES = 12;
@@ -113,8 +112,7 @@ const ImageLoader = ({ onImageUpload, imagesFromStorage }: Props) => {
         <div onClick={() => removeImage(id)} className={styles.remove}>
           <IoClose />
         </div>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={src} alt='user provided image' />
+        <Image src={src} alt='uploaded image' fill />
       </div>
     );
   };

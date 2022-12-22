@@ -1,5 +1,7 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
-import { ranges } from '../../../constants/constants';
+import { doc, DocumentReference, getDoc } from 'firebase/firestore';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { initialNewListingState, ranges } from '../../../constants/constants';
+import { db } from '../../../firebase/firebase';
 import { useDropdownData } from '../../../hooks/useDropdownData';
 import { AuthType, useAuth } from '../../../store/AuthContext';
 import Button from '../../UI/Button/Button';
@@ -10,32 +12,66 @@ import styles from './NewListingForm.module.scss';
 
 type Props = {
   onPublish: (listingData: Listing, images: File[]) => void;
+  onEdit: (listingData: Listing, images: EditImages) => void;
   isLoading: boolean;
+  editId: string;
 };
 
-const NewListingForm = ({ onPublish, isLoading }: Props) => {
-  const [location, setLocation] = useState('');
-  const [brand, setBrand] = useState('');
-  const [model, setModel] = useState('');
-  const [productionYear, setProductionYear] = useState<number>(0);
-  const [mileage, setMileage] = useState<number>(0);
-  const [power, setPower] = useState('');
-  const [powertrain, setPowertrain] = useState('');
-  const [gearbox, setGearbox] = useState('');
-  const [fuelType, setFuelType] = useState('');
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState<number>(0);
-  const [isDamaged, setIsDamaged] = useState(false);
-  const [isAccidentFree, setIsAccidentFree] = useState(false);
-  const [images, setImages] = useState<File[] | []>([]);
+export type EditImages = {
+  new: File[];
+  old?: string[];
+};
 
-  const { userData } = useAuth() as AuthType;
+const NewListingForm = ({ onPublish, isLoading, editId, onEdit }: Props) => {
+  const [images, setImages] = useState<File[] | []>([]);
+  const [editImages, setEditImages] = useState<EditImages | null>(null);
+
+  const [listingData, setListingData] = useState<Listing>(
+    initialNewListingState
+  );
+
+  const [isEditing, setIsEditing] = useState(false);
+
+  const {
+    mileage,
+    brand,
+    power,
+    location,
+    gearbox,
+    powertrain,
+    model,
+    description,
+    price,
+    isDamaged,
+    isAccidentFree,
+    productionYear,
+    fuelType,
+  } = listingData;
   const { POWER, MILEAGE, PRICE } = ranges;
   const { gearboxTypes, drivetrainTypes, productionYears, fuelTypes, brands } =
     useDropdownData();
 
-  const setImagesHandler = (uploadedImages: File[] | []) =>
-    setImages(uploadedImages);
+  const { userData } = useAuth() as AuthType;
+
+  const islistingDataFilled = Object.values(listingData).every(
+    (value) => value !== 0 && value !== ''
+  );
+
+  const areImagesUploaded = () => {
+    if (isEditing && editImages) {
+      return editImages.new.length > 0 ? true : false;
+    }
+
+    return images.length ? true : false;
+  };
+
+  const canPublish = areImagesUploaded() && islistingDataFilled;
+
+  const setImagesHandler = (uploadedImages: File[] | []) => {
+    isEditing
+      ? setEditImages({ new: uploadedImages, old: listingData.imageUrls })
+      : setImages(uploadedImages);
+  };
 
   const numInputsHandler = (
     event: ChangeEvent<HTMLInputElement>,
@@ -46,64 +82,57 @@ const NewListingForm = ({ onPublish, isLoading }: Props) => {
 
     if (value === '0') return;
 
-    if (input === 'power' && numValue <= POWER.max) setPower(value);
-    if (input === 'mileage' && numValue <= MILEAGE.max) setMileage(numValue);
-    if (input === 'price' && numValue <= PRICE.max) setPrice(numValue);
+    if (input === 'power' && numValue <= POWER.max)
+      setListingData({ ...listingData, power: value });
+    if (input === 'mileage' && numValue <= MILEAGE.max)
+      setListingData({ ...listingData, mileage: numValue });
+    if (input === 'price' && numValue <= PRICE.max)
+      setListingData({ ...listingData, price: numValue });
   };
-
-  const canPublish =
-    images.length &&
-    brand &&
-    model &&
-    userData &&
-    productionYear &&
-    mileage &&
-    power &&
-    powertrain &&
-    gearbox &&
-    fuelType &&
-    description &&
-    price &&
-    (isDamaged || isAccidentFree)
-      ? true
-      : false;
 
   const publishHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!userData) return;
 
-    const listingData = {
-      location,
-      uid: userData.uid,
+    const completedListingData = {
+      ...listingData,
+      uid: userData!.uid,
       date: Date.now(),
-      imageUrls: [],
-      brand,
-      model,
-      productionYear: productionYear!,
-      mileage: mileage!,
-      price: price!,
-      power,
-      powertrain,
-      gearbox,
-      fuelType,
-      description,
-      isDamaged,
-      isAccidentFree,
     };
 
-    onPublish(listingData, images);
+    isEditing
+      ? onEdit(completedListingData, editImages!)
+      : onPublish(completedListingData, images);
   };
+
+  useEffect(() => {
+    if (!editId) return;
+    setIsEditing(true);
+
+    const fetchDataToEdit = async () => {
+      const docRef = doc(db, 'listings', editId) as DocumentReference<Listing>;
+      const docSnap = await getDoc(docRef);
+      const dataToEdit = docSnap.data();
+      if (dataToEdit) setListingData(dataToEdit);
+    };
+    fetchDataToEdit();
+  }, [editId]);
 
   return (
     <form className={styles['new-listing-form']} onSubmit={publishHandler}>
       <h1>Add New Listing</h1>
-      <ImageLoader onImageUpload={setImagesHandler} />
+      <ImageLoader
+        onImageUpload={setImagesHandler}
+        imagesFromStorage={editId ? listingData.imageUrls : undefined}
+      />
       <div>
         <span className={styles.title}>Brand</span>
         <DropdownList
           options={brands}
+          value={brand}
           placeholder={'Brand'}
-          onSelect={(selected) => setBrand(selected as string)}
+          onSelect={(selected) =>
+            setListingData({ ...listingData, brand: selected as string })
+          }
         />
       </div>
 
@@ -111,16 +140,25 @@ const NewListingForm = ({ onPublish, isLoading }: Props) => {
         <span className={styles.title}>Model</span>
         <input
           type='text'
+          value={model}
           maxLength={40}
-          onChange={(event) => setModel(event.target.value)}
+          onChange={(event) =>
+            setListingData({ ...listingData, model: event.target.value })
+          }
         />
       </div>
       <div>
         <span className={styles.title}>Production Year</span>
         <DropdownList
           options={productionYears}
+          value={productionYear}
           placeholder={'Production Year'}
-          onSelect={(selected) => setProductionYear(selected as number)}
+          onSelect={(selected) =>
+            setListingData({
+              ...listingData,
+              productionYear: selected as number,
+            })
+          }
         />
       </div>
       <div>
@@ -143,32 +181,56 @@ const NewListingForm = ({ onPublish, isLoading }: Props) => {
         <span className={styles.title}>Gearbox</span>
         <DropdownList
           options={gearboxTypes}
+          value={gearbox}
           placeholder={'Gearbox'}
-          onSelect={(selected) => setGearbox(selected as string)}
+          onSelect={(selected) =>
+            setListingData({
+              ...listingData,
+              gearbox: selected as string,
+            })
+          }
         />
       </div>
       <div>
         <span className={styles.title}>Drivetrain</span>
         <DropdownList
           options={drivetrainTypes}
+          value={powertrain}
           placeholder={'Drivetrain'}
-          onSelect={(selected) => setPowertrain(selected as string)}
+          onSelect={(selected) =>
+            setListingData({
+              ...listingData,
+              powertrain: selected as string,
+            })
+          }
         />
       </div>
       <div>
         <span className={styles.title}>Fuel Type</span>
         <DropdownList
           options={fuelTypes}
+          value={fuelType}
           placeholder={'Fuel Type'}
-          onSelect={(selected) => setFuelType(selected as string)}
+          onSelect={(selected) =>
+            setListingData({
+              ...listingData,
+              fuelType: selected as string,
+            })
+          }
         />
       </div>
       <div>
         <span className={styles.title}>Location</span>
         <input
           type='text'
+          value={location}
           maxLength={40}
-          onChange={(event) => setLocation(event.target.value)}
+          onChange={(event) =>
+            setListingData({
+              ...listingData,
+              location: event.target.value,
+            })
+          }
         />
       </div>
       <div>
@@ -176,7 +238,12 @@ const NewListingForm = ({ onPublish, isLoading }: Props) => {
         <textarea
           maxLength={300}
           className={styles.description}
-          onChange={(event) => setDescription(event.target.value)}
+          onChange={(event) =>
+            setListingData({
+              ...listingData,
+              description: event.target.value,
+            })
+          }
           value={description}
           placeholder={'Describe your vehicle in detail'}
         />
@@ -194,13 +261,20 @@ const NewListingForm = ({ onPublish, isLoading }: Props) => {
         <div className={styles.checkboxes}>
           <CustomCheckbox
             label={'Damaged'}
-            onChange={(isChecked) => setIsDamaged(isChecked)}
+            onChange={(isChecked) =>
+              setListingData({ ...listingData, isDamaged: isChecked })
+            }
             dark
             isChecked={isDamaged}
           />
           <CustomCheckbox
             label={'Accident-free'}
-            onChange={(isChecked) => setIsAccidentFree(isChecked)}
+            onChange={(isChecked) =>
+              setListingData({
+                ...listingData,
+                isAccidentFree: isChecked,
+              })
+            }
             dark
             isChecked={isAccidentFree}
           />

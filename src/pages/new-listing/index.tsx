@@ -1,24 +1,19 @@
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
-import {
-  deleteObject,
-  getDownloadURL,
-  listAll,
-  ref,
-  uploadBytes,
-} from 'firebase/storage';
+import { deleteObject, ref } from 'firebase/storage';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import EditListingForm, {
-  Images,
-} from '../../components/NewListing/EditListingForm/EditListingForm';
-import NewListingForm from '../../components/NewListing/NewListingForm/NewListingForm';
+import NewListingForm, {
+  EditImages,
+} from '../../components/NewListing/NewListingForm/NewListingForm';
 import Wrapper from '../../components/UI/Wrapper/Wrapper';
 import { db, storage } from '../../firebase/firebase';
+import { uploadImagesToStorage } from '../../utils/uploadImagesToStorage';
 
 const NewListingPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [editId, setEditId] = useState('');
+
   const router = useRouter();
 
   useEffect(() => {
@@ -26,31 +21,9 @@ const NewListingPage = () => {
     if (editId && typeof editId === 'string') setEditId(editId);
   }, [router.query.edit]);
 
-  const uploadImagesToStorage = async (images: File[], docId: string) => {
-    let imageUrls: string[] = [];
-
-    for (const image of images) {
-      if (image.name.includes('firebasestorage') && !image.type) return; // Prevent the addition of already uploaded images
-      const imageRef = ref(
-        storage,
-        `${docId}/${image.name}${Math.round(Math.random() * 1000)}`
-      );
-
-      await uploadBytes(imageRef, image);
-    }
-
-    const imageItems = await listAll(ref(storage, docId));
-
-    for (const imageItem of imageItems.items) {
-      const imageUrl = await getDownloadURL(imageItem);
-      imageUrls.push(imageUrl);
-    }
-
-    return imageUrls;
-  };
-
   const publishHandler = async (listingData: Listing, images: File[]) => {
     setIsLoading(true);
+
     const docRef = await addDoc(collection(db, 'listings'), listingData);
     const imageUrls = await uploadImagesToStorage(images, docRef.id);
 
@@ -62,10 +35,11 @@ const NewListingPage = () => {
 
     await setDoc(doc(db, 'listings', docRef.id), updatedListingData);
     router.push('/dashboard');
+
     setIsLoading(false);
   };
 
-  const updateHandler = async (newListingData: Listing, images: Images) => {
+  const editHandler = async (newListingData: Listing, images: EditImages) => {
     setIsLoading(true);
     const docId = newListingData.storageRef;
 
@@ -79,7 +53,10 @@ const NewListingPage = () => {
     });
 
     const imageUrls = await uploadImagesToStorage(images.new, docId!);
-    await setDoc(doc(db, 'listings', docId!), { ...newListingData, imageUrls });
+    await setDoc(doc(db, 'listings', docId!), {
+      ...newListingData,
+      imageUrls: imageUrls ? imageUrls : newListingData.imageUrls,
+    });
 
     router.push('/dashboard');
     setIsLoading(false);
@@ -101,18 +78,14 @@ const NewListingPage = () => {
         <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
         <meta name='language' content='English' />
       </Head>
-      <Wrapper>
-        {!editId && (
-          <NewListingForm onPublish={publishHandler} isLoading={isLoading} />
-        )}
-        {editId && (
-          <EditListingForm
-            onUpdate={updateHandler}
-            isLoading={isLoading}
-            editId={editId}
-          />
-        )}
-      </Wrapper>
+     <Wrapper>
+      <NewListingForm
+        onPublish={publishHandler}
+        onEdit={editHandler}
+        isLoading={isLoading}
+        editId={editId}
+      />
+    </Wrapper>
     </>
   );
 };
